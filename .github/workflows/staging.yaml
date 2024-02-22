@@ -33,14 +33,6 @@ jobs:
           --yes
           --env NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.GRAPHQL_ENDPOINT }}
           --build-env NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.GRAPHQL_ENDPOINT }}
-          >deployment-url.txt 2>error.txt
-
-      - name: Remove old staging alias
-        run: vercel --token ${{ secrets.VERCEL_TOKEN }} alias rm ${{ vars.CUSTOM_DOMAIN }} --yes
-        continue-on-error: true
-
-      - name: Create staging alias
-        run: vercel --token ${{ secrets.VERCEL_TOKEN }} alias $(cat deployment-url.txt) ${{ vars.CUSTOM_DOMAIN }}
 
       - name: Success
         run: echo "🛠️ Deploy successful 🛠️"
