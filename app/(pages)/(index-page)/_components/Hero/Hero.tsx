@@ -14,7 +14,7 @@ export default function Hero() {
         />
       </div>
       <div className={styles.welcome}>
-        <h1>PLATFORM TEAM NEXT.JS TEMPLATE</h1>
+        <h1>ESTORE MANAGEMENT TOOL</h1>
       </div>
     </div>
   );
