@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Next.js app
         env:
-          MONGO_CONNECTION_STRING: ${{ secrets.MONGO_CONNECTION_STRING }}
+          NEXT_PUBLIC_GRAPHQL_ENDPOINT: ${{ vars.GRAPHQL_ENDPOINT }}
         run: npm run build
 
       - name: Success
