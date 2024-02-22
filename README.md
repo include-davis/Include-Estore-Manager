@@ -1,11 +1,15 @@
 # Some Notes Before You Begin
-**Switch to the template/mongodb branch if you aren't branching off this repo using the repo as a template**
-
-If you already had this repo, you'll need to `npm install` again since this branch has a few extra dependencies.
 
 Make sure you follow all of the steps in "Setting Up Your Development Environment" before attempting to even look at the code. 
 
-Also, read through the docs linked under the "Contributing to the Codebase" section so you can get a feel for the tools and syntax we will be going through.
+Also, read through the docs linked under the "Contributing to the Codebase" section so you can get a feel for the tools and syntax.
+
+**Resources on GraphQL/Apollo**  
+These are pulled from https://www.apollographql.com/tutorials/browse
+- https://www.apollographql.com/tutorials/lift-off-part1
+- https://www.apollographql.com/tutorials/lift-off-part2
+- https://www.apollographql.com/tutorials/lift-off-part3
+- https://www.apollographql.com/tutorials/lift-off-part4
 
 # Setting Up Your Development Environment
 
@@ -36,59 +40,55 @@ ESLint is an extension that ensures that your code adheres to certain code style
 2. Once it is installed, open your Command Palette by pressing **Ctrl + SHift + P**/**Command + Shift + P** and search for **Preferences: Open Workspace Settings (JSON)**. Open the file and add this code into the file. This will autoformat your code on save and also configure tab sizes:
 
    ```json
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
-    },
-    "eslint.validate": [
-        "javascript"
-    ],
-    "[javascriptreact]": {
-        "editor.indentSize": 2
-    }
+   {
+       "editor.codeActionsOnSave": {
+           "source.fixAll.eslint": "explicit"
+       },
+       "eslint.validate": [
+           "javascript",
+           "typescript",
+       ],
+       "[javascriptreact]": {
+           "editor.indentSize": 2
+       },
+       "[javascript]": {
+           "editor.indentSize": 2
+       },
+       "[typescriptreact]": {
+           "editor.indentSize": 2
+       },
+       "[typescript]": {
+           "editor.indentSize": 2
+       },
+       "[jsonc]": {
+           "editor.indentSize": 2
+       },
+   }
    ```
 
-## 3. Optional Extension
-- Auto Rename Tag — useful for JSX
+## 3. Postgres
+1. Install Postgres by following this tutorial: https://www.prisma.io/dataguide/postgresql/setting-up-a-local-postgresql-database#setting-up-postgresql-on-windows
+2. Follow this tutorial to create a user and create a database: https://commandprompt.com/education/how-to-create-user-create-database-grant-privileges-in-postgresql/
+3. Grant the user you just created CREATEDB permissions with the command ```ALTER USER username CREATEDB;```
 
-## 4. MongoDB
-### 4.1 Installation
-To get MongoDB set up locally, you'll need to install MongoDB on your machine along with mongosh (the command line tool for MongoDB). Then, you'll also need MongoDBCompass to view your database with a new interface. **The goal is to have mongosh working, once that works, other parts of the tutorial are optional.**
-- Install MongoDB on Mac: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-os-x/
-- Install MongoDB on Windows: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-windows/
-- https://www.mongodb.com/products/tools/compass
-- 
-### 4.2 Database and User setup
-Inside MongoDB Compass, connect to the client and create a new database using the plus sign near the Database part of the sidebar menu. For collections, just name it anything since it will be deleted later.
+## 4. DBeaver
+By now, you should have a database and user created in postgres. This means you can try connecting to it in DBeaver, a nice UI tool that allows you to view your database and also view ER diagrams.
+1. Connect to your database by clicking the new database connection in the top left corner. It should look like a Plug with a green + sign.
+2. Choose Postgres when asked for Database type.
+3. You should only have to change 3 things: "Database", "Username", and "Password". Change those to the name of the database you created, the name of your user, and the password you chose for that user.
+4. If it works, then you should be able to click into the database connection and view the contents by going through it like a file structure. The path for our data will be ```Databases --> [dbname] --> Schemas --> public```. There shouldn't really be anything to see but if you can click around the "file structure" it means you're connected.
 
-You will also need to create a user that has a username, password, and dbOwnership role using the mongo shell (mongosh). To enter your mongo shell, type `mongosh` into your terminal.
-To switch to your newly created database:
-```bash
-use <DBNAME>
+## 5. environment file
+Create a file called ```.env``` in the root of the codebase and paste in the following (replace ```username```, ```password```, and ```db_name``` to fit your own information which is the same as what you input into DBeaver).
 ```
-Replace `<DBNAME>` with the actual name of your database. (remove the angle brackets, they're just there for me to show that this is replaceable)
-
-Then, to create a user that has ownership of the database:
-```js
-db.createUser({
-   user: "<USERNAME>",
-   pwd: "<PASSWORD>",
-   roles: ['dbOwner']
-})
+# development
+DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<db name>?schema=public"
 ```
+I'll share the staging DATABASE_URL another way since we should keep that private.
 
-### 4.3 Connecting with the Codebase
-If that worked, then you should be ready to connect using the codebase! To do so, create a file called `.env` in the root of the repository (same level as package.json) and input the following:
-```
-MONGO_USERNAME=<USERNAME>
-MONGO_PASSWORD=<PASSWORD>
-MONGO_DB_HOST=127.0.0.1:27017/<DBNAME>
-```
-Replace `<USERNAME>, <PASSWORD>, <DBNAME>` with the actual username, password, and database names. (Don't include the angle brackets).
-
-### 4.4 Testing & Initialization
-Do this after the getting started portion (right after this section)
-
-Assuming you have already run `npm install` and `npm run dev` is producing a web page for you to view, you can continue with this part. You will be running the `npm run init` command which will **wipe your database** and initialize it with a `pokemon` and `trainers` collection. In the future, you can edit this initialization in the `_utils/db/dbInit.js` file. If this works, then your MongoDB Compass (after a refresh) should display that your database has these two collections. This means everything is working!
+## 6. Other Extensions
+For GraphQL schema highlighting: https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql-syntax
+Auto Rename Tag — useful for JSX
 
 ## Getting Started
 Set up:
@@ -100,8 +100,9 @@ Run the development server:
 ```bash
 npm run dev
 ```
+Open up http://localhost:4000/graphql to open the graphql playground and test your server
 
-Run a linting test:
+Run a linting test for the /src folder:
 
 ```bash
 npm run lint
@@ -152,8 +153,9 @@ To keep a maintainable codebase, we will be following strict rules that allow us
 - _components
 - _data
 - _hooks
+- _contexts
 
-These three folders should account for every type of file you'll ever need to create. In each subdirectory, for example, `about-us`, we can also have these three folders.
+These folders should account for every type of file you'll ever need to create. In each subdirectory, for example, `about-us`, we can also have these folders.
 
 Lets say I want to create the Navbar component. I will first think about which parts of the codebase the navbar is used by. Since the Navbar is a part of every page and called by the root layout, it makes sense to define the Navbar inside the `_components` folder of the root folder.
 
@@ -172,185 +174,25 @@ We will be using SCSS since it just provides more options for how to format our 
 ### Resources
 - https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/
 
-## Serverless Functions
-To create your API from serverless functions, go to the `(api)` folder which contains a file structure similar to the `(pages)` folder. Instead of having `_components` and `_hooks`, the `(api)` folder only has the `_utils` folder which will be used to define global utility functions. I defined three folders: `db`, `request`, and `response`. These are designed such that all database related utility functions are defined in `db`, request processing related functions will be in `request`, and response related utility such as custom Errors are defined in `reponse`.
+## Integrating our GraphQL API
+Anything GraphQL (API) related will be handled in the (api) folder. You'll notice 4 special folders: `_graphql`, `_types`, `_utils`, and `_actions`.
 
-If you see a case where some utility only applies to a certain set of endpoints, feel free to create local `_utils` folders using the same logic as before for local `_components` and `_hooks`.
+### _graphql folder
+Here is where we will be defining some commonly used GraphQL queries and mutations. See the contents for examples.
 
-You'll see that there are folders defined with square brackets around the name such as `[id]`. These are dynamic routes and they work on the frontend as well. 
+### _types folder
+Since we are using typescript, each object returned from GraphQL queries must have a type definition. We will handle that here.
 
-**Resources**
-- https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes
-- https://restfulapi.net/http-methods/
-- https://medium.com/@nadinCodeHat/rest-api-naming-conventions-and-best-practices-1c4e781eb6a5
+### _utils folder
+If there are any utility functions you believe would help keep the codebase clean, abstracted, and modularized, this is where you can define some helper functions.
 
-**Note**
-If your app only has a frontend, feel free to delete the `(api)` folder. 
+### _actions folder
+This is where we will be defining server actions for when we want to handle form submissions and button clicks using the server. Please read up on server actions and understand their use case. There are a few good YouTube videos on them and the Next.js documentation covers it pretty well.
 
-## MongoDB
-MongoDB is our database and in order to use it to create an easy to use REST api, I defined a couple of helper functions that you may use for your projects. Before I get into those, I'll link a few resources for you to read up on for CRUD with MongoDB. To be honest, these may not be the best resources, but they are a place to start. 
+A summary of Server Actions:
+Server actions are async functions defined with a "use server" directive at the top of the file or function declaration. These functions are implicitely sent over the network and ran on the server before getting returned. They are easily invoked from form submissions and button clicks and they can be invoked from both client and server components. Server actions are helpful when you have functionality that requires some production secrets and you don't want the client to have access to those secrets, so we have the server run some process with the secrets and get back to the client after.
 
-Take looks at embeddings, relations, crud, and aggregations please. Like always, if you are reading through docs and find terms you don't know, look them up so you can truly understand what's going on. If you do this for long enough, you'll build up an internal database of knowledge that carries into future projects, thus saving time!
+We will be using Server Actions for data creation, updates, and deletions along with some authentication functions. There may be other use cases but things like queries can just be called using the Apollo Client directly.
 
-**resources**
-- https://www.mongodb.com/docs/manual/applications/data-models-relationships/
-- https://www.mongodb.com/docs/manual/crud/
-- https://www.mongodb.com/docs/drivers/node/current/fundamentals/aggregation/
-
-## Helper Functions
-By now, I hope you have an understanding of the general syntax of crud operations. The main priority of writing the API is to keep the API simple to use. A secondary concern is making the logic behind the scenes (inside the serverless fucntions) easy to write as well. To solve both issues, I created some helper functions that mainly serve to manipulate JSON objects.
-
-To see how these helper functions were written, refer to the definitions within the `_utils/response` folder. If there are any bugs, please let me know ASAP so I can fix them, or even better, fix them and make a pull request.
-
-### getQueries(request: NextRequest)
-getQueries is a helper function that I made to take request queries like `http://localhost:3000/api/trainers?<queries>` and converts them into a JSON object. This allows you to directly feed the query into some of mongoDB's query inputs.
-
-### isBodyEmpty(obj: Object)
-Just a simple way to check if a JSON object is empty `{}`. If our request body is empty, we should throw a NoContentError.
-
-### prependAllAttributes(obj: Object, prefix, String)
-prependAllAttributes takes a JSON object and renames all fields that are two levels deep by adding the prefix to their names.
-
-Example Input: 
-```json
-{
-   "$set": {
-      "name": "austin",
-      "age": 20
-   },
-   "$push": {
-      "classes": ["physics", "chem"]
-   }
-}
-```
-
-Example Output where `prefix = PREFIX`:
-```json
-{
-   "$set": {
-      "PREFIXname": "austin",
-      "PREFIXage": 20
-   },
-   "$push": {
-      "PREFIXclasses": ["physics", "chem"]
-   }
-}
-```
-
-This function is mainly used when you have embeddings, such as pokemon embedded within a trainer object. When you update a pokemon from the pokemon collection, you also have to update all copies of that pokemon that is stored in an embedding inside trainer objects. In order to access subdocuments within an object, you often have to refer to fields with `dot .` notation or `array []` notation as prefixes to the actual field name.
-
-### parseAndReplace(obj: Object)
-This function recursively searches through a JSON object for certain keywords: "*convertIds", "*convertId", "*expandIds", "*expandId". **Note**: remember to add in the `*` or else the function won't recognize the keywords. After finding objects with one of these keywords as fields, it will replace the entire object with the return value of a specified operation.
-
-Example full input:
-```JSON
-{
-   "name": "ash",
-   "age": 20,
-   "pokemon": {
-      "*expandIds": {
-        "ids": ["65915e9052657d4814a173c4", "65915e9f52657d4814a173c7"],
-        "from": "pokemon"
-      }
-   }
-}
-```
-
-Example output:
-```JSON
-{
-   "name": "ash",
-   "age": 20,
-   "pokemon": [
-       {
-           "_id": "65915e9052657d4814a173c4",
-           "name": "vaporeon",
-           "happiness": 100
-       },
-       {
-           "_id": "65915e9f52657d4814a173c7",
-           "name": "squirtle",
-           "happiness": 100
-       }
-   ]
-}
-```
-
-Before the API call is made, by calling parseAndReplace() on the incoming object, we could first convert the raw ObjectIds into pokemon documents to pass into our trainer object. If we didn't do this, the best we could input to our trainer creation command would be the raw ids.
-
-***convertIds**:  
-convertIds takes in a list of raw ObjectId strings and typecasts them into ObjectIds. This is useful since the caller of the api can only pass in ObjectIds as strings, but they need to be casted to ObjecctIds. Rather than manually defining these typeCasts within each serverless function, we can define the typeCasting within the API call itself.
-
-Everytime an object appears like so, it will be replaced with a list of ObjectIds.  
-Before:
-```JSON
-{
-   "*convertIds": {
-     "ids": ["658f94018dac260ae7b17fce", "658f940e8dac260ae7b17fd0"],
-   }
-}
-```
-After:
-```js
-[ObjectId("658f94018dac260ae7b17fce"), ObjectId("658f940e8dac260ae7b17fd0")]
-```
-
-There is also ***convertId**   
-Before:
-```json
-{
-   "*convertId": {
-     "id": "658f94018dac260ae7b17fce",
-   }
-}
-```  
-After:
-```js
-ObjectId("658f94018dac260ae7b17fce")
-```
-
-***expandIds**:  
-expandIds takes in a list of raw ObjectId strings and transforms it into a list of documents queried from a collection. This is extremely useful when you have embeddings. Let's say you are trying to create a trainer and want to assign it some pokemon. You plan on embedding the pokemon data within the trainer. Unless you have access to the entire pokemon objects, you (as the user) would have to first query the pokemon and then pass them into the call to create a trainer. Instead, you can just write that logic with this simple JSON object here to make the API call simpler for the user.  
-Before:
-```JSON
-{
-   "*expandIds": {
-     "ids": ["65915e9052657d4814a173c4", "65915e9f52657d4814a173c7"],
-     "from": "pokemon"
-   }
-}
-```
-After:
-```js
-[
-    {
-        "_id": "65915e9052657d4814a173c4",
-        "name": "vaporeon",
-        "happiness": 100
-    },
-    {
-        "_id": "65915e9f52657d4814a173c7",
-        "name": "squirtle",
-        "happiness": 100
-    }
-]
-```
-
-There is also ***expandId**   
-Before:
-```JSON
-{
-   "*expandId": {
-     "id": "65915e9052657d4814a173c4",
-     "from": "pokemon"
-   }
-}
-```
-After:
-```js
- {
-     "_id": "65915e9052657d4814a173c4",
-     "name": "vaporeon",
-     "happiness": 100
- }
-```
+## Apollo Client
+The Apollo Client is a useful tool used to integrate your frontend with a GraphQL server. The Apollo Client functions can be run within server actions and there are ways to make it run on both client and server components. We will have it run everything on the server either through server components or server actions. This means that even if we are in a client component, we can most likely use a Server Action to still have the Apollo Client use the server to make our queries and mutations.
