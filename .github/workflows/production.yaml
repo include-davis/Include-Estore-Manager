@@ -30,7 +30,7 @@ jobs:
           --token ${{ secrets.VERCEL_TOKEN }}
           -n ${{ vars.VERCEL_PROJECT }}
           --yes
-          --prod --skip-domain
+          --prod
           --env NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.GRAPHQL_ENDPOINT }}
           --build-env NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.GRAPHQL_ENDPOINT }}
 
