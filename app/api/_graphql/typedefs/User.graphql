@@ -1,0 +1,24 @@
+type User {
+    name: String
+}
+
+type User {
+    id: ID!
+    name: String!
+    playlists: [Playlist]
+}
+
+input UserInput {
+    name: String!
+}
+
+type Query {
+    user(id: ID!): User
+    users(ids: [ID]): [User]
+}
+
+type Mutation {
+    createUser(input: UserInput!): User
+    updateUser(id: ID!, input: UserInput!): User
+    deleteUser(id: ID!): Boolean
+}

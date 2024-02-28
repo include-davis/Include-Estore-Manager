@@ -1,0 +1,6 @@
+query Users($ids: [ID]) {
+    users(ids: $ids) {
+        id
+        name
+    }
+}

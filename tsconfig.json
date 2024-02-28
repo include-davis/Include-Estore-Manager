@@ -26,9 +26,8 @@
     "@hooks/*": ["./app/(pages)/_hooks/*"],
     "@contexts/*": ["./app/(pages)/_contexts/*"],
     "@utils/*": ["./app/(api)/_utils/*"],   
-    "@actions/*": ["./app/(api)/_actions/*"],
-    "@graphql/*": ["./app/(api)/_graphql/*"],
-    "@datatypes/*": ["./app/(api)/_types/*"]
+    "@graphql/*": ["./app/api/_graphql/*"],
+    "@datatypes/*": ["./app/api/_types/*"]
     }
   },
   "include": ["nextEnv.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
