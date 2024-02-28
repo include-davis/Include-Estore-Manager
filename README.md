@@ -175,7 +175,7 @@ We will be using SCSS since it just provides more options for how to format our 
 - https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/
 
 ## Integrating our GraphQL API
-Anything GraphQL (API) related will be handled in the (api) folder. You'll notice 4 special folders: `_graphql`, `_types`, `_utils`, and `_actions`.
+Anything GraphQL (API) related will be handled in the (api) folder. You'll notice 4 special folders: `_graphql`, `_types`, `_utils`.
 
 ### _graphql folder
 Here is where we will be defining some commonly used GraphQL queries and mutations. See the contents for examples.
@@ -186,13 +186,9 @@ Since we are using typescript, each object returned from GraphQL queries must ha
 ### _utils folder
 If there are any utility functions you believe would help keep the codebase clean, abstracted, and modularized, this is where you can define some helper functions.
 
-### _actions folder
-This is where we will be defining server actions for when we want to handle form submissions and button clicks using the server. Please read up on server actions and understand their use case. There are a few good YouTube videos on them and the Next.js documentation covers it pretty well.
-
-A summary of Server Actions:
-Server actions are async functions defined with a "use server" directive at the top of the file or function declaration. These functions are implicitely sent over the network and ran on the server before getting returned. They are easily invoked from form submissions and button clicks and they can be invoked from both client and server components. Server actions are helpful when you have functionality that requires some production secrets and you don't want the client to have access to those secrets, so we have the server run some process with the secrets and get back to the client after.
-
-We will be using Server Actions for data creation, updates, and deletions along with some authentication functions. There may be other use cases but things like queries can just be called using the Apollo Client directly.
-
 ## Apollo Client
-The Apollo Client is a useful tool used to integrate your frontend with a GraphQL server. The Apollo Client functions can be run within server actions and there are ways to make it run on both client and server components. We will have it run everything on the server either through server components or server actions. This means that even if we are in a client component, we can most likely use a Server Action to still have the Apollo Client use the server to make our queries and mutations.
+The Apollo Client is a useful tool used to integrate your frontend with a GraphQL server. The Apollo Client functions can be run within server actions and there are ways to make it run on both client and server components. 
+
+### Resources
+- https://www.apollographql.com/docs/react/data/suspense/
+- https://github.com/apollographql/apollo-client-nextjs
