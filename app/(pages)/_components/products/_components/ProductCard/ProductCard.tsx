@@ -7,7 +7,6 @@ import {
   FaPencilAlt,
 } from 'react-icons/fa';
 
-
 // Still unsure about this part since the figma online doesn't have a listed boolean, so for now, just a placeholder
 interface ProductInfo {
   imageUrl: string;
