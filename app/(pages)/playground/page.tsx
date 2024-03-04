@@ -1,4 +1,4 @@
-import ProductCard from '@components/products/_components/ProductCard/ProductCard';
+import ProductList from '@components/products/_components/ProductList/ProductList';
 import styles from './playground.module.scss';
 
 const products = [
@@ -55,12 +55,10 @@ const products = [
 export default function Playground() {
   return (
     <div className={styles.generalcontainer}>
-      <h2>Product Card:</h2>
+      <h2>Product List:</h2>
       <div className={styles.generalcontainer}>
-        <ProductCard productInfo={products[0]} />
+        <ProductList products={products} />
       </div>
     </div>
   );
 }
-// import ProductList from '@components/products/_components/ProductList/ProductList';
-// <ProductList products={products} />
