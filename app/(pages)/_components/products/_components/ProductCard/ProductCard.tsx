@@ -1,11 +1,12 @@
-import React from "react";
-import styles from "./ProductCard.module.scss";
+import React from 'react';
+import styles from './ProductCard.module.scss';
 import {
   FaCheckCircle,
   FaTimesCircle,
   FaRegTrashAlt,
   FaPencilAlt,
-} from "react-icons/fa";
+} from 'react-icons/fa';
+
 
 // Still unsure about this part since the figma online doesn't have a listed boolean, so for now, just a placeholder
 interface ProductInfo {
