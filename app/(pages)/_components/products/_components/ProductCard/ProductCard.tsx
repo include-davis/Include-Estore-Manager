@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ProductCard.module.scss';
+import Image from 'next/image';
 import {
   FaCheckCircle,
   FaTimesCircle,
@@ -21,9 +22,12 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ productInfo }) => {
   return (
     <div className={styles.productCard}>
-      <img
+      <Image
         src={productInfo.imageUrl}
         alt={productInfo.title}
+        width="0"
+        height="0"
+        layout="responsive"
         className={styles.productImage}
       />
       <div className={styles.horizontalLine}></div>
