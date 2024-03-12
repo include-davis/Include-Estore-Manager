@@ -1,0 +1,85 @@
+.productCard {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--gray-500);
+    border-radius: 4px;
+    overflow: hidden;
+    padding: var(--small-spacer);
+   }
+   
+   .productImage {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: var(--spacer);
+    aspect-ratio: 16 / 9;
+   }
+   
+   .productInfo {
+    padding: var(--tiny-spacer)
+   }
+   
+   .productTitle {
+    margin-bottom: var(--tiny-spacer);
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   }
+   
+   .productButton {
+    height: 2.5rem;
+    width: 2.5rem;
+    margin-top: auto;
+    background-color: var(--background-secondary);
+    border-width: .25px;
+    color: var(--background-tertiary);
+    border: solid;
+    border-radius: 4px;
+    cursor: pointer;
+   }
+
+   .statusContainer {
+    display: flex;
+    align-items: center;
+    margin-top: var(--small-spacer); 
+    margin-bottom: var(--small-spacer);
+   }
+   
+   .listedStatus, .notListedStatus {
+    display: flex;
+    align-items: center;
+    color: var(--gray-600);
+   }
+   
+   .listedStatus svg {
+    font-size: 1.5em;
+    fill: var(--green);
+    margin-right: var(--tiny-spacer); // Space between the icon and the text
+   }
+   
+   .notListedStatus svg {
+    font-size: 1.5em;
+    fill: var(--red);
+    margin-right: var(--tiny-spacer);
+   }
+
+   .trashEditButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--tiny-spacer);
+    width: 100%;
+   }
+   
+   .trashEditButton{
+    font-size: 1.5em;
+    fill: var(--purple);
+   }
+
+   .horizontalLine {
+    border-bottom: 1px solid var(--gray-300); 
+    margin: 10px 0; 
+   }
