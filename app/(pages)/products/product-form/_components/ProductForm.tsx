@@ -3,22 +3,24 @@ import styles from './ProductForm.module.scss';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import Textbox from '@components/Textbox/Textbox';
+import { FormEvent } from 'react';
 
 export default function ProductForm() {
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('Form submitted');
   };
-  const [tags, setTags] = useState([]);
-  const addTag = (event) => {
+  const [tags, setTags] = useState<string[]>([]);
+  const addTag = (event: React.KeyboardEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const newTag = event.target.value;
+    const input = event.target as HTMLInputElement;
+    const newTag = input.value;
     if (newTag !== '') {
       setTags((prevTags) => [...prevTags, newTag]);
     }
-    event.target.value = '';
+    input.value = '';
   };
-  const deleteTag = (index) => {
+  const deleteTag = (index: number) => {
     setTags((prevTags) => [
       ...prevTags.slice(0, index),
       ...prevTags.slice(index + 1),
@@ -61,7 +63,7 @@ export default function ProductForm() {
           <div className={styles.input_container}>
             <p>Tags</p>
             <input
-              onKeyDown={(event) => {
+              onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
                 if (event.key === 'Enter') {
                   addTag(event);
                 }
