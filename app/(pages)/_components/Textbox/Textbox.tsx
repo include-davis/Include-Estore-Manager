@@ -2,12 +2,17 @@ import styles from './Textbox.module.scss';
 import Image from 'next/image';
 import { useState } from 'react';
 
-export default function Textbox(props) {
+interface TextboxProps {
+  name: string;
+  placeholder: string;
+}
+
+const Textbox: React.FC<TextboxProps> = (props) => {
   const [wordStats, setStats] = useState({
     words: 0,
     capacity: false,
   });
-  function onChange(e) {
+  function onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const temp = e.target.value;
     const tmp = temp.split(/([\S])+/) || [];
     const newStats = {
@@ -93,4 +98,6 @@ export default function Textbox(props) {
       </p>
     </div>
   );
-}
+};
+
+export default Textbox;
