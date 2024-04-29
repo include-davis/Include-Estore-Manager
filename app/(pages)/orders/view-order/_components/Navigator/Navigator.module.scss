@@ -1,0 +1,40 @@
+@use 'media';
+
+.navigator {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: var(--spacer);
+
+	@include media.tablet {
+		gap: var(--small-spacer);
+	}
+
+	.indicator_container {
+		display: flex;
+		gap: var(--tiny-spacer);
+	}
+
+	.arrow {
+		display: flex;
+		align-items: center;
+		width: min-content;
+		padding: var(--tiny-spacer);
+
+		border-style: solid;
+		border-color: var(--gray-300);
+		border-width: var(--b-width);
+		
+		cursor: pointer;
+	}
+	
+	.left_arrow {
+		border-top-left-radius: var(--b-radius);
+		border-bottom-left-radius: var(--b-radius);
+	}
+	
+	.right_arrow {
+		border-top-right-radius: var(--b-radius);
+		border-bottom-right-radius: var(--b-radius);
+	}
+}

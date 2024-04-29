@@ -1,0 +1,50 @@
+@use 'media';
+
+.progress_bar {
+	display: flex;
+
+	@include media.phone {
+		flex-direction: column;
+	}
+
+	.status {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--tiny-spacer);
+		width: 100%;
+
+		@include media.phone {
+			flex-direction: row;
+		}
+	
+		.icon {
+			display: flex;
+			align-items: center;
+			width: 100%;
+
+			@include media.phone {
+				flex-direction: column;
+				width: auto;
+			}
+	
+			.div {
+				width: 100%;
+				height: var(--progress-bar-thickness);
+				background-color: var(--purple);
+
+				@include media.phone {
+					width: var(--progress-bar-thickness);
+				}
+			}
+			
+			.end_div {
+				height: 0;
+			}
+		}
+
+		.label {
+			color: var(--gray-600);
+		}
+	}
+}
