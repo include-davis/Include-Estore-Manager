@@ -1,0 +1,88 @@
+@use 'media';
+
+.textbox_container {
+    display: flex;
+    height: 155px;
+    flex-direction: column;
+    width: 100%;
+    margin: var(--tiny-spacer) 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--gray-500);
+    border-radius: var(--tiny-spacer);
+    outline: none;
+
+    .edit_header {
+        display: flex;
+        align-items: center;
+        background-color: var(--background-primary);
+        border-radius: var(--tiny-spacer) var(--tiny-spacer) 0 0;
+        height: 40px;
+        border-bottom: 1px solid var(--gray-500);
+        padding: var(--tiny-spacer) 0;
+
+        @include media.tablet {
+            min-height: 40px;
+            height: auto;
+        }
+
+        @include media.phone {
+            overflow: scroll;
+            scrollbar-width: none;
+        }
+
+        .icon_group {
+            padding: var(--small-spacer);
+            margin: var(--tiny-spacer);
+            display: flex;
+            flex-direction: row;
+            gap: var(--small-spacer);
+            cursor: pointer;
+            
+            @include media.tablet {
+                padding: 0 var(--tiny-spacer);
+                margin: 0 var(--tiny-spacer);
+            }
+        }
+
+        .header_border {
+            width: 0.8px;
+            min-height: 40px;
+            background-color: var(--gray-500);
+
+            @include media.tablet {
+                display: none;
+            }
+        }
+    }
+
+    .input_text {
+        border: none;
+        margin: 0;
+        height: 100%;
+        padding: var(--small-spacer);
+        resize: none;
+        outline: none;
+        scrollbar-width: none;
+    }
+
+    .input_text::placeholder {
+        color: var(--gray-500);
+    }
+
+    .wordcount {
+        padding: var(--small-spacer) var(--tiny-spacer);
+        display: flex;
+        justify-content: end;
+        color: var(--gray-500);
+        font-weight: 300;
+    }
+
+    .wordcount_over {
+        padding: var(--small-spacer) var(--tiny-spacer);
+        display: flex;
+        justify-content: end;
+        color: var(--red);
+        font-weight: 300;
+    }
+}
