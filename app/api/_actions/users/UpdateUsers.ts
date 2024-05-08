@@ -1,10 +1,10 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { getClient } from '@utils/apollo/ApolloClient';
+import { getClient } from '../../_utils/apollo/ApolloClient';
 import FormToJSON from '@utils/form/FormToJSON';
 
-import { updateUserMutation } from '@graphql/mutations/updateUser';
+import { updateUserMutation } from '../../_graphql/mutations/updateUser';
 
 export async function UpdateUser(id: string, formData: FormData) {
   const dataJSON = FormToJSON(formData);
