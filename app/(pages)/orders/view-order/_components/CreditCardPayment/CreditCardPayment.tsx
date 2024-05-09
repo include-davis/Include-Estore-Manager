@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import creditCardIcon from '/public/icons/cards/credit_card.svg';
+import masterCardIcon from '/public/icons/cards/master_card.svg';
 
 import styles from './CreditCardPayment.module.scss';
 
@@ -17,16 +19,11 @@ function HeaderContainer() {
   return (
     <div className={styles.header_container}>
       <div className={styles.header}>
-        <Image
-          src="/icons/cards/credit_card.svg"
-          alt="credit card icon"
-          width={20}
-          height={20}
-        />
+        <Image src={creditCardIcon} alt="credit card icon" />
         Credit Card Payment
       </div>
       <Image
-        src="/icons/cards/master_card.svg"
+        src={masterCardIcon}
         alt="master card icon"
         width={40}
         height={20}
@@ -43,10 +40,8 @@ function CardNumber() {
         className={`${styles.value} ${styles.right_justified} ${styles.card_number}`}
       >
         <Image
-          src="/icons/cards/credit_card.svg"
+          src={creditCardIcon}
           alt="credit card icon"
-          width={20}
-          height={20}
           className={styles.icon}
         />
         ****-****-****-1234

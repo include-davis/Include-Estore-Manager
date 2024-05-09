@@ -1,8 +1,12 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 import { useState } from 'react';
+
+import leftArrowIcon from '/public/icons/arrows/left.svg';
+import rightArrowIcon from '/public/icons/arrows/right.svg';
+import selectedIcon from '/public/icons/indicators/selected.svg';
+import unselectedIcon from '/public/icons/indicators/unselected.svg';
 
 import styles from './Navigator.module.scss';
 
@@ -11,26 +15,18 @@ export default function Navigator() {
   const [selected, setSelected] = useState(0);
 
   function decrSelected() {
-    if (selected === 0) {
-      setSelected(4);
-    } else {
-      setSelected(selected - 1);
-    }
+    setSelected((selected - 1 + 5) % 5);
   }
 
   function incrSelected() {
-    if (selected === 4) {
-      setSelected(0);
-    } else {
-      setSelected(selected + 1);
-    }
+    setSelected((selected + 1) % 5);
   }
 
   return (
     <div className={styles.navigator}>
       <div className={`${styles.arrow} ${styles.left_arrow}`}>
         <Image
-          src="/icons/arrows/left.svg"
+          src={leftArrowIcon}
           width={arrowSize}
           height={arrowSize}
           alt="left arrow"
@@ -40,7 +36,7 @@ export default function Navigator() {
       <Indicators selectedIndex={selected} />
       <div className={`${styles.arrow} ${styles.right_arrow}`}>
         <Image
-          src="/icons/arrows/right.svg"
+          src={rightArrowIcon}
           width={arrowSize}
           height={arrowSize}
           alt="right arrow"
@@ -59,7 +55,7 @@ function Indicators({ selectedIndex }: { selectedIndex: number }) {
     if (i !== selectedIndex) {
       indicators.push(
         <Image
-          src="/icons/indicators/unselected.svg"
+          src={unselectedIcon}
           width={indicatorSize}
           height={indicatorSize}
           alt="unselected indicator"
@@ -69,7 +65,7 @@ function Indicators({ selectedIndex }: { selectedIndex: number }) {
     } else {
       indicators.push(
         <Image
-          src="/icons/indicators/selected.svg"
+          src={selectedIcon}
           width={indicatorSize}
           height={indicatorSize}
           alt="selected indicator"

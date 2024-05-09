@@ -1,4 +1,7 @@
 import Image from 'next/image';
+import finishedIcon from '/public/icons/status/complete.svg';
+import inProgressIcon from '/public/icons/status/in_progress.svg';
+import incompleteIcon from '/public/icons/status/incomplete.svg';
 
 import styles from './ProgressBar.module.scss';
 
@@ -14,34 +17,30 @@ export default function ProgressBar() {
   );
 }
 
+interface StatusIconProps {
+  status: string;
+  label: string;
+  isAtLeftEnd?: boolean;
+  isAtRightEnd?: boolean;
+}
+
 function StatusIcon({
   status,
   label,
   isAtLeftEnd = false,
   isAtRightEnd = false,
-}: {
-  status: string;
-  label: string;
-  isAtLeftEnd?: boolean;
-  isAtRightEnd?: boolean;
-}) {
-  const iconPath = {
-    finished: '/icons/status/complete.svg',
-    inProgress: '/icons/status/in_progress.svg',
-    incomplete: '/icons/status/incomplete.svg',
+}: StatusIconProps) {
+  const icon = {
+    finished: finishedIcon,
+    inProgress: inProgressIcon,
+    incomplete: incompleteIcon,
   }[status];
-  const iconSize = 40;
 
   return (
     <div className={styles.status}>
       <div className={styles.icon}>
         <div className={`${styles.div} ${isAtLeftEnd ? styles.end_div : ''}`} />
-        <Image
-          src={iconPath!}
-          width={iconSize}
-          height={iconSize}
-          alt="icon of order stage status"
-        />
+        <Image src={icon} alt="icon of order stage status" />
         <div
           className={`${styles.div} ${isAtRightEnd ? styles.end_div : ''}`}
         />

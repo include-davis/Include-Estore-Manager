@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { useState } from 'react';
 
+import labelIcon from '/public/icons/label.svg';
+
 import styles from './ShippingLabel.module.scss';
 
 export default function ShippingLabel() {
@@ -12,12 +14,7 @@ export default function ShippingLabel() {
     <div className={styles.container}>
       <div className={styles.header_container}>
         <div className={styles.header}>
-          <Image
-            src="/icons/label.svg"
-            alt="label icon"
-            width={20}
-            height={20}
-          />
+          <Image src={labelIcon} alt="label icon" />
           Shipping Label
         </div>
         <button onClick={() => setShowLabel(!showLabel)}>

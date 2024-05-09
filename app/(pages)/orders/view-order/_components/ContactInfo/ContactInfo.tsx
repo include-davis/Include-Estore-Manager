@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import userIcon from '/public/icons/user.svg';
 
 import styles from './ContactInfo.module.scss';
 
@@ -6,7 +7,7 @@ export default function ContactInfo() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Image src="/icons/user.svg" alt="user icon" width={20} height={20} />
+        <Image src={userIcon} alt="user icon" />
         Contact Info
       </div>
       <div className={styles.data}>
