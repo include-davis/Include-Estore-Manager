@@ -1,6 +1,10 @@
 'use client';
 import styles from './ProductView.module.scss';
 import Image from 'next/image';
+import listedItem from '../../../../../public/icons/check_circle_fill.svg';
+import unlistedItem from '../../../../../public/icons/close_circle_fill.svg';
+import nextImage from '../../../../../public/icons/chevron-right.svg';
+import prevImage from '../../../../../public/icons/chevron-left.svg';
 import { useState } from 'react';
 
 export default function ProductView() {
@@ -72,14 +76,8 @@ export default function ProductView() {
           <div className={styles.info_group}>
             <div className={styles.item_status}>
               <Image
-                src={`${
-                  fakeItem.listed
-                    ? '/icons/check_circle_fill.svg'
-                    : '/icons/close_circle_fill.svg'
-                }`}
+                src={fakeItem.listed ? listedItem : unlistedItem}
                 alt="icon if listed"
-                width={24}
-                height={24}
               />
               <p>{fakeItem.listed ? 'Listed' : 'Not Listed'}</p>
             </div>
@@ -112,12 +110,7 @@ export default function ProductView() {
       </div>
       <div className={styles.slider}>
         <button onClick={subCurrentImage}>
-          <Image
-            src="/icons/chevron-left.svg"
-            alt="pointer left"
-            width={24}
-            height={24}
-          />
+          <Image src={prevImage} alt="pointer left" />
         </button>
         {displayImages.map((image, index) => (
           <div
@@ -130,12 +123,7 @@ export default function ProductView() {
           ></div>
         ))}
         <button onClick={addCurrentImage}>
-          <Image
-            src="/icons/chevron-right.svg"
-            alt="pointer left"
-            width={24}
-            height={24}
-          />
+          <Image src={nextImage} alt="pointer left" />
         </button>
       </div>
     </div>
