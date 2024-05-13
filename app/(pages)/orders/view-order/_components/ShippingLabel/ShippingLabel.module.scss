@@ -1,0 +1,48 @@
+@use 'media';
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: var(--spacer);
+	padding: var(--spacer);
+	
+	border-style: solid;
+	border-color: var(--gray-300);
+	border-width: var(--b-width);
+	border-radius: var(--b-radius);
+
+	.header_container {
+		display: flex;
+		justify-content: space-between;
+
+		@include media.tablet {
+			flex-direction: column;
+			align-items: start;
+			gap: var(--tiny-spacer);
+		}
+
+		.header {
+			display: flex;
+			align-items: center;
+			gap: var(--tiny-spacer);
+		}
+
+		button {
+			font-size: 1rem;
+			color: var(--gray-500);
+			background-color: transparent;
+			border: none;
+			cursor: pointer;
+		}
+	}	
+
+	.img_container {
+		position: relative;
+
+		.img {
+			width: 100%;
+			height: auto;
+		}
+	}
+}

@@ -1,0 +1,19 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: var(--medium-spacer);
+	padding: var(--medium-spacer);
+	width: 60%;
+
+	border-style: solid;
+	border-color: var(--gray-300);
+	border-width: var(--b-width);
+	border-radius: var(--b-radius);
+
+	.main {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacer);
+	}
+}
