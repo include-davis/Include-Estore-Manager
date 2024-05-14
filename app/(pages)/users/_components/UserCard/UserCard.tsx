@@ -1,6 +1,6 @@
 import styles from './UserCard.module.scss';
-import { UpdateUser } from '@actions/users/UpdateUsers';
-import type User from '@datatypes/User';
+import { UpdateUser } from '../../../../api/_actions/users/UpdateUsers';
+import type User from '../../../../api/_types/User';
 
 export default function PokemonCard({ user }: { user: User }) {
   const UpdatePokemonWithId = UpdateUser.bind(null, user.id);

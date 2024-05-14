@@ -1,6 +1,6 @@
 import styles from './CreateUsersForm.module.scss';
 
-import { CreateUser } from '@actions/users/CreateUsers';
+import { CreateUser } from '../../../../api/_actions/users/CreateUsers';
 export default function CreateUserForm() {
   return (
     <div className={styles.form_container}>

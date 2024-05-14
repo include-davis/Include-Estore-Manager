@@ -1,9 +1,9 @@
 import styles from './UsersList.module.scss';
 
-import type User from '@datatypes/User';
+import type User from '../../../../api/_types/User';
 import UserCard from '../UserCard/UserCard';
-import { getClient } from '@utils/apollo/ApolloClient';
-import { usersQuery } from '@graphql/queries/users';
+import { getClient } from '../../../../api/_utils/apollo/ApolloClient';
+import { usersQuery } from '../../../../api/_graphql/queries/users';
 
 export default async function UsersList() {
   const users = await getClient().query({

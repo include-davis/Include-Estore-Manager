@@ -1,5 +1,7 @@
+/* eslint-disable prettier/prettier */
 import Link from 'next/link';
 import styles from './Footer.module.scss';
+import links from '../../../../links';
 
 interface NavLink {
   name: string;
@@ -42,7 +44,7 @@ export default function Footer({ navLinks }: { navLinks: NavLink[] }) {
               <div>
                 <Link href="/project/4">Project 4</Link>
                 <Link href="/project/5">Project 5</Link>
-                <Link href="/project/6">Project 6</Link>
+                <Link href={links.shiba_pillow} target='_blank'>Project 6</Link>
               </div>
             </div>
           </div>
