@@ -1,5 +1,6 @@
 import ProductCard from './_components/ProductCard/ProductCard';
 import styles from './page.module.scss';
+import ProductList from '@components/products/_components/ProductList/ProductList';
 
 const products = [
   {
@@ -55,12 +56,10 @@ const products = [
 export default function Playground() {
   return (
     <div className={styles.generalcontainer}>
-      <h2>Product Card:</h2>
+      <h2>Product List:</h2>
       <div className={styles.generalcontainer}>
-        <ProductCard productInfo={products[0]} />
+        <ProductList products={products} />
       </div>
     </div>
   );
 }
-// import ProductList from '@components/products/_components/ProductList/ProductList';
-// <ProductList products={products} />
