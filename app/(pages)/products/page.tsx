@@ -1,4 +1,3 @@
-import ProductCard from './_components/ProductCard/ProductCard';
 import styles from './page.module.scss';
 import ProductList from '@components/products/_components/ProductList/ProductList';
 
