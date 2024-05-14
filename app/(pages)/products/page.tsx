@@ -1,5 +1,5 @@
 import styles from './page.module.scss';
-import ProductList from '@components/products/_components/ProductList/ProductList';
+import ProductList from './_components/ProductList/ProductList';
 
 const products = [
   {
@@ -10,8 +10,8 @@ const products = [
   },
   {
     imageUrl:
-      'https://www.seriouseats.com/thmb/hMevGtiDkCJ_k7FUZ9TNq3Ud4Wc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__images__2015__12__20151201-gift-guide-stand-mixer-1500x1125-712fb32a38d84c8097d3f5ce60ca626b.jpg',
-    title: 'KitchenAid Stand Mixer',
+      'https://m.media-amazon.com/images/I/61nxFEV-alL._AC_UF894,1000_QL80_.jpg',
+    title: 'Apple Watch Series 9',
     listed: false,
   },
   {
@@ -22,8 +22,8 @@ const products = [
   },
   {
     imageUrl:
-      'https://www.seriouseats.com/thmb/hMevGtiDkCJ_k7FUZ9TNq3Ud4Wc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__images__2015__12__20151201-gift-guide-stand-mixer-1500x1125-712fb32a38d84c8097d3f5ce60ca626b.jpg',
-    title: 'KitchenAid Stand Mixer',
+      'https://m.media-amazon.com/images/I/61nxFEV-alL._AC_UF894,1000_QL80_.jpg',
+    title: 'Apple Watch Series 9',
     listed: false,
   },
   {
@@ -34,8 +34,8 @@ const products = [
   },
   {
     imageUrl:
-      'https://www.seriouseats.com/thmb/hMevGtiDkCJ_k7FUZ9TNq3Ud4Wc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__images__2015__12__20151201-gift-guide-stand-mixer-1500x1125-712fb32a38d84c8097d3f5ce60ca626b.jpg',
-    title: 'KitchenAid Stand Mixer',
+      'https://m.media-amazon.com/images/I/61nxFEV-alL._AC_UF894,1000_QL80_.jpg',
+    title: 'Apple Watch Series 9',
     listed: false,
   },
   {
@@ -46,13 +46,13 @@ const products = [
   },
   {
     imageUrl:
-      'https://www.seriouseats.com/thmb/hMevGtiDkCJ_k7FUZ9TNq3Ud4Wc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__images__2015__12__20151201-gift-guide-stand-mixer-1500x1125-712fb32a38d84c8097d3f5ce60ca626b.jpg',
-    title: 'KitchenAid Stand Mixer',
+      'https://m.media-amazon.com/images/I/61nxFEV-alL._AC_UF894,1000_QL80_.jpg',
+    title: 'Apple Watch Series 9',
     listed: true,
   },
 ];
 
-export default function Playground() {
+export default function Products() {
   return (
     <div className={styles.generalcontainer}>
       <h2>Product List:</h2>
