@@ -1,5 +1,5 @@
-import ProductCard from '@components/products/_components/ProductCard/ProductCard';
-import styles from './playground.module.scss';
+import ProductCard from './_components/ProductCard/ProductCard';
+import styles from './page.module.scss';
 
 const products = [
   {

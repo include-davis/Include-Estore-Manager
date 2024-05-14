@@ -3,6 +3,18 @@ const nextConfig = {
   sassOptions: {
     includePaths: ['./app/(pages)/_globals/styles'],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'm.media-amazon.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'seriouseats.com',
+      }
+    ]
+ },
 };
 
 module.exports = nextConfig;
