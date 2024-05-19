@@ -6,8 +6,6 @@
 	align-items: center;
 	gap: var(--large-spacer);
 	padding: var(--small-spacer) var(--medium-spacer) ;
-	background-color: var(--backgroung-primary);
-	color: var(--text-dark);
 
 	@include media.phone {
 		flex-direction: column;
