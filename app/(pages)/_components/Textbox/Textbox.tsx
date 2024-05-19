@@ -1,101 +1,85 @@
 import styles from './Textbox.module.scss';
-import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import 'react-quill/dist/quill.snow.css';
+import dynamic from 'next/dynamic';
 
-interface TextboxProps {
-  name: string;
-  placeholder: string;
+const QuillEditor = dynamic(() => import('react-quill'), { ssr: false });
+
+interface QuillEditorInstance {
+  getEditor: () => {
+    getLength: () => number;
+    setText: (text: string) => void;
+    enable: (enabled: boolean) => void;
+  };
 }
 
-const Textbox: React.FC<TextboxProps> = (props) => {
-  const [wordStats, setStats] = useState({
-    words: 0,
-    capacity: false,
-  });
-  function onChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    const temp = e.target.value;
-    const tmp = temp.split(/([\S])+/) || [];
-    const newStats = {
-      words: (tmp.length - 1) / 2,
-      capacity: (tmp.length - 1) / 2 > 300 ? true : false,
-    };
-    setStats(newStats);
-  }
+const Textbox = () => {
+  const [content, setContent] = useState<string>('');
+  const quillRef = useRef<QuillEditorInstance | null>(null);
+  const maxWords = 300;
+
+  const handleEditorChange = (newContent: string) => {
+    const words = newContent
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0);
+
+    if (words.length <= maxWords) {
+      setContent(newContent);
+      if (quillRef.current) {
+        const editor = quillRef.current.getEditor();
+        editor.enable(true); // Enable input if word count is within the limit
+      }
+    } else {
+      if (quillRef.current) {
+        const editor = quillRef.current.getEditor();
+        editor.enable(false); // Disable input if word count exceeds the limit
+      }
+    }
+  };
+  const quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ align: [] }],
+    ],
+  };
+  const quillFormats = [
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'list',
+    'bullet',
+    'align',
+  ];
+
+  useEffect(() => {
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      editor.setText(content);
+    }
+  }, [content]);
+
   return (
     <div className={styles.textbox_container}>
-      <div className={styles.edit_header}>
-        <div className={styles.icon_group}>
-          <Image src="/icons/bold.svg" alt="bold icon" width={16} height={16} />
-          <Image
-            src="/icons/italicize.svg"
-            alt="bold icon"
-            width={16}
-            height={16}
-          />
-          <Image
-            src="/icons/underline.svg"
-            alt="bold icon"
-            width={16}
-            height={16}
-          />
-          <Image
-            src="/icons/strikethrough.svg"
-            alt="bold icon"
-            width={16}
-            height={16}
-          />
-        </div>
-        <div className={styles.header_border}></div>
-        <div className={styles.icon_group}>
-          <Image
-            src="/icons/columnleft.svg"
-            alt="bold icon"
-            width={16}
-            height={16}
-          />
-          <Image
-            src="/icons/columnmiddle.svg"
-            alt="bold icon"
-            width={16}
-            height={16}
-          />
-          <Image
-            src="/icons/columnright.svg"
-            alt="bold icon"
-            width={16}
-            height={16}
-          />
-        </div>
-        <div className={styles.header_border}></div>
-        <div className={styles.icon_group}>
-          <Image
-            src="/icons/numbers.svg"
-            alt="bold icon"
-            width={16}
-            height={16}
-          />
-          <Image
-            src="/icons/bullets.svg"
-            alt="bold icon"
-            width={16}
-            height={16}
-          />
-        </div>
-        <div className={styles.header_border}></div>
+      <QuillEditor
+        value={content}
+        onChange={handleEditorChange}
+        modules={quillModules}
+        formats={quillFormats}
+        className={styles.quill_style}
+        theme="snow"
+      />
+      <div id="counter">
+        {
+          content
+            .trim()
+            .split(/\s+/)
+            .filter((word) => word.length > 0).length
+        }{' '}
+        / {maxWords}
       </div>
-      <textarea
-        onChange={onChange}
-        className={styles.input_text}
-        name={props.name}
-        placeholder={props.placeholder}
-      ></textarea>
-      <p
-        className={
-          wordStats.capacity ? styles.wordcount_over : styles.wordcount
-        }
-      >
-        {wordStats.words}/300
-      </p>
     </div>
   );
 };
