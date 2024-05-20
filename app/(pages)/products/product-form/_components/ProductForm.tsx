@@ -82,14 +82,11 @@ export default function ProductForm() {
           </div>
           <div className={styles.input_container}>
             <p>Product Description</p>
-            <Textbox
-              name="product_description"
-              placeholder="Desk. Mingen. Rengen. Mobildagis. Krov."
-            />
+            <Textbox />
           </div>
           <div className={styles.input_container}>
             <p>Product Details</p>
-            <Textbox name="product_details" placeholder="Colors, Material..." />
+            <Textbox />
           </div>
         </div>
         <div className={styles.button_container}>
