@@ -4,15 +4,11 @@
       "slug": "/"
     },
     {
-      "name": "About Us",
-      "slug": "/about"
+      "name": "Product",
+      "slug": "/products"
     },
     {
-      "name": "Examples",
-      "slug": "/examples"
-    },
-    {
-      "name": "Contact Us",
-      "slug": "/contact"
+      "name": "Order",
+      "slug": "/orders"
     }
-  ]
+]
