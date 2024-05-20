@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={fonts}>
-        <Navbar navLinks={navLinks} />
+        <Navbar />
         <ApolloContext>{children}</ApolloContext>
         <Footer navLinks={navLinks} />
       </body>
