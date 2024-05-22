@@ -1,9 +1,12 @@
+'use client';
 import styles from './page.module.scss';
 import Image from 'next/image';
 import includeArt from '/public/graphics/bg-abstract.svg';
 import google from '/public/icons/google.svg';
+import useToggle from '@hooks/useToggle';
 
 export default function LoginPage() {
+  const [activeCurrent, toggleActiveCurrent] = useToggle(false);
   return (
     <div className={styles.page_container}>
       <div className={styles.login_container}>
@@ -20,11 +23,23 @@ export default function LoginPage() {
           </div>
           <div className={styles.input_container}>
             <label>Password</label>
-            <input
-              name="password"
-              type="text"
-              placeholder="Enter your password"
-            />
+            <div className={styles.password_container}>
+              <input
+                type={`${activeCurrent ? 'text' : 'password'}`}
+                name="current_password"
+                placeholder="Password"
+              />
+              <Image
+                className={`${
+                  activeCurrent ? styles.active_eye_icon : styles.eye_icon
+                }`}
+                src="/icons/eye.svg"
+                alt="eye icon"
+                width={24}
+                height={24}
+                onClick={toggleActiveCurrent}
+              />
+            </div>
           </div>
           <div className={styles.toggle_container}>
             <input name="check" type="checkbox" />

@@ -49,6 +49,7 @@
             outline: none;
             border: 1px solid var(--gray-500);
             border-radius: 5px;
+            width: 100%;
         }
     }
 
@@ -121,6 +122,27 @@
 
     p {
         font-weight: 500;
+    }
+}
+
+.password_container {
+    position: relative;
+    width: 100%;
+
+    .eye_icon {
+        position: absolute;
+        right: var(--tiny-spacer);
+        top: 30%;
+        opacity: 50%;
+        cursor: pointer;
+    }
+
+    .active_eye_icon {
+        position: absolute;
+        right: var(--tiny-spacer);
+        top: 30%;
+        opacity: 100%;
+        cursor: pointer;
     }
 }
 
