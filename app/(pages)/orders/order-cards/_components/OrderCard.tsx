@@ -15,7 +15,7 @@ interface TextboxProps {
   icon: number;
 }
 
-const OrderCard: React.FC<TextboxProps> = (props) => {
+export default function OrderCard(props: TextboxProps) {
   const itemStatuses = [
     'Customer',
     'Payment',
@@ -72,6 +72,4 @@ const OrderCard: React.FC<TextboxProps> = (props) => {
       </button>
     </div>
   );
-};
-
-export default OrderCard;
+}

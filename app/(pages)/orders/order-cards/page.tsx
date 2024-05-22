@@ -3,6 +3,60 @@ import styles from './page.module.scss';
 
 export default function ViewOrderCards() {
   const dateTime = new Date('2024-03-01T10:36:01.516Z');
+  const progressList: [string, Date, number, string, number][] = [
+    [
+      'Lightweight Water-Resistant Hooded Puffer Coat',
+      dateTime,
+      3,
+      '/sample-product/puffer.png',
+      0,
+    ],
+    [
+      'Lightweight Water-Resistant Hooded Puffer Coat',
+      dateTime,
+      1,
+      '/sample-product/watch.png',
+      2,
+    ],
+    [
+      'Lightweight Water-Resistant Hooded Puffer Coat',
+      dateTime,
+      1,
+      '/sample-product/sneaker.png',
+      1,
+    ],
+    [
+      'Lightweight Water-Resistant Hooded Puffer Coat',
+      dateTime,
+      1,
+      '/sample-product/plant.png',
+      0,
+    ],
+  ];
+  const deliveredList: [string, Date, number, string, number][] = [
+    [
+      'Lightweight Water-Resistant Hooded Puffer Coat',
+      dateTime,
+      4,
+      '/sample-product/cap.png',
+      3,
+    ],
+    [
+      'Lightweight Water-Resistant Hooded Puffer Coat',
+      dateTime,
+      4,
+      '/sample-product/bear.png',
+      3,
+    ],
+    [
+      'Lightweight Water-Resistant Hooded Puffer Coat',
+      dateTime,
+      4,
+      '/sample-product/hydro.png',
+      3,
+    ],
+  ];
+
   return (
     <div className={styles.page_container}>
       <div className={styles.orders}>
@@ -29,60 +83,33 @@ export default function ViewOrderCards() {
       <div className={styles.progress}>
         <h4>Progress</h4>
         <div className={styles.order_cards}>
-          <OrderCard
-            title="Lightweight Water-Resistant Hooded Puffer Coat"
-            date={dateTime}
-            status={3}
-            image="/sample-product/puffer.png"
-            icon={0}
-          />
-          <OrderCard
-            title="Lightweight Water-Resistant Hooded Puffer Coat"
-            date={dateTime}
-            status={1}
-            image="/sample-product/watch.png"
-            icon={2}
-          />
-          <OrderCard
-            title="Lightweight Water-Resistant Hooded Puffer Coat"
-            date={dateTime}
-            status={1}
-            image="/sample-product/sneaker.png"
-            icon={1}
-          />
-          <OrderCard
-            title="Lightweight Water-Resistant Hooded Puffer Coat"
-            date={dateTime}
-            status={1}
-            image="/sample-product/plant.png"
-            icon={0}
-          />
+          {progressList.map((item, index) => (
+            <div key={index}>
+              <OrderCard
+                title={item[0]}
+                date={item[1]}
+                status={item[2]}
+                image={item[3]}
+                icon={item[4]}
+              />
+            </div>
+          ))}
         </div>
       </div>
       <div className={styles.past_orders}>
         <h4>Past Orders</h4>
         <div className={styles.order_cards}>
-          <OrderCard
-            title="Lightweight Water-Resistant Hooded Puffer Coat"
-            date={dateTime}
-            status={4}
-            image="/sample-product/cap.png"
-            icon={3}
-          />
-          <OrderCard
-            title="Lightweight Water-Resistant Hooded Puffer Coat"
-            date={dateTime}
-            status={4}
-            image="/sample-product/bear.png"
-            icon={3}
-          />
-          <OrderCard
-            title="Lightweight Water-Resistant Hooded Puffer Coat"
-            date={dateTime}
-            status={4}
-            image="/sample-product/hydro.png"
-            icon={3}
-          />
+          {deliveredList.map((item, index) => (
+            <div key={index}>
+              <OrderCard
+                title={item[0]}
+                date={item[1]}
+                status={item[2]}
+                image={item[3]}
+                icon={item[4]}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
