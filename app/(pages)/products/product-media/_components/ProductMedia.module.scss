@@ -1,0 +1,93 @@
+@use 'media';
+
+.container {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    padding: var(--medium-spacer);
+    background-color: var(--background-secondary);
+    border: 2px solid var(--gray-300);
+    border-radius: 10px;
+    gap: var(--small-spacer);
+
+    h4 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        padding: var(--tiny-spacer) 0;
+    }
+}
+
+.upload_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--medium-spacer);
+    background-color: var(--background-upload);
+    border: 1px dotted var(--gray-300);
+    gap: var(--small-spacer);
+
+    span {
+        color: var(--purple);
+        cursor: pointer;
+    }
+}
+
+.upload_image {
+    background-color: var(--light-purple);
+    padding: var(--tiny-spacer) var(--medium-spacer);
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.buttons {
+    align-self: end;
+    display: flex;
+    flex-direction: row;
+    gap: var(--small-spacer);
+    padding-top: var(--small-spacer);
+
+    .cancel {
+        padding: var(--tiny-spacer) var(--medium-spacer);
+        background-color: var(--background-secondary);
+        border: 1px solid var(--gray-500);
+        border-radius: 5px;
+        font-weight: 500;
+        color: var(--purple);
+        cursor: pointer;
+    }
+
+    .save {
+        padding: var(--tiny-spacer) var(--medium-spacer);
+        background-color: var(--purple);
+        border: 1px solid var(--gray-700);
+        border-radius: 5px;
+        font-weight: 500;
+        color: var(--text-light);
+        cursor: pointer;
+    }
+}
+
+.past_media_container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--small-spacer);
+
+    .single_media {
+        border: 1px solid var(--gray-500);
+        border-radius: 10px;
+        height: 160px;
+        width: 240px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .delete {
+        position: absolute;
+        top: 1px;
+        right: 1px;
+        cursor: pointer;
+    }
+}

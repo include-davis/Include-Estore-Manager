@@ -41,8 +41,6 @@ const OrderCard: React.FC<TextboxProps> = (props) => {
       return '';
     }
   }
-
-  console.log(props.status);
   return (
     <div className={styles.container}>
       <div className={styles.item_image}>
@@ -55,7 +53,7 @@ const OrderCard: React.FC<TextboxProps> = (props) => {
           <div className={styles.status_bar}></div>
           {itemStatuses.map((status, index) => (
             <div key={index} className={styles.status_options}>
-              {props.status < 4 &&
+              {props.status <= 4 &&
               displayIcon(props.status, props.icon, index) !== '' ? (
                 <Image
                   src={displayIcon(props.status, props.icon, index)}
