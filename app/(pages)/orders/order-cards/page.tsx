@@ -56,7 +56,6 @@ export default function ViewOrderCards() {
       icon: 3,
     },
   ];
-
   return (
     <div className={styles.page_container}>
       <div className={styles.orders}>
