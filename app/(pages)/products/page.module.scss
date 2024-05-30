@@ -1,3 +1,9 @@
 .generalcontainer{
     padding: var(--spacer);
 }
+
+.main {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacer);
+}
