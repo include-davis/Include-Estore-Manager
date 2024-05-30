@@ -1,5 +1,6 @@
 import styles from './page.module.scss';
 import ProductList from './_components/ProductList/ProductList';
+import SearchFilters from './_components/SearchFilters/SearchFilters';
 
 const products = [
   {
@@ -55,8 +56,9 @@ const products = [
 export default function Products() {
   return (
     <div className={styles.generalcontainer}>
-      <h2>Product List:</h2>
-      <div className={styles.generalcontainer}>
+      <h2>Products</h2>
+      <div className={`${styles.generalcontainer} ${styles.main}`}>
+        <SearchFilters />
         <ProductList products={products} />
       </div>
     </div>
