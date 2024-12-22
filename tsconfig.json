@@ -28,7 +28,8 @@
     "@utils/*": ["./app/(api)/_utils/*"],   
     "@actions/*": ["./app/(api)/_actions/*"],
     "@graphql/*": ["./app/(api)/_graphql/*"],
-    "@datatypes/*": ["./app/(api)/_types/*"]
+    "@datatypes/*": ["./app/(api)/_types/*"],
+    "@datalib/*": ["./app/(api)/_datalib/*"],
     }
   },
   "include": ["nextEnv.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
