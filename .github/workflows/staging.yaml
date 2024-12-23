@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'fix/vercel-deployment'
 
 jobs:
   deploy_staging:
@@ -25,9 +24,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Install vercel
-        run: npm install vercel
 
       - name: Lint and build code, then publish to Vercel
         run: >
