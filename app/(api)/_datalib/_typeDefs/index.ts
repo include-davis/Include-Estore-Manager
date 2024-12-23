@@ -1,12 +1,11 @@
 import { mergeTypeDefs } from '@graphql-tools/merge';
+import type { DocumentNode } from 'graphql';
 
-import User from './User.js';
-import Playlist from './Playlist.js';
-import Song from './Song.js';
+import Product from './Product';
 
-const allTypeDefs = [];
+const allTypeDefs: DocumentNode[] = [];
 
-const modules = [User, Playlist, Song];
+const modules = [Product];
 modules.forEach((module) => {
   allTypeDefs.push(module);
 });
