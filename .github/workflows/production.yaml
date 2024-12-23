@@ -24,6 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install vercel
+        run: npm install vercel
+
       - name: Lint and build code, then publish to Vercel
         run: >
           vercel
