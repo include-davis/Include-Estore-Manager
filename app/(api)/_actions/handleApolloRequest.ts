@@ -5,7 +5,7 @@ import { revalidatePath, revalidateTag } from 'next/cache';
 import handler from '@datalib/apolloServer';
 
 export default async function handleApolloRequest(
-  query: string,
+  request: string,
   variables: object,
   revalidateCache?: { path?: string; type?: 'page' | 'layout'; tag?: string }
 ) {
@@ -18,7 +18,7 @@ export default async function handleApolloRequest(
     method: 'POST',
     headers: headers,
     body: JSON.stringify({
-      query,
+      request,
       variables,
     }),
   });

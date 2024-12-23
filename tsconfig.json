@@ -25,9 +25,10 @@
     "@data/*": ["./app/(pages)/_data/*"],
     "@hooks/*": ["./app/(pages)/_hooks/*"],
     "@contexts/*": ["./app/(pages)/_contexts/*"],
-    "@utils/*": ["./app/(api)/_utils/*"],   
+    "@utils/*": ["./app/(api)/_utils/*"],
+    "@pageUtils/*": ["./app/(pages)/_utils/*"],
     "@actions/*": ["./app/(api)/_actions/*"],
-    "@graphql/*": ["./app/(api)/_graphql/*"],
+    "@graphql/*": ["./app/(pages)/_graphql/*"],
     "@datatypes/*": ["./app/(api)/_types/*"],
     "@datalib/*": ["./app/(api)/_datalib/*"],
     }
