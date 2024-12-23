@@ -9,10 +9,9 @@ export default async function UsersList() {
 
   return (
     <div className={styles.list_container}>
-      {users &&
-        users.data.users.map((user: User, index: number) => (
-          <UserCard key={index} user={user} />
-        ))}
+      {users?.data.users.map((user: User, index: number) => (
+        <UserCard key={index} user={user} />
+      ))}
     </div>
   );
 }
