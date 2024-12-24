@@ -1,5 +1,5 @@
 import FormToJSON from '@utils/form/FormToJSON';
-import type User from '@datatypes/User';
+import { User } from '@datatypes/User';
 import sendApolloRequest from '@pageUtils/sendApolloRequest';
 import { updateUserMutation } from '@graphql/mutations/updateUser';
 import styles from './UserCard.module.scss';

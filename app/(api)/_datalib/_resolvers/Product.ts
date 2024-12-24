@@ -4,7 +4,7 @@ import { ProductInput } from '@datatypes/Product';
 const resolvers = {
   Query: {
     product: (_: never, args: { id: string }) => Products.find(args.id),
-    products: (_: never, args: { ids: [string] }) => Products.findAll(args.ids),
+    products: (_: never, args: { ids: string[] }) => Products.findAll(args.ids),
   },
   Mutation: {
     createProduct: (_: never, args: { input: ProductInput }) =>

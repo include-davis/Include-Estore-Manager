@@ -1,4 +1,4 @@
-import type User from '@datatypes/User';
+import { User } from '@datatypes/User';
 import UserCard from '../UserCard/UserCard';
 import sendApolloRequest from '@pageUtils/sendApolloRequest';
 import { usersQuery } from '@graphql/queries/users';
