@@ -23,6 +23,7 @@ export default class Users {
     if (!ids) {
       return prisma.user.findMany();
     }
+
     return prisma.user.findMany({
       where: {
         id: {
