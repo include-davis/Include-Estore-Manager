@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Inventory {
+  id                 String  @id
+  product            Product @relation(fields: [id], references: [id], onDelete: Cascade)
+  available_quantity Int
+  cost_of_production Float
+  lead_time          Int
+  reorder_point      Int
+  reorder_quantity   Int
+  safety_stock       Int
+  stock_on_order     Int
+}
+
+model Product {
+  id                   String         @id @default(uuid())
+  inventory            Inventory?
+  tags                 ProductToTag[]
+  name                 String
+  price                Int
+  description          String
+  details              String
+  weight               Int
+  height               Int
+  width                Int
+  depth                Int
+  special_label_needed Boolean
+}
+
+model ProductToTag {
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  tag_id     String
+  tag        Tag     @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+
+  @@id(name: "id", fields: [product_id, tag_id])
+}
+
+model Tag {
+  id       String         @id @default(uuid())
+  name     String         @unique
+  products ProductToTag[]
+}
+
+model User {
+  id                      String  @id @default(uuid())
+  name                    String
+  email                   String  @unique
+  password                String
+  shipping_address_line_1 String
+  shipping_address_line_2 String?
+  shipping_city           String
+  shipping_state          String?
+  shipping_country        String
+  shipping_zip            Int
+}
