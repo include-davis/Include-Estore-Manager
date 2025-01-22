@@ -1,5 +1,6 @@
 import { InventoryInput } from '@datatypes/Inventory';
 import prisma from '../_prisma/client';
+import revalidateCache from '@actions/revalidateCache';
 
 export default class Inventories {
   // READ
@@ -34,6 +35,7 @@ export default class Inventories {
         },
         data: input,
       });
+      revalidateCache(['inventories', 'products']);
       return inventory;
     } catch (e) {
       return null;

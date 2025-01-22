@@ -1,3 +1,4 @@
+import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { ProductInput, ProductInventoryInput } from '@datatypes/Product';
 
@@ -19,7 +20,7 @@ export default class Products {
     } = productInput;
 
     // single transaction to ensure both records get created
-    return prisma.$transaction(async () => {
+    const transaction = prisma.$transaction(async () => {
       return prisma.product.create({
         data: {
           name,
@@ -40,6 +41,8 @@ export default class Products {
         },
       });
     });
+    revalidateCache(['products', 'inventories']);
+    return transaction;
   }
 
   // READ
@@ -87,6 +90,7 @@ export default class Products {
         },
         data: input,
       });
+      revalidateCache(['products', 'inventories']);
       return product;
     } catch (e) {
       return null;
@@ -118,7 +122,7 @@ export default class Products {
         return existingProduct;
       }
 
-      return prisma.product.update({
+      const updatedProduct = prisma.product.update({
         where: {
           id,
         },
@@ -142,6 +146,8 @@ export default class Products {
           },
         },
       });
+      revalidateCache(['products', 'tags']);
+      return updatedProduct;
     } catch (e) {
       return null;
     }
@@ -161,7 +167,7 @@ export default class Products {
 
     const tagIds = tags.map((tag) => tag.id);
 
-    return prisma.product.update({
+    const updatedProduct = prisma.product.update({
       where: {
         id,
       },
@@ -182,6 +188,8 @@ export default class Products {
         },
       },
     });
+    revalidateCache(['products', 'tags']);
+    return updatedProduct;
   }
 
   // DELETE
@@ -192,6 +200,7 @@ export default class Products {
           id,
         },
       });
+      revalidateCache(['products', 'inventories']);
       return true;
     } catch (e) {
       return false;

@@ -12,9 +12,6 @@ export default async function CreateUserForm() {
       variables: {
         input: dataJSON,
       },
-      revalidateCache: {
-        path: '/users',
-      },
     });
   };
 

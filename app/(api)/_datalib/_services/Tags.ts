@@ -1,5 +1,6 @@
 import { TagInput } from '@datatypes/Tag';
 import prisma from '../_prisma/client';
+import revalidateCache from '@actions/revalidateCache';
 
 export default class Tags {
   // CREATE
@@ -7,6 +8,7 @@ export default class Tags {
     const tag = await prisma.tag.create({
       data: input,
     });
+    revalidateCache(['tags', 'products']);
     return tag;
   }
 
@@ -52,6 +54,7 @@ export default class Tags {
           name,
         },
       });
+      revalidateCache(['tags', 'products']);
       return true;
     } catch (e) {
       return false;
