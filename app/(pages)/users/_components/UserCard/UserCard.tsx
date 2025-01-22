@@ -14,9 +14,6 @@ export default async function UserCard({ user }: { user: User }) {
         updateUserId: user.id,
         input: dataJSON,
       },
-      revalidateCache: {
-        path: '/users',
-      },
     });
   };
 

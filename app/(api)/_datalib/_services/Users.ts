@@ -1,3 +1,4 @@
+import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { UserInput } from '@datatypes/User';
 
@@ -7,6 +8,7 @@ export default class Users {
     const user = await prisma.user.create({
       data: input,
     });
+    revalidateCache(['users']);
     return user;
   }
 
@@ -42,6 +44,7 @@ export default class Users {
         },
         data: input,
       });
+      revalidateCache(['users']);
       return user;
     } catch (e) {
       return null;
@@ -56,6 +59,7 @@ export default class Users {
           id,
         },
       });
+      revalidateCache(['users']);
       return true;
     } catch (e) {
       return false;
