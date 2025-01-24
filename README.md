@@ -83,6 +83,7 @@ Create a file called ```.env``` in the root of the codebase and paste in the fol
 ```
 # development
 DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<db name>?schema=public"
+AUTH_SECRET="<your_secret>"
 ```
 I'll share the staging DATABASE_URL another way since we should keep that private.
 
