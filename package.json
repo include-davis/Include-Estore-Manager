@@ -20,7 +20,8 @@
   "dependencies": {
     "@apollo/server": "^4.11.2",
     "@as-integrations/next": "^3.2.0",
-    "@prisma/client": "^6.2.1",
+    "@auth/prisma-adapter": "^2.7.4",
+    "@prisma/client": "^6.3.0",
     "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6",
     "mongodb": "^6.3.0",
@@ -52,7 +53,7 @@
     "eslint-plugin-unicorn": "^50.0.1",
     "postcss": "^8",
     "prettier": "3.0.3",
-    "prisma": "^6.2.1",
+    "prisma": "^6.3.0",
     "run-script-os": "^1.1.6",
     "tailwindcss": "^3.3.0",
     "typescript": "^5.6.3"
