@@ -68,7 +68,7 @@ async function credentialsSignUp(credentials: Credentials) {
       shipping_city: city,
       shipping_state: state,
       shipping_country: country,
-      shipping_zip: parseInt(zip),
+      shipping_zip: parseInt(zip), // TODO: For some reason it thinks this is a string.
     },
   });
 }
@@ -122,7 +122,7 @@ async function credentialsLogIn(credentials: Credentials) {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    Credentials({  // http://localhost:3000/api/auth/signin
+    Credentials({ // http://localhost:3000/api/auth/signin
       credentials: {
         firstName: { label: 'First Name', type: 'text' },
         lastName: { label: 'Last Name', type: 'text' },
@@ -151,11 +151,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (totalUsers === 0) {
           // Sign up logic.
-          return credentialsSignUp(credentials); // TODO: Return signed up user.
+          return credentialsSignUp(credentials); // Return signed-up user.
         }
 
         // Login logic.
-        return credentialsLogIn(credentials); // TODO: Return user.
+        return credentialsLogIn(credentials); // Return logged-in user.
       },
     }),
   ],
