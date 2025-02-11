@@ -53,6 +53,11 @@ const typeDefs = gql`
     shipping_country: String
   }
 
+  type OrderProduct {
+    product: Product!
+    quantity: Int!
+  }
+
   type Query {
     order(id: ID!): Order
     orders(id: [ID]): [Order]

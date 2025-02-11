@@ -2,7 +2,7 @@ model ProductToOrder {
   product_id String
   product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
   order_id   String
-  order      Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  order      Order   @relation(fields: [order_id], references: [id], onDelete: Cascade)
   quantity   Int
 
   @@id(name: "id", fields: [product_id, order_id])
