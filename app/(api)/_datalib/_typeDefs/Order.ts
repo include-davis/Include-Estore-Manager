@@ -18,7 +18,7 @@ const typeDefs = gql`
     shipping_zip: String!
     shipping_country: String!
     status: String!
-    created_at: DateTime!
+    created_at: String!
   }
 
   input OrderInput {
