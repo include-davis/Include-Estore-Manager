@@ -5,7 +5,7 @@ import Image from 'next/image';
 import includeArt from '/public/graphics/bg-abstract.svg';
 import google from '/public/icons/google.svg';
 import useToggle from '@hooks/useToggle';
-import { loginWithCredentials } from '@/app/(api)/api/auth/_utils/Authorization';
+import { loginWithCredentials } from '@actions/Authorization';
 
 export default function LoginPage() {
   const [activeCurrent, toggleActiveCurrent] = useToggle(false);
