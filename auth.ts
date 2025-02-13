@@ -1,4 +1,4 @@
-import NextAuth, { CredentialsSignin } from 'next-auth';
+import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import prisma from '@datalib/_prisma/client';
 import Credentials from '@auth/core/providers/credentials';
@@ -9,6 +9,7 @@ import {
   phoneNumberSchema,
   zipCodeSchema,
 } from '@utils/InputValidation';
+import InvalidLoginError from '@error/auth/InvalidLogin';
 
 /**
  * Interface definition for required credentials.
@@ -16,7 +17,7 @@ import {
  * Only email and password are required for login.
  * Everything is required for sign-up.
  */
-interface Credentials {
+export interface Credentials {
   firstName?: string;
   lastName?: string;
   email: string; // Required for login only.
@@ -30,30 +31,23 @@ interface Credentials {
   zip?: number;
 }
 
-function validateCredentials(credentials: Credentials) {
+function validateCredentials(credentials: Credentials, isLogin: boolean) {
   const emailValidation = emailSchema.safeParse(credentials.email);
   const passwordValidation = passwordSchema.safeParse(credentials.password);
   const phoneValidation = phoneNumberSchema.safeParse(credentials.phone);
   const zipValidation = zipCodeSchema.safeParse(credentials.zip);
 
   if (credentials.email && !emailValidation.success)
-    throw new InvalidLoginError(emailValidation.error.message);
+    throw new InvalidLoginError(emailValidation.error.errors[0].message);
 
-  if (credentials.password && !passwordValidation.success)
-    throw new InvalidLoginError(passwordValidation.error.message);
+  if (!isLogin && credentials.password && !passwordValidation.success)
+    throw new InvalidLoginError(passwordValidation.error.errors[0].message);
 
   if (credentials.phone && !phoneValidation.success)
-    throw new InvalidLoginError(phoneValidation.error.message);
+    throw new InvalidLoginError(phoneValidation.error.errors[0].message);
 
   if (credentials.zip && !zipValidation.success)
-    throw new InvalidLoginError(zipValidation.error.message);
-}
-
-class InvalidLoginError extends CredentialsSignin {
-  constructor(message: string) {
-    super(message);
-    this.code = message;
-  }
+    throw new InvalidLoginError(zipValidation.error.errors[0].message);
 }
 
 async function credentialsSignUp(credentials: Credentials) {
@@ -99,7 +93,7 @@ async function credentialsSignUp(credentials: Credentials) {
       shipping_city: city,
       shipping_state: state,
       shipping_country: country,
-      shipping_zip: parseInt(zip), // TODO: For some reason it thinks this is a string.
+      shipping_zip: parseInt(String(zip)), // For some reason, this is also required.
     },
   });
 }
@@ -171,12 +165,19 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         country: { label: 'Country', type: 'text' },
         zip: { label: 'ZIP Code', type: 'number' },
       },
-      async authorize(credentials: Credentials) {
-        validateCredentials(credentials);
+      async authorize(credentials) {
+        const typedCredentials = credentials as Credentials; // Required for some reason.
 
         const totalUsers = await prisma.user.count();
-        if (totalUsers === 0) return credentialsSignUp(credentials); // Sign up logic. Return signed-up user.
-        return credentialsLogIn(credentials); // Login logic. Return logged-in user.
+
+        // Sign up logic. Return signed-up user.
+        if (totalUsers === 0) {
+          validateCredentials(typedCredentials, false);
+          return credentialsSignUp(typedCredentials);
+        }
+
+        validateCredentials(typedCredentials, true);
+        return credentialsLogIn(typedCredentials); // Login logic. Return logged-in user.
       },
     }),
   ],

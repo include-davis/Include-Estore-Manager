@@ -33,7 +33,7 @@
       "@datatypes/*": ["./app/(api)/_types/*"],
       "@datalib/*": ["./app/(api)/_datalib/*"],
       "@cache/*": ["./app/(api)/_cache/*"],
-      "@auth/*": ["./app/(api)/auth/_utils/*"]
+      "@error/*": ["./app/(api)/_errors/*"]
     }
   },
   "include": ["nextEnv.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
