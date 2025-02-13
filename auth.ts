@@ -135,10 +135,10 @@ async function credentialsLogIn(credentials: Credentials) {
     where: { email: email },
   });
 
-  if (!user) throw new InvalidLoginError('User not found');
+  if (!user) throw new InvalidLoginError('Invalid credentials');
 
   const passwordsMatch = await bcrypt.compare(password, user.password);
-  if (!passwordsMatch) throw new InvalidLoginError('Invalid password');
+  if (!passwordsMatch) throw new InvalidLoginError('Invalid credentials');
 
   return user;
 }
