@@ -34,8 +34,8 @@ export default function LoginPage() {
 
     try {
       await loginWithCredentials(formData.email, formData.password);
-    } catch (error) {
-      setError(`Unable to sign in: ${error}`);
+    } catch (error: any) {
+      setError(`Unable to sign in: ${error.message}`);
     }
   };
 

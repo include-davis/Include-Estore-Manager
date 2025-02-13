@@ -3,19 +3,50 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import prisma from '@datalib/_prisma/client';
 import Credentials from '@auth/core/providers/credentials';
 import bcrypt from 'bcrypt';
+import {
+  emailSchema,
+  passwordSchema,
+  phoneNumberSchema,
+  zipCodeSchema,
+} from '@utils/InputValidation';
 
+/**
+ * Interface definition for required credentials.
+ *
+ * Only email and password are required for login.
+ * Everything is required for sign-up.
+ */
 interface Credentials {
   firstName?: string;
   lastName?: string;
-  email: string;
-  password: string;
-  phone: string;
+  email: string; // Required for login only.
+  password: string; // Required for login only.
+  phone?: string;
   addressLine1?: string;
   addressLine2?: string;
   city?: string;
   state?: string;
   country?: string;
   zip?: number;
+}
+
+function validateCredentials(credentials: Credentials) {
+  const emailValidation = emailSchema.safeParse(credentials.email);
+  const passwordValidation = passwordSchema.safeParse(credentials.password);
+  const phoneValidation = phoneNumberSchema.safeParse(credentials.phone);
+  const zipValidation = zipCodeSchema.safeParse(credentials.zip);
+
+  if (credentials.email && !emailValidation.success)
+    throw new InvalidLoginError(emailValidation.error.message);
+
+  if (credentials.password && !passwordValidation.success)
+    throw new InvalidLoginError(passwordValidation.error.message);
+
+  if (credentials.phone && !phoneValidation.success)
+    throw new InvalidLoginError(phoneValidation.error.message);
+
+  if (credentials.zip && !zipValidation.success)
+    throw new InvalidLoginError(zipValidation.error.message);
 }
 
 class InvalidLoginError extends CredentialsSignin {
@@ -103,18 +134,17 @@ async function credentialsLogIn(credentials: Credentials) {
     throw new InvalidLoginError('Too many fields. Did you mean to sign up?');
   }
 
+  if (!email || !password)
+    throw new InvalidLoginError('Email and password are required');
+
   const user = await prisma.user.findUnique({
     where: { email: email },
   });
 
-  if (!user) {
-    throw new InvalidLoginError('User not found');
-  }
+  if (!user) throw new InvalidLoginError('User not found');
 
   const passwordsMatch = await bcrypt.compare(password, user.password);
-  if (!passwordsMatch) {
-    throw new InvalidLoginError('Invalid password');
-  }
+  if (!passwordsMatch) throw new InvalidLoginError('Invalid password');
 
   return user;
 }
@@ -122,7 +152,8 @@ async function credentialsLogIn(credentials: Credentials) {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-    Credentials({ // http://localhost:3000/api/auth/signin
+    Credentials({
+      // http://localhost:3000/api/auth/signin
       credentials: {
         firstName: { label: 'First Name', type: 'text' },
         lastName: { label: 'Last Name', type: 'text' },
@@ -141,21 +172,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         zip: { label: 'ZIP Code', type: 'number' },
       },
       async authorize(credentials: Credentials) {
-        const { email, password } = credentials;
-
-        if (!email || !password) {
-          throw new InvalidLoginError('Email and password are required');
-        }
+        validateCredentials(credentials);
 
         const totalUsers = await prisma.user.count();
-
-        if (totalUsers === 0) {
-          // Sign up logic.
-          return credentialsSignUp(credentials); // Return signed-up user.
-        }
-
-        // Login logic.
-        return credentialsLogIn(credentials); // Return logged-in user.
+        if (totalUsers === 0) return credentialsSignUp(credentials); // Sign up logic. Return signed-up user.
+        return credentialsLogIn(credentials); // Login logic. Return logged-in user.
       },
     }),
   ],

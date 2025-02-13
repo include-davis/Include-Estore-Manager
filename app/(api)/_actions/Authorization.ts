@@ -1,9 +1,13 @@
 'use server';
 
-import { auth, signIn, signOut } from '@/auth';
+import { auth, Credentials, signIn, signOut } from '@/auth';
 
 export const loginWithCredentials = async (email: string, password: string) => {
   await signIn('credentials', { email, password, redirectTo: '/' });
+};
+
+export const signupWithCredentials = async (credentials: Credentials) => {
+  await signIn('credentials', { credentials, redirectTo: '/' });
 };
 
 export const login = async (provider: string) => {
