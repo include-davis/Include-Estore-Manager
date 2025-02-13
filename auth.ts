@@ -9,7 +9,7 @@ import {
   phoneNumberSchema,
   zipCodeSchema,
 } from '@utils/InputValidation';
-import InvalidLoginError from '@error/auth/InvalidLogin';
+import InvalidLoginError from '@error/auth/InvalidLoginError';
 
 /**
  * Interface definition for required credentials.
