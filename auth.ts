@@ -125,7 +125,7 @@ async function credentialsLogIn(credentials: Credentials) {
     country ||
     zip
   ) {
-    throw new InvalidLoginError('Too many fields. Did you mean to sign up?');
+    throw new InvalidLoginError('Too many fields for login.');
   }
 
   if (!email || !password)
