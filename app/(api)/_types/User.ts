@@ -1,8 +1,10 @@
 export type User = {
   id: string;
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
+  phone: string;
   shipping_address_line_1: string;
   shipping_address_line_2: string;
   shipping_city: string;
@@ -12,9 +14,11 @@ export type User = {
 };
 
 export type UserInput = {
-  name: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
+  phone: string;
   shipping_address_line_1: string;
   shipping_address_line_2: string;
   shipping_city: string;
