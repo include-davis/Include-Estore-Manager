@@ -6,7 +6,6 @@ export default class Products {
   // CREATE
   static async create(input: ProductInventoryInput) {
     const { productInput, inventoryInput } = input;
-    console.log(input);
     const {
       name,
       price,
