@@ -42,8 +42,6 @@ export type OrderInput = {
   shipping_city: string;
   shipping_zip: string;
   shipping_country: string;
-  status: string;
-  created;
 };
 
 //make all inputs optional
