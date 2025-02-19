@@ -1,10 +1,57 @@
 import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { OrderInput } from '@datatypes/Order';
+//import { ProductInput } from '@datatypes/Product';
 
 export default class Orders {
   //CREATE
-  //READ
+  static async create(input: OrderInput) {
+    return prisma.order.create({
+      data: {
+        ...input, // Spread the input fields
+        status: 'pending', // Default status
+        created_at: new Date(), // Current timestamp
+      },
+    });
+  }
+
+  //READ -> get order and orders, also getProducts using the ProductToOrder table
+
+  static async find(id: string) {
+    return prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  static async findMany(ids: string[]) {
+    if (!ids) {
+      return prisma.order.findMany();
+    }
+
+    return prisma.order.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
+
+  static async getProducts(order_id: string) {
+    const productToOrder = await prisma.productToOrder.findMany({
+      where: {
+        order_id,
+      },
+      include: {
+        product: true,
+      },
+    });
+
+    return productToOrder.map((item) => item.product);
+  }
+
   //UPDATE
   static async update(id: string, input: OrderInput) {
     try {
