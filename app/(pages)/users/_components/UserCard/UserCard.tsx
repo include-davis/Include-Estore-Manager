@@ -20,9 +20,7 @@ export default async function UserCard({ user }: { user: User }) {
   return (
     <div className={styles.container}>
       <h3 className={styles.subtitle}>USERNAME</h3>
-      <p>
-        {user.first_name} {user.last_name}
-      </p>
+      <p>{user.name}</p>
       <hr />
       <form action={UpdateUser}>
         <h3>Rename form</h3>
@@ -34,7 +32,7 @@ export default async function UserCard({ user }: { user: User }) {
           <label>New last name</label>
           <input name="lname" type="text"></input>
         </div>
-        <button type="submit">{`Update ${user.first_name} ${user.last_name}`}</button>
+        <button type="submit">{`Update ${user.name}`}</button>
       </form>
     </div>
   );

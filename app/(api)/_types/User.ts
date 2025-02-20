@@ -1,7 +1,6 @@
 export type User = {
   id: string;
-  first_name: string;
-  last_name: string;
+  name: string;
   email: string;
   password: string;
   phone: string;
@@ -14,8 +13,7 @@ export type User = {
 };
 
 export type UserInput = {
-  first_name: string;
-  last_name: string;
+  name: string;
   email: string;
   password: string;
   phone: string;
