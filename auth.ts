@@ -18,8 +18,7 @@ import InvalidLoginError from '@error/auth/InvalidLoginError';
  * Everything is required for sign-up.
  */
 export interface Credentials {
-  firstName?: string;
-  lastName?: string;
+  name?: string;
   email: string; // Required for login only.
   password: string; // Required for login only.
   phone?: string;
@@ -52,8 +51,7 @@ function validateCredentials(credentials: Credentials, isLogin: boolean) {
 
 async function credentialsSignUp(credentials: Credentials) {
   const {
-    firstName,
-    lastName,
+    name,
     email,
     password,
     phone,
@@ -66,8 +64,7 @@ async function credentialsSignUp(credentials: Credentials) {
   } = credentials;
 
   if (
-    !firstName ||
-    !lastName ||
+    !name ||
     !email ||
     !password ||
     !phone ||
@@ -83,8 +80,7 @@ async function credentialsSignUp(credentials: Credentials) {
 
   return prisma.user.create({
     data: {
-      first_name: firstName,
-      last_name: lastName,
+      name: name,
       email: email,
       password: hashedPassword,
       phone: phone,
@@ -100,8 +96,7 @@ async function credentialsSignUp(credentials: Credentials) {
 
 async function credentialsLogIn(credentials: Credentials) {
   const {
-    firstName,
-    lastName,
+    name,
     email,
     password,
     phone,
@@ -115,8 +110,7 @@ async function credentialsLogIn(credentials: Credentials) {
 
   // This may be redundant.
   if (
-    firstName ||
-    lastName ||
+    name ||
     phone ||
     addressLine1 ||
     addressLine2 ||

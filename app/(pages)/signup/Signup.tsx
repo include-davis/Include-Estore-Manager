@@ -19,8 +19,7 @@ export default function SignUpPage() {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
 
-    const firstName = formData.get('first');
-    const lastName = formData.get('last');
+    const name = formData.get('name');
     const email = formData.get('email');
     const phone = formData.get('phone');
     const password = formData.get('enter_password');
@@ -34,8 +33,7 @@ export default function SignUpPage() {
 
     // Validate that all fields are filled out
     if (
-      !firstName ||
-      !lastName ||
+      !name ||
       !email ||
       !password ||
       !phone ||
@@ -56,8 +54,7 @@ export default function SignUpPage() {
     }
 
     const response = await signupWithCredentials({
-      firstName: firstName as string,
-      lastName: lastName as string,
+      name: name as string,
       email: email as string,
       password: password as string,
       phone: phone as string,
@@ -89,8 +86,7 @@ export default function SignUpPage() {
         <form className={styles.form_container} onSubmit={handleSubmit}>
           <div className={styles.input_container}>
             <label>Name</label>
-            <input name="first" type="text" placeholder="First Name" />
-            <input name="last" type="text" placeholder="Last Name" />
+            <input name="name" type="text" placeholder="Full Name" />
           </div>
           <div className={styles.input_container}>
             <label>Email address</label>
