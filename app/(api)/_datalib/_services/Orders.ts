@@ -1,7 +1,6 @@
 import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { OrderInput } from '@datatypes/Order';
-//import { ProductInput } from '@datatypes/Product';
 
 export default class Orders {
   //CREATE
@@ -67,6 +66,11 @@ export default class Orders {
       return null;
     }
   }
+
+  // these are the services for the mutations we have left
+  // static async addProductToOrder(id: string, input: ProductInput) {}
+  // static async removeProductFromOrder() {}
+  // static async editProductQuantity() {}
 
   // DELETE
   static async delete(id: string) {
