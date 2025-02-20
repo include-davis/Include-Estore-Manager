@@ -1,7 +1,10 @@
 import Orders from '../_services/Orders';
-import { OrderInput } from '@datatypes/Order';
+import { OrderInput, Order } from '@datatypes/Order';
 
 const resolvers = {
+  Order: {
+    products: (parent: Order) => Orders.getProducts(parent.id),
+  },
   Query: {
     order: (_: never, args: { id: string }) => Orders.find(args.id),
     orders: (_: never, args: { ids: string[] }) => Orders.findMany(args.ids),
