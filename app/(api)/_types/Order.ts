@@ -33,6 +33,11 @@ export type OrderProduct = {
   quantity: number;
 };
 
+export type OrderProductInput = {
+  product_id: string;
+  quantity: number;
+};
+
 export type OrderInput = {
   customer_name: string;
   customer_email: string;

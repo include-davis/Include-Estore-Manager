@@ -53,6 +53,11 @@ const typeDefs = gql`
     shipping_country: String
   }
 
+  input OrderProductInput {
+    product_id: string!;
+    quantity: Int!;
+  }
+
   type OrderProduct {
     product: Product!
     quantity: Int!
@@ -67,7 +72,7 @@ const typeDefs = gql`
     createOrder(input: OrderInput!): Order
     updateOrder(id: ID!, input: OrderUpdateInput!): Order
     deleteOrder(id: ID!): Boolean
-    addProductToOrder(orderId: ID!, productId: OrderProduct!): Order
+    addProductToOrder(id: ID!, productToAdd: OrderProductInput!): Order
     removeProductFromOrder(orderId: ID!, productId: ID!): Order
     editProductQuantity(orderId: ID!, productId: ID!): Order
   }

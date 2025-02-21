@@ -1,5 +1,5 @@
 import Orders from '../_services/Orders';
-import { OrderInput, Order, OrderProduct } from '@datatypes/Order';
+import { OrderInput, Order, OrderProductInput } from '@datatypes/Order';
 
 const resolvers = {
   Order: {
@@ -17,7 +17,7 @@ const resolvers = {
       Orders.create(args.input),
     addProductToOrder: (
       _: never,
-      args: { id: string; productToAdd: OrderProduct }
+      args: { id: string; productToAdd: OrderProductInput }
     ) => Orders.addProductToOrder(args.id, args.productToAdd),
   },
 };
