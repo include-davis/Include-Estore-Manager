@@ -54,8 +54,8 @@ const typeDefs = gql`
   }
 
   input OrderProductInput {
-    product_id: string!;
-    quantity: Int!;
+    product_id: string!
+    quantity: Int!
   }
 
   type OrderProduct {
