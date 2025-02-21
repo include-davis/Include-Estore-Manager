@@ -67,7 +67,7 @@ const typeDefs = gql`
     createOrder(input: OrderInput!): Order
     updateOrder(id: ID!, input: OrderUpdateInput!): Order
     deleteOrder(id: ID!): Boolean
-    addProductToOrder(orderId: ID!, productId: ID!): Order
+    addProductToOrder(orderId: ID!, productId: OrderProduct!): Order
     removeProductFromOrder(orderId: ID!, productId: ID!): Order
     editProductQuantity(orderId: ID!, productId: ID!): Order
   }
