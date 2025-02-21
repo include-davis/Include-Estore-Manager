@@ -84,7 +84,7 @@ export default class Orders {
           quantity: productQuantity,
         },
       });
-      revalidateCache(['products', 'tags']);
+      revalidateCache(['products', 'orders']);
       return newProductToOrder;
     } catch (e) {
       return null;
