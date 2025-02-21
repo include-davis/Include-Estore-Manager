@@ -68,13 +68,9 @@ export default class Orders {
   }
 
   // these are the services for the mutations we have left
-  // static async addProductToOrder(id: string, input: ProductInput) {}
-
   static async addProductToOrder(id: string, productToAdd: OrderProduct) {
     try {
       const product_id = productToAdd.product.id;
-
-      //productToAdd.product;
       const productQuantity = productToAdd.quantity;
 
       const newProductToOrder = prisma.productToOrder.create({
@@ -87,7 +83,7 @@ export default class Orders {
       revalidateCache(['products', 'orders']);
       return newProductToOrder;
     } catch (e) {
-      return null;
+      return e;
     }
   }
 
