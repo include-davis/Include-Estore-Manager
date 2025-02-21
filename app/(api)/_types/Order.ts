@@ -28,6 +28,11 @@ export type ProductToOrder = {
   quantity: number;
 };
 
+export type OrderProduct = {
+  product: Product;
+  quantity: number;
+};
+
 export type OrderInput = {
   customer_name: string;
   customer_email: string;

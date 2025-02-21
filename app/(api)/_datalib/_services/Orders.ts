@@ -1,6 +1,6 @@
 import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
-import { OrderInput } from '@datatypes/Order';
+import { OrderInput, OrderProduct } from '@datatypes/Order';
 
 export default class Orders {
   //CREATE
@@ -69,6 +69,28 @@ export default class Orders {
 
   // these are the services for the mutations we have left
   // static async addProductToOrder(id: string, input: ProductInput) {}
+
+  static async addProductToOrder(id: string, productToAdd: OrderProduct) {
+    try {
+      const product_id = productToAdd.product.id;
+
+      //productToAdd.product;
+      const productQuantity = productToAdd.quantity;
+
+      const newProductToOrder = prisma.productToOrder.create({
+        data: {
+          product_id: product_id,
+          order_id: id,
+          quantity: productQuantity,
+        },
+      });
+      revalidateCache(['products', 'tags']);
+      return newProductToOrder;
+    } catch (e) {
+      return null;
+    }
+  }
+
   // static async removeProductFromOrder() {}
   // static async editProductQuantity() {}
 

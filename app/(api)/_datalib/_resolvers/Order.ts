@@ -18,4 +18,6 @@ const resolvers = {
   },
 };
 
+// still need: addProductToOrder, removeProductFromOrder, editProductQuantity
+
 export default resolvers;
