@@ -54,9 +54,8 @@ export default async function uploadMediaItem(mediaItem: MediaItem) {
         updatedMediaItem.cloudinary_id,
         getCloudinaryType(updatedMediaItem.type)
       );
-      const errorMsg = `${creationRes.error}${
-        deleteStatus.ok ? '' : `\n${deleteStatus.error}`
-      }`;
+      const errorMsg = `${creationRes.error}${deleteStatus.ok ? '' : `\n${deleteStatus.error}`
+        }`;
       throw new Error(errorMsg);
     }
 
