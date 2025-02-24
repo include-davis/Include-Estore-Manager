@@ -23,6 +23,10 @@ const resolvers = {
       _: never,
       args: { id: string; productToRemove: OrderProductInput }
     ) => Orders.removeProductFromOrder(args.id, args.productToRemove),
+    editProductQuantity: (
+      _: never,
+      args: { id: string; productToUpdate: OrderProductInput }
+    ) => Orders.addProductToOrder(args.id, args.productToUpdate),
   },
 };
 

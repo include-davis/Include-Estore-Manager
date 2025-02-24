@@ -155,7 +155,53 @@ export default class Orders {
       return e;
     }
   }
-  // static async editProductQuantity() {}
+
+  static async editProductQuantity(
+    id: string,
+    productToUpdate: OrderProductInput
+  ) {
+    try {
+      const product_id = productToUpdate.product_id;
+      const productQuantity = productToUpdate.quantity;
+      const order = await prisma.productToOrder.findUnique({
+        where: {
+          id: {
+            order_id: id,
+            product_id,
+          },
+        },
+      });
+
+      if (order) {
+        await prisma.productToOrder.update({
+          where: {
+            id: {
+              order_id: id,
+              product_id: product_id,
+            },
+          },
+          data: {
+            quantity: order.quantity + productQuantity,
+          },
+        });
+      }
+
+      const updatedOrder = await prisma.order.findUnique({
+        where: { id },
+        include: {
+          products: {
+            include: {
+              product: true,
+            },
+          },
+        },
+      });
+      revalidateCache(['products', 'orders']);
+      return updatedOrder;
+    } catch (e) {
+      return e;
+    }
+  }
 
   // DELETE
   static async delete(id: string) {
