@@ -19,6 +19,10 @@ const resolvers = {
       _: never,
       args: { id: string; productToAdd: OrderProductInput }
     ) => Orders.addProductToOrder(args.id, args.productToAdd),
+    removeProductFromOrder: (
+      _: never,
+      args: { id: string; productToRemove: OrderProductInput }
+    ) => Orders.removeProductFromOrder(args.id, args.productToRemove),
   },
 };
 

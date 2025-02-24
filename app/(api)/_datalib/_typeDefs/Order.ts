@@ -54,7 +54,11 @@ const typeDefs = gql`
   }
 
   input OrderProductInput {
+<<<<<<< Updated upstream
     product_id: string!
+=======
+    product_id: ID!
+>>>>>>> Stashed changes
     quantity: Int!
   }
 
@@ -73,7 +77,7 @@ const typeDefs = gql`
     updateOrder(id: ID!, input: OrderUpdateInput!): Order
     deleteOrder(id: ID!): Boolean
     addProductToOrder(id: ID!, productToAdd: OrderProductInput!): Order
-    removeProductFromOrder(orderId: ID!, productId: ID!): Order
+    removeProductFromOrder(id: ID!, productToRemove: OrderProductInput!): Order
     editProductQuantity(orderId: ID!, productId: ID!): Order
   }
 `;

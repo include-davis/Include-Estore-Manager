@@ -88,6 +88,39 @@ export default class Orders {
   }
 
   // static async removeProductFromOrder() {}
+  static async removeProductFromOrder(
+    id: string,
+    productToRemove: OrderProductInput
+  ) {
+    try {
+      const product_id = productToRemove.product_id;
+
+      await prisma.productToOrder.delete({
+        where: {
+          id: {
+            order_id: id,
+            product_id: product_id,
+          },
+        },
+      });
+
+      const updatedOrder = await prisma.order.findUnique({
+        where: { id },
+        include: {
+          products: {
+            include: {
+              product: true,
+            },
+          },
+        },
+      });
+
+      revalidateCache(['products', 'orders']);
+      return updatedOrder;
+    } catch (e) {
+      return e;
+    }
+  }
   // static async editProductQuantity() {}
 
   // DELETE
