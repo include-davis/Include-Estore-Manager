@@ -54,11 +54,7 @@ const typeDefs = gql`
   }
 
   input OrderProductInput {
-<<<<<<< Updated upstream
-    product_id: string!
-=======
     product_id: ID!
->>>>>>> Stashed changes
     quantity: Int!
   }
 
