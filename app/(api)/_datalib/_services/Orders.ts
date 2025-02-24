@@ -73,15 +73,49 @@ export default class Orders {
       const product_id = productToAdd.product_id;
       const productQuantity = productToAdd.quantity;
 
-      const newProductToOrder = prisma.productToOrder.create({
-        data: {
-          product_id: product_id,
-          order_id: id,
-          quantity: productQuantity,
+      const existingOrder = await prisma.productToOrder.findUnique({
+        where: {
+          id: {
+            order_id: id,
+            product_id: product_id,
+          },
+        },
+      });
+
+      if (existingOrder) {
+        await prisma.productToOrder.update({
+          where: {
+            id: {
+              order_id: id,
+              product_id: product_id,
+            },
+          },
+          data: {
+            quantity: existingOrder.quantity + productQuantity,
+          },
+        });
+      } else {
+        await prisma.productToOrder.create({
+          data: {
+            order_id: id,
+            product_id: product_id,
+            quantity: productQuantity,
+          },
+        });
+      }
+
+      const updatedOrder = await prisma.order.findUnique({
+        where: { id },
+        include: {
+          products: {
+            include: {
+              product: true,
+            },
+          },
         },
       });
       revalidateCache(['products', 'orders']);
-      return newProductToOrder;
+      return updatedOrder;
     } catch (e) {
       return e;
     }
