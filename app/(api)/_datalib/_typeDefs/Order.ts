@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 const typeDefs = gql`
   type Order {
     id: ID!
-    products: [OrderProduct!]
+    products: [OrderProduct]
     customer_name: String!
     customer_email: String!
     customer_phone_num: String!
@@ -74,7 +74,11 @@ const typeDefs = gql`
     deleteOrder(id: ID!): Boolean
     addProductToOrder(id: ID!, productToAdd: OrderProductInput!): Order
     removeProductFromOrder(id: ID!, productToRemove: OrderProductInput!): Order
-    editProductQuantity(id: ID!, productToUpdate: OrderProductInput!): Order
+    editProductQuantity(
+      id: ID!
+      productToUpdate: OrderProductInput!
+      operation: String!
+    ): Order
   }
 `;
 
