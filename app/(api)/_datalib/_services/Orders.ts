@@ -48,7 +48,12 @@ export default class Orders {
       },
     });
 
-    return productToOrder.map((item) => item.product);
+    const orderProducts = productToOrder.map((item) => ({
+      product: item.product,
+      quantity: item.quantity,
+    }));
+
+    return orderProducts;
   }
 
   //UPDATE
