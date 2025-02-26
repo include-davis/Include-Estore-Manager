@@ -168,7 +168,8 @@ export default class Orders {
     try {
       const product_id = productToUpdate.product_id;
       const productQuantity = productToUpdate.quantity;
-      if (productQuantity <= 0) throw new Error('Quantity must be greater than 0');
+      if (productQuantity <= 0)
+        throw new Error('Quantity must be greater than 0');
       const order = await prisma.productToOrder.findUnique({
         where: {
           id: {
