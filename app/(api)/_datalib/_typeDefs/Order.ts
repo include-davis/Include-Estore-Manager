@@ -35,6 +35,7 @@ const typeDefs = gql`
     shipping_city: String!
     shipping_zip: String!
     shipping_country: String!
+    status: String!
   }
 
   input OrderUpdateInput {
@@ -51,6 +52,7 @@ const typeDefs = gql`
     shipping_city: String
     shipping_zip: String
     shipping_country: String
+    status: String
   }
 
   input OrderProductInput {

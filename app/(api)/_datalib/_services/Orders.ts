@@ -213,13 +213,38 @@ export default class Orders {
   // DELETE
   static async delete(id: string) {
     try {
-      await prisma.order.delete({
+      const order = await prisma.order.findFirst({
         where: {
           id,
         },
+        select: {
+          status: true,
+        },
       });
-      revalidateCache(['orders', 'products']);
-      return true;
+
+      if (order) {
+        if (order.status == 'refunded') {
+          await prisma.order.delete({
+            where: {
+              id,
+            },
+          });
+          revalidateCache(['orders', 'products']);
+          return true;
+        } else {
+          await prisma.order.update({
+            where: {
+              id,
+            },
+            data: {
+              status: 'needs refund',
+            },
+          });
+          // could possibly add a message? "this order need to be refunded" or smth
+          revalidateCache(['orders']);
+          return false;
+        }
+      }
     } catch (e) {
       return false;
     }
