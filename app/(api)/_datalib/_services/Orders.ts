@@ -163,15 +163,11 @@ export default class Orders {
 
   static async editProductQuantity(
     id: string,
-    productToUpdate: OrderProductInput,
-    operation: string
+    productToUpdate: OrderProductInput
   ) {
     try {
       const product_id = productToUpdate.product_id;
-      let productQuantity = productToUpdate.quantity;
-      if (operation === '-') {
-        productQuantity *= -1;
-      }
+      const productQuantity = productToUpdate.quantity;
       const order = await prisma.productToOrder.findUnique({
         where: {
           id: {
@@ -190,7 +186,7 @@ export default class Orders {
             },
           },
           data: {
-            quantity: order.quantity + productQuantity,
+            quantity: productQuantity,
           },
         });
       }

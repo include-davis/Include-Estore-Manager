@@ -28,10 +28,8 @@ const resolvers = {
       args: {
         id: string;
         productToUpdate: OrderProductInput;
-        operation: string;
       }
-    ) =>
-      Orders.editProductQuantity(args.id, args.productToUpdate, args.operation),
+    ) => Orders.editProductQuantity(args.id, args.productToUpdate),
   },
 };
 
