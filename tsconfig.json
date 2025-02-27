@@ -24,6 +24,7 @@
     "@public/*": ["./public/*"],
     "@globals/*": ["./app/(pages)/_globals/*"],
     "@components/*": ["./app/(pages)/_components/*"],
+    "@components/media/*": ["./app/(pages)/uploaded-media/_components"],
     "@data/*": ["./app/(pages)/_data/*"],
     "@hooks/*": ["./app/(pages)/_hooks/*"],
     "@contexts/*": ["./app/(pages)/_contexts/*"],

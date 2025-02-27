@@ -5,10 +5,6 @@ import FilterContextProvider from '@app/(pages)/_contexts/FilterContext';
 import MediaCard from '../MediaCard/MediaCard';
 import useMedia from '@app/(pages)/_hooks/useMedia';
 import MediaItem from '@app/_types/media/MediaItem';
-import ContentSection from '@components/ContentSection/ContentSection';
-import ContentFilters from '@components/ContentFilters/ContentFilters';
-import useContentFormContext from '@app/(pages)/_hooks/useContentFormContext';
-import useContentWindowContext from '@hooks/useContentWindowContext';
 
 interface UploadedMediaPopupProps {
   fieldName: string;
@@ -17,7 +13,6 @@ interface UploadedMediaPopupProps {
 export default function UploadedMediaPopup({
   fieldName,
 }: UploadedMediaPopupProps) {
-  const { top, left, bottom, right } = useContentWindowContext();
   const position = {
     top: `${top}px`,
     left: `${left}px`,
@@ -27,7 +22,6 @@ export default function UploadedMediaPopup({
 
   const { selectMode, toggleSelectMode, selectedIds } = useSelectContext();
   const { loading, data: mediaData, error } = useMedia();
-  const { updateField, data } = useContentFormContext();
 
   if (loading) {
     return 'loading...';
@@ -57,9 +51,7 @@ export default function UploadedMediaPopup({
         <div className={styles.data_container}>
           <div className={styles.header}>
             <h1 className={styles.title}>Uploaded Media</h1>
-            <ContentFilters searchPlaceholder={`Search in uploaded media...`} />
           </div>
-          <ContentSection title="">{data_list}</ContentSection>
         </div>
       </FilterContextProvider>
       <div className={styles.button_container}>

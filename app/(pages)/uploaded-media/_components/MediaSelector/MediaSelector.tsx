@@ -1,6 +1,5 @@
 'use client';
 import styles from './MediaSelector.module.scss';
-import MediaFromGallery from './MediaFromGallery';
 import MediaFromUpload from './MediaFromUpload';
 import useContentFormContext from '@hooks/useContentFormContext';
 import convertFileToMediaItem from '../../_utils/convertFileToMediaItem';
