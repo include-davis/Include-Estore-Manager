@@ -1,26 +1,25 @@
+'use server';
+
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
-// display children when user is logged in 
+import React from 'react';
 
+interface ProtectedDisplayProps {
+  failRedirectRoute: string;
+  children: React.ReactNode;
+}
 
+/**
+ * Display children when user is logged in.
+ *
+ * ! - Important: This component's parents must only be server components.
+ */
+export default async function ProtectedDisplay(props: ProtectedDisplayProps) {
+  const session = await auth();
 
-export default async function ProtectedDisplay({
-
-    failRedirectRoute,
-    children,
-    
-  }: {
-   failRedirectRoute: string;
-    children: React.ReactNode;
-
-  }) {
-    const session = await auth();
-  
-    if (session?.user) {
-      return <>{children}</>;
-    } else  {
-        redirect(failRedirectRoute); 
-
-  
-    }
+  if (session?.user) {
+    return <>{props.children}</>;
+  } else {
+    redirect(props.failRedirectRoute);
   }
+}
