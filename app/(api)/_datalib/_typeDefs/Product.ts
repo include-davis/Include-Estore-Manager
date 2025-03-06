@@ -5,6 +5,7 @@ const typeDefs = gql`
     id: ID!
     inventory: Inventory!
     tags: [Tag]
+    orders: [Order]
     name: String!
     price: Float!
     description: String!
