@@ -127,13 +127,8 @@ export default class Orders {
   }
 
   // static async removeProductFromOrder() {}
-  static async removeProductFromOrder(
-    id: string,
-    productToRemove: OrderProductInput
-  ) {
+  static async removeProductFromOrder(id: string, product_id: string) {
     try {
-      const product_id = productToRemove.product_id;
-
       await prisma.productToOrder.delete({
         where: {
           id: {
