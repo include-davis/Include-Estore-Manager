@@ -2,9 +2,9 @@
 import styles from './UploadedMediaPopup.module.scss';
 import useSelectContext from '@app/(pages)/_hooks/useSelectContext';
 import FilterContextProvider from '@app/(pages)/_contexts/FilterContext';
-import MediaCard from '../MediaCard/MediaCard';
+//import MediaCard from '../MediaCard/MediaCard';
 import useMedia from '@app/(pages)/_hooks/useMedia';
-import MediaItem from '@app/_types/media/MediaItem';
+//import MediaItem from '@app/_types/media/MediaItem';
 
 interface UploadedMediaPopupProps {
   fieldName: string;
@@ -31,9 +31,9 @@ export default function UploadedMediaPopup({
     return error;
   }
 
-  const data_list = mediaData.map((mediaItem: MediaItem) => {
+  /*const data_list = mediaData.map((mediaItem: MediaItem) => {
     return <MediaCard mediaItem={mediaItem} key={mediaItem._id} />;
-  });
+  });*/
 
   const attachMedia = () => {
     const selectedMedia = Object.values(selectedIds).filter(Boolean);

@@ -2,8 +2,8 @@
 import styles from './MediaSelector.module.scss';
 import MediaFromUpload from './MediaFromUpload';
 import useContentFormContext from '@hooks/useContentFormContext';
-import convertFileToMediaItem from '../../_utils/convertFileToMediaItem';
-import SelectContextProvider from '@app/(pages)/_contexts/SelectContext';
+//import convertFileToMediaItem from "../../_utils/convertFileToMediaItem";
+//import SelectContextProvider from "@app/(pages)/_contexts/SelectContext";
 
 interface MediaSelectorProps {
   field_name: string;
@@ -19,12 +19,18 @@ export default function MediaSelector({ field_name }: MediaSelectorProps) {
     ];
     updateField(field_name, updatedFieldValue);
   };*/
-  const onInput = (uploadedMediaItems: any[]) => { //files are already processed, not in raw format
+  const onInput = (uploadedMediaItems: any[]) => {
+    //files are already processed, not in raw format
     const updatedFieldValue = [...data[field_name], ...uploadedMediaItems];
     updateField(field_name, updatedFieldValue);
   };
 
   return (
+    <div className={styles.container}>
+      <MediaFromUpload onInput={onInput} />
+    </div>
+  );
+  /*return (
     <div className={styles.container}>
       <MediaFromUpload onInput={onInput} />
       <div className={styles.or_container}>
@@ -36,5 +42,5 @@ export default function MediaSelector({ field_name }: MediaSelectorProps) {
         <MediaFromGallery fieldName={field_name} />
       </SelectContextProvider>
     </div>
-  );
+  );*/
 }

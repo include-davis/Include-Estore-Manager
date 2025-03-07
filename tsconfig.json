@@ -28,7 +28,7 @@
     "@data/*": ["./app/(pages)/_data/*"],
     "@hooks/*": ["./app/(pages)/_hooks/*"],
     "@contexts/*": ["./app/(pages)/_contexts/*"],
-    "@utils/*": ["./app/(api)/_utils/*"],
+    "@utils/*": ["./app/(pages)/_utils/*"],
     "@pageUtils/*": ["./app/(pages)/_utils/*"],
     "@actions/*": ["./app/(api)/_actions/*"],
     "@graphql/*": ["./app/(pages)/_graphql/*"],

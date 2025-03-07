@@ -33,22 +33,21 @@ export default function MediaFromUpload({ onInput }: MediaFromUploadProps) {
   //new function
   const processFiles = async (files: FileList) => {
     const uploadedMediaItems = [];
-  
+
     for (const file of Array.from(files)) {
       const mediaItem = {
         type: file.type.startsWith('video') ? 'video' : 'image',
         src: URL.createObjectURL(file), // Temporary preview URL
       };
-  
+
       const response = await uploadMediaItem(mediaItem); //call backend function
       if (response.ok) {
         uploadedMediaItems.push(response.body);
       }
     }
-  
+
     onInput(uploadedMediaItems); // Calls the function with new media items
   };
-  
 
   const handleDragOver = (e: DragEvent<HTMLInputElement>) => {
     e.preventDefault();

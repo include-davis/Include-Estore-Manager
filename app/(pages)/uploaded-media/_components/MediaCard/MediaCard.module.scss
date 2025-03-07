@@ -1,67 +1,67 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacer);
-    gap: var(--small-spacer);
-    text-align: left;
-    border-radius: var(--c-radius);
-    box-shadow: var(--b-shadow);
-    background-color: var(--background-light);
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacer);
+  gap: var(--small-spacer);
+  text-align: left;
+  border-radius: var(--c-radius);
+  box-shadow: var(--b-shadow);
+  background-color: var(--background-light);
 
-    min-width: 324px;
-    width: calc(calc(100% - 5 * var(--medium-spacer)) / 3);
-    max-width: 424px;
-    height: min-content;
-    cursor: pointer;
+  min-width: 324px;
+  width: calc(calc(100% - 5 * var(--medium-spacer)) / 3);
+  max-width: 424px;
+  height: min-content;
+  cursor: pointer;
 }
 
 .top_row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: var(--small-spacer);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--small-spacer);
 
-    h2 {
-        font-size: 1.5rem;
-        font-weight: 400;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-wrap: nowrap;
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+  }
+
+  .checkbox_container {
+    height: 1.5rem;
+    aspect-ratio: 1;
+    border-radius: 4px;
+    border: solid 1px black;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    .checkbox_internals {
+      position: relative;
+      background-color: var(--primary);
+      display: flex;
+      height: 100%;
+      width: 100%;
     }
-
-    .checkbox_container {
-        height: 1.5rem;
-        aspect-ratio: 1;
-        border-radius: 4px;
-        border: solid 1px black;
-        overflow: hidden;
-        flex-shrink: 0;
-
-        .checkbox_internals {
-            position: relative;
-            background-color: var(--primary);
-            display: flex;
-            height: 100%;
-            width: 100%;
-        }
-    }
+  }
 }
 
 .last_edited {
-    font-size: 0.875rem;
-    color: var(--text-dark-gray);
+  font-size: 0.875rem;
+  color: var(--text-dark-gray);
 }
 
 .kebab_button {
-    .kebab {
-        font-size: 1.5rem;
-    }
+  .kebab {
+    font-size: 1.5rem;
+  }
 }
 
 .media_container {
-    width: 100%;
-    aspect-ratio: 1.52;
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--b-radius);
+  width: 100%;
+  aspect-ratio: 1.52;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--b-radius);
 }

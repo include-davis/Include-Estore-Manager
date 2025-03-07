@@ -1,10 +1,10 @@
 'use client';
 import useSelectContext from '@hooks/useSelectContext';
-import Image from 'next/image';
+//import Image from "next/image";
 //import { DeleteMediaItem } from '@actions/media/deleteMediaItem';
 import styles from './MediaHeader.module.scss';
 
-import trash from '@public/content/[content_type]/trash.svg';
+//import trash from "@public/content/[content_type]/trash.svg";
 
 export default function MediaHeader() {
   const { selectMode, toggleSelectMode, selectedIds } = useSelectContext();
