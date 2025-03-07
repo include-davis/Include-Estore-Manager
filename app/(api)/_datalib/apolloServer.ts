@@ -4,6 +4,8 @@ import type { NextRequest } from 'next/server';
 
 import typeDefs from './_typeDefs/index';
 import resolvers from './_resolvers/index';
+import { auth } from '@/auth';
+import { Session } from 'next-auth';
 
 const server = new ApolloServer({
   typeDefs,
@@ -11,6 +13,18 @@ const server = new ApolloServer({
   introspection: process.env.NODE_ENV !== 'production',
 }) as ApolloServer<object>;
 
-const handler = startServerAndCreateNextHandler<NextRequest>(server);
+/**
+ * Can add extra things here when necessary.
+ */
+interface ApolloContext {
+  session: Session | null;
+}
+
+const handler = startServerAndCreateNextHandler<NextRequest>(server, {
+  context: async (): Promise<ApolloContext> => {
+    const session = await auth();
+    return { session };
+  },
+});
 
 export default handler;
