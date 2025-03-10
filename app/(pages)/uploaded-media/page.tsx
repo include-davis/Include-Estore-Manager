@@ -1,13 +1,13 @@
 'use server';
 import styles from './page.module.scss';
 
-import MediaCard from '@components/media/MediaCard/MediaCard';
-import MediaHeader from '@components/media/MediaHeader/MediaHeader';
-import ContentSection from '@components/media/ContentSection/ContentSection';
+import MediaCard from '@componentsmedia/MediaCard/MediaCard';
+import MediaHeader from '@componentsmedia/MediaHeader/MediaHeader';
+import ContentSection from '@componentsmedia/ContentSection/ContentSection';
 import SelectContextProvider from '@contexts/SelectContext';
 import FilterContextProvider from '@contexts/FilterContext';
-import { findMediaItems } from '@datalib/media/findMediaItem';
-import MediaItem from '@typeDefs/media/MediaItem';
+import { findMediaItems } from '@datalib/media/findMediaItem'; //no media folder under ./app/(api)/_datalib and no findMediaItem function yet
+import MediaItem from '@typeDefs/media/MediaItem'; //no media folder under ./app/(api)/_types and no typeDef for Media Item yet
 
 export default async function MediaPage() {
   const res = JSON.parse(JSON.stringify(await findMediaItems()));
