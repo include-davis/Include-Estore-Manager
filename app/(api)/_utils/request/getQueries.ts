@@ -1,18 +1,14 @@
 import { NextRequest } from 'next/server';
-import { getDatabase } from '@utils/mongodb/mongoClient.mjs';
-import { ObjectId } from 'mongodb';
+import prisma from '@datalib/_prisma/client';
+// import { DMMF } from '@prisma/client/runtime';
 
 function typeCast(value: string, type: string) {
   switch (type) {
-    case 'int':
+    case 'Int':
       return isNaN(+value) ? value : +value;
-    case 'objectId':
-      try {
-        return ObjectId.createFromHexString(value);
-      } catch {
-        return value;
-      }
-    case 'bool':
+    case 'String':
+      return value;
+    case 'Boolean':
       if (value === 'true') {
         return true;
       } else if (value === 'false') {
@@ -29,14 +25,36 @@ export default async function getQueries(
   request: NextRequest,
   content_type: string
 ) {
-  const db = await getDatabase();
-  const query_entries = request.nextUrl.searchParams.entries();
-  const schema = (await db.listCollections({ name: content_type }).toArray())[0]
-    .options.validator;
+  // Get the schema for the model in Prisma
 
+  interface Field {
+    name: string;
+    type: string;
+  }
+
+  interface Schema {
+    fields: Field[];
+  }
+
+  const schema: Schema | undefined = prisma._getDmmf().datamodel.models.find(
+    (model: { name: string }) => model.name === content_type
+  );
+
+  if (!schema) {
+    throw new Error(`Model ${content_type} not found in Prisma schema.`);
+  }
+
+  const query_entries = request.nextUrl.searchParams.entries();
   const output: { [key: string]: any } = {};
+
   for (const [key, val] of query_entries) {
-    output[key] = typeCast(val, schema.$jsonSchema.properties[key]?.bsonType);
+    // Fetch the field type from the Prisma schema
+    const field = schema.fields.find((field) => field.name === key);
+    if (field) {
+      output[key] = typeCast(val, field.type);
+    } else {
+      output[key] = val; // If field is not found in schema, return as is
+    }
   }
   return output;
 }

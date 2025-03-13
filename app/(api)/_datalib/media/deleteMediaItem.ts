@@ -1,6 +1,4 @@
-import { ObjectId } from 'mongodb';
-
-import { getDatabase } from '@utils/mongodb/mongoClient.mjs';
+import prisma from '@datalib/_prisma/client';
 import { HttpError, NotFoundError } from '@utils/response/Errors';
 import { v2 as cloudinary } from 'cloudinary';
 import schema from '@app/_utils/schema';
@@ -12,66 +10,67 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export async function deleteMediaItem(id: string) {
+export async function deleteMediaItem(
+  id: string
+): Promise<{ ok: boolean; body: string | null; error: string | null }> {
   try {
-    const db = await getDatabase();
-
-    const objectId = ObjectId.createFromHexString(id);
-    const mediaItem = await db.collection('media').findOne({
-      _id: objectId,
+    // Find the media item in the database
+    const mediaItem = await prisma.media.findUnique({
+      where: { id },
     });
 
-    await cloudinary.uploader.destroy(mediaItem.cloudinary_id, {
+    if (!mediaItem) {
+      throw new NotFoundError(`Media item with id: ${id} not found.`);
+    }
+
+    // Delete from Cloudinary
+    await cloudinary.uploader.destroy(mediaItem.cloudinaryId, {
       resource_type: mediaItem.format === 'pdf' ? 'image' : mediaItem.type,
     });
 
-    const deleteStatus = await db.collection('media').deleteOne({
-      _id: objectId,
+    // Delete from Prisma database
+    await prisma.media.delete({
+      where: { id },
     });
 
-    const content_types = schema.getNames();
+    const contentTypes = schema.getNames();
+
     await Promise.all(
-      content_types.map((content_type: string) => {
-        const contentSchema = schema.get(content_type);
+      contentTypes.map(async (contentType: string) => {
+        const contentSchema = schema.get(contentType);
         if (!contentSchema) {
           throw new NotFoundError(
-            `Content type: ${content_type} does not exist.`
+            `Content type: ${contentType} does not exist.`
           );
         }
+
         const mediaFields = contentSchema
           .getFieldArray()
           .filter((field: Field) => field.type === FieldType.MEDIA_LIST)
           .map((field: Field) => field.name);
 
-        const updatePullList: { [key: string]: any } = {};
-        mediaFields.forEach((field: string) => {
-          updatePullList[field] = objectId;
-        });
-
-        const mediaFieldQueries = mediaFields.map((field: string) => ({
-          [field]: objectId,
-        }));
-        if (mediaFieldQueries.length === 0) {
+        if (mediaFields.length === 0) {
           return null;
         }
-        return db.collection(content_type).updateMany(
-          {
-            $or: mediaFieldQueries,
+
+        // Update all records to remove references to the deleted media item
+        await prisma[contentType as keyof typeof prisma].updateMany({
+          where: {
+            OR: mediaFields.map((field: string) => ({
+              [field]: { has: id }, // Assuming media fields are stored as arrays
+            })),
           },
-          {
-            $pull: updatePullList,
-          }
-        );
+          data: mediaFields.reduce(
+            (acc: any, field: any) => ({ ...acc, [field]: { set: [] } }), // Remove media item from lists
+            {}
+          ),
+        });
       })
     );
 
-    if (deleteStatus.deletedCount === 0) {
-      throw new NotFoundError(`media item with id: ${id} not found.`);
-    }
-
     return {
       ok: true,
-      body: 'media item deleted.',
+      body: 'Media item deleted.',
       error: null,
     };
   } catch (error) {

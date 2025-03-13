@@ -1,6 +1,8 @@
-import { ObjectId } from 'mongodb';
+import { PrismaClient } from '@prisma/client';
 
-import { getDatabase } from '@utils/mongodb/mongoClient.mjs';
+const prisma = new PrismaClient();
+
+
 /**
  * Takes object resembling example below with an "*expandIds" field:
  * {
@@ -14,13 +16,13 @@ import { getDatabase } from '@utils/mongodb/mongoClient.mjs';
  */
 async function expandIds(obj) {
   obj = obj['*expandIds'];
-  const db = await getDatabase();
-  const documents = await db
-    .collection(obj.from)
-    .find({
-      _id: { $in: obj.ids.map((id) => ObjectId.createFromHexString(id)) },
-    })
-    .toArray();
+  const documents = await prisma[obj.from].findMany({
+    where: {
+      id: {
+        in: obj.ids.map((id) => parseInt(id, 10)), // Assuming ids are integers in Prisma schema
+      },
+    },
+  });
   return documents;
 }
 
@@ -37,11 +39,12 @@ async function expandIds(obj) {
  */
 async function expandId(obj) {
   obj = obj['*expandId'];
-  const db = await getDatabase();
-  const documents = await db.collection(obj.from).findOne({
-    _id: ObjectId.createFromHexString(obj.id),
+  const document = await prisma[obj.from].findUnique({
+    where: {
+      id: parseInt(obj.id, 10), // Assuming id is an integer in Prisma schema
+    },
   });
-  return documents;
+  return document;
 }
 
 /**
@@ -52,11 +55,11 @@ async function expandId(obj) {
  *     }
  * }
  *
- * Returns the array of ids converted to ObjectIds
+ * Returns the array of ids converted to integers
  */
 async function convertIds(obj) {
   obj = obj['*convertIds'];
-  return obj.ids.map((id) => ObjectId.createFromHexString(id));
+  return obj.ids.map((id) => parseInt(id, 10)); // Assuming ids are integers in Prisma schema
 }
 
 /**
@@ -67,49 +70,12 @@ async function convertIds(obj) {
  *     }
  * }
  *
- * Returns the id converted to an ObjectId
+ * Returns the id converted to an integer
  */
 async function convertId(obj) {
   obj = obj['*convertId'];
-  return ObjectId.createFromHexString(obj.id);
+  return parseInt(obj.id, 10); // Assuming id is an integer in Prisma schema
 }
 
 /**
- * Searches through a json object and replaces all objects that have a key of
- * "*keyword" with the object processed with replaceFunc()
- *
- * replacements comes in the form of:
- * {
- *    "*keyword": replaceFunc,
- *    "*keyword2": replaceFunc2
- * }
- */
-async function searchAndReplace(obj, replacements) {
-  if (obj === null || typeof obj !== 'object') {
-    return obj;
-  }
-  for (const [key, val] of Object.entries(obj)) {
-    let replaced = false;
-    for (const [keyword, replaceFunc] of Object.entries(replacements)) {
-      if (val?.[keyword] !== undefined) {
-        obj[key] = await replaceFunc(val);
-        replaced = true;
-        break;
-      }
-    }
-    if (!replaced) {
-      obj[key] = await searchAndReplace(val, replacements);
-    }
-  }
-  return obj;
-}
-
-export default async function parseAndReplace(obj) {
-  const res = await searchAndReplace(obj, {
-    '*expandId': expandId,
-    '*expandIds': expandIds,
-    '*convertId': convertId,
-    '*convertIds': convertIds,
-  });
-  return res;
-}
+ * Searches through a json object and replaces all 

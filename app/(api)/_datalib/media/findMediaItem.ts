@@ -1,14 +1,12 @@
-import { ObjectId } from 'mongodb';
-import { getDatabase } from '@utils/mongodb/mongoClient.mjs';
+import prisma from '@datalib/_prisma/client';
 import { HttpError, NotFoundError } from '@utils/response/Errors';
 
-export async function findMediaItem(id: string) {
+export async function findMediaItem(
+  id: string
+): Promise<{ ok: boolean; body: any | null; error: string | null }> {
   try {
-    const db = await getDatabase();
-    const objectId = ObjectId.createFromHexString(id);
-
-    const mediaItem = await db.collection('media').findOne({
-      _id: objectId,
+    const mediaItem = await prisma.media.findUnique({
+      where: { id },
     });
 
     if (!mediaItem) {
@@ -26,10 +24,12 @@ export async function findMediaItem(id: string) {
   }
 }
 
-export async function findMediaItems(query: object = {}) {
+export async function findMediaItems(query: Record<string, any> = {}): Promise<{ ok: boolean; body: any[] | null; error: string | null }> {
   try {
-    const db = await getDatabase();
-    const mediaItems = await db.collection('media').find(query).toArray();
+    const mediaItems = await prisma.media.findMany({
+      where: query,
+    });
+
     return { ok: true, body: mediaItems, error: null };
   } catch (error) {
     const e = error as HttpError;

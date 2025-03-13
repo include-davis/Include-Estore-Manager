@@ -1,34 +1,24 @@
-import { ObjectId } from 'mongodb';
-import { getDatabase } from '@utils/mongodb/mongoClient.mjs';
+import prisma from '@datalib/_prisma/client';
+// import { parseAndReplace } from '@utils/request/parseAndReplace';
 import parseAndReplace from '@utils/request/parseAndReplace';
-import {
-  HttpError,
-  NoContentError,
-  NotFoundError,
-} from '@utils/response/Errors';
+import { HttpError, NoContentError } from '@utils/response/Errors';
 
-export async function updateMediaItem(id: string, body = {}) {
+export async function updateMediaItem(
+  id: string,
+  body = {}
+): Promise<{ ok: boolean; body: any | null; error: string | null }> {
   try {
     if (!body || Object.keys(body).length === 0) {
       throw new NoContentError();
     }
 
-    const db = await getDatabase();
-
-    const objectId = ObjectId.createFromHexString(id);
     const updates = await parseAndReplace(body);
-    updates.$set._last_modified = new Date().toISOString();
+    updates._last_modified = new Date().toISOString();
 
-    const updateStatus = await db.collection('media').updateOne(
-      {
-        _id: objectId,
-      },
-      updates
-    );
-
-    if (updateStatus === null) {
-      throw new NotFoundError(`Judge with id: ${id} not found.`);
-    }
+    const updateStatus = await prisma.media.update({
+      where: { id },
+      data: updates,
+    });
 
     return { ok: true, body: updateStatus, error: null };
   } catch (error) {

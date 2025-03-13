@@ -19,6 +19,15 @@ model Inventory {
   stock_on_order     Int
 }
 
+model Media {
+  id           String  @id @default(uuid())
+  title        String
+  description  String
+  lastModified DateTime @default(now())
+  createdAt    DateTime @default(now())
+}
+
+
 model Product {
   id                   String         @id @default(uuid())
   inventory            Inventory?
