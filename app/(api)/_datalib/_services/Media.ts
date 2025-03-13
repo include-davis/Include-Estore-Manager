@@ -18,7 +18,7 @@ export default class MediaService {
         last_modified: input.last_modified || new Date().toISOString(), 
       },
     });
-=    return media;
+    return media;
   }
 
   // READ 
@@ -39,7 +39,7 @@ export default class MediaService {
     return prisma.media.findMany({
       where: {
         id: {
-          in: ids, 
+          in: ids,
         },
       },
     });
@@ -79,9 +79,9 @@ export default class MediaService {
           id,
         },
       });
-      return true; 
+      return true;
     } catch (e) {
-      return false; 
+      return false;
     }
   }
 }
