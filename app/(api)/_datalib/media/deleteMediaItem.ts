@@ -61,7 +61,10 @@ export async function deleteMediaItem(
             })),
           },
           data: mediaFields.reduce(
-            (acc: any, field: any) => ({ ...acc, [field]: { set: [] } }), // Remove media item from lists
+            (acc: Record<string, { set: string[] }>, field: string) => ({
+              ...acc,
+              [field]: { set: [] },
+            }), // Remove media item from lists
             {}
           ),
         });

@@ -6,7 +6,7 @@ import { HttpError, NoContentError } from '@utils/response/Errors';
 export async function updateMediaItem(
   id: string,
   body = {}
-): Promise<{ ok: boolean; body: any | null; error: string | null }> {
+): Promise<{ ok: boolean; body: object | null; error: string | null }> {
   try {
     if (!body || Object.keys(body).length === 0) {
       throw new NoContentError();
