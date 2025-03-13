@@ -10,18 +10,18 @@ export default class MediaService {
         type: input.type,
         format: input.format,
         src: input.src,
-        alt: input.alt || null, 
+        alt: input.alt || null,
         size: input.size,
         width: input.width,
         height: input.height,
-        created_at: input.created_at || new Date().toISOString(),  
-        last_modified: input.last_modified || new Date().toISOString(), 
+        created_at: input.created_at || new Date().toISOString(),
+        last_modified: input.last_modified || new Date().toISOString(),
       },
     });
     return media;
   }
 
-  // READ 
+  // READ
   static async find(id: string) {
     return prisma.media.findUnique({
       where: {
@@ -30,10 +30,10 @@ export default class MediaService {
     });
   }
 
-  // READ 
+  // READ
   static async findMany(ids: string[]) {
     if (!ids || ids.length === 0) {
-      return prisma.media.findMany(); 
+      return prisma.media.findMany();
     }
 
     return prisma.media.findMany({
@@ -58,7 +58,7 @@ export default class MediaService {
           type: input.type || undefined,
           format: input.format || undefined,
           src: input.src || undefined,
-          alt: input.alt || null,  // If `alt` is not provided, set it to null
+          alt: input.alt || null, // If `alt` is not provided, set it to null
           size: input.size || undefined,
           width: input.width || undefined,
           height: input.height || undefined,

@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import prisma from '@datalib/_prisma/client';
-import { DMMF } from '@prisma/client/runtime';
+// import { DMMF } from '@prisma/client/runtime';
 
 function typeCast(value: string, type: string) {
   switch (type) {

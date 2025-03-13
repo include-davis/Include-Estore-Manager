@@ -76,6 +76,3 @@ async function convertId(obj) {
   obj = obj['*convertId'];
   return parseInt(obj.id, 10); // Assuming id is an integer in Prisma schema
 }
-
-/**
- * Searches through a json object and replaces all 
