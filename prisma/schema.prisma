@@ -20,12 +20,20 @@ model Inventory {
 }
 
 model Media {
-  id           String  @id @default(uuid())
-  title        String
-  description  String
-  lastModified DateTime @default(now())
-  createdAt    DateTime @default(now())
+  id           String   @id @default(uuid())
+  cloudinary_id String?  
+  name         String
+  type         String
+  format       String
+  src          String
+  alt          String?  
+  size         Int
+  width        Int?     
+  height       Int?     
+  created_at   DateTime? @default(now())  
+  last_modified DateTime? @default(now())  
 }
+
 
 
 model Product {
