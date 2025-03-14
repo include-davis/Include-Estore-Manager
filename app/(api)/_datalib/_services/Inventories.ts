@@ -1,6 +1,7 @@
 import { InventoryInput } from '@datatypes/Inventory';
 import prisma from '../_prisma/client';
 import revalidateCache from '@actions/revalidateCache';
+import { ApolloContext } from '@datalib/apolloServer';
 
 export default class Inventories {
   // READ
@@ -27,7 +28,9 @@ export default class Inventories {
   }
 
   // UPDATE
-  static async update(id: string, input: InventoryInput) {
+  static async update(id: string, input: InventoryInput, ctx: ApolloContext) {
+    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+
     try {
       const inventory = await prisma.inventory.update({
         where: {

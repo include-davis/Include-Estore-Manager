@@ -1,10 +1,13 @@
 import { TagInput } from '@datatypes/Tag';
 import prisma from '../_prisma/client';
 import revalidateCache from '@actions/revalidateCache';
+import { ApolloContext } from '@datalib/apolloServer';
 
 export default class Tags {
   // CREATE
-  static async create(input: TagInput) {
+  static async create(input: TagInput, ctx: ApolloContext) {
+    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+
     const tag = await prisma.tag.create({
       data: input,
     });
@@ -47,7 +50,9 @@ export default class Tags {
   }
 
   // DELETE
-  static async delete(name: string) {
+  static async delete(name: string, ctx: ApolloContext) {
+    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+
     try {
       await prisma.tag.delete({
         where: {

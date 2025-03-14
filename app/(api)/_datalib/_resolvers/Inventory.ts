@@ -1,6 +1,7 @@
 import { Inventory, InventoryInput } from '@datatypes/Inventory';
 import Inventories from '../_services/Inventories';
 import Products from '../_services/Products';
+import { ApolloContext } from '@datalib/apolloServer';
 
 const resolvers = {
   Inventory: {
@@ -12,8 +13,11 @@ const resolvers = {
       Inventories.findMany(args.ids),
   },
   Mutation: {
-    updateInventory: (_: never, args: { id: string; input: InventoryInput }) =>
-      Inventories.update(args.id, args.input),
+    updateInventory: (
+      _: never,
+      args: { id: string; input: InventoryInput },
+      ctx: ApolloContext
+    ) => Inventories.update(args.id, args.input, ctx),
   },
 };
 

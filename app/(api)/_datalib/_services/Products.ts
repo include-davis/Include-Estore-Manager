@@ -1,10 +1,13 @@
 import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { ProductInput, ProductInventoryInput } from '@datatypes/Product';
+import { ApolloContext } from '@datalib/apolloServer';
 
 export default class Products {
   // CREATE
-  static async create(input: ProductInventoryInput) {
+  static async create(input: ProductInventoryInput, ctx: ApolloContext) {
+    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+
     const { productInput, inventoryInput } = input;
     console.log(input);
     const {
@@ -82,7 +85,9 @@ export default class Products {
   }
 
   // UPDATE
-  static async update(id: string, input: ProductInput) {
+  static async update(id: string, input: ProductInput, ctx: ApolloContext) {
+    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+
     try {
       const product = await prisma.product.update({
         where: {
@@ -97,7 +102,9 @@ export default class Products {
     }
   }
 
-  static async addTags(id: string, tagNames: string[]) {
+  static async addTags(id: string, tagNames: string[], ctx: ApolloContext) {
+    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+
     try {
       const existingProduct = await prisma.product.findUnique({
         where: {
@@ -153,7 +160,9 @@ export default class Products {
     }
   }
 
-  static async removeTags(id: string, tagNames: string[]) {
+  static async removeTags(id: string, tagNames: string[], ctx: ApolloContext) {
+    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+
     const tags = await prisma.tag.findMany({
       where: {
         name: {
@@ -193,7 +202,9 @@ export default class Products {
   }
 
   // DELETE
-  static async delete(id: string) {
+  static async delete(id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+
     try {
       await prisma.product.delete({
         where: {
