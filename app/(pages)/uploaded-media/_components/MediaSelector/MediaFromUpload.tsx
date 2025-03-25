@@ -4,11 +4,10 @@ import Image from 'next/image';
 import styles from './MediaFromUpload.module.scss';
 
 import uploadIcon from '@public/content/form/upload.png';
-import uploadMediaItem from '@utils/uploadMediaItem';
+import uploadMediaItem from '@utils/uploadMediaItem'; //backend function from vinay/ kiran
 
 interface MediaFromUploadProps {
-  //onInput: (files: FileList) => void;
-  onInput: (mediaItems: any[]) => void;
+  onInput: (files: FileList) => void;
 }
 
 export default function MediaFromUpload({ onInput }: MediaFromUploadProps) {

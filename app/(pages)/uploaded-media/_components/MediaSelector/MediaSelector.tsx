@@ -2,7 +2,7 @@
 import styles from './MediaSelector.module.scss';
 import MediaFromUpload from './MediaFromUpload';
 import useContentFormContext from '@hooks/useContentFormContext';
-//import convertFileToMediaItem from "../../_utils/convertFileToMediaItem";
+import convertFileToMediaItem from '@utils/convertFileToMediaItem';
 //import SelectContextProvider from "@app/(pages)/_contexts/SelectContext";
 
 interface MediaSelectorProps {
@@ -12,16 +12,11 @@ interface MediaSelectorProps {
 export default function MediaSelector({ field_name }: MediaSelectorProps) {
   const { data, updateField } = useContentFormContext();
 
-  /*const onInput = (files: FileList) => {
+  const onInput = (files: FileList) => {
     const updatedFieldValue = [
       ...data[field_name],
       ...Array.from(files).map(convertFileToMediaItem),
     ];
-    updateField(field_name, updatedFieldValue);
-  };*/
-  const onInput = (uploadedMediaItems: any[]) => {
-    //files are already processed, not in raw format
-    const updatedFieldValue = [...data[field_name], ...uploadedMediaItems];
     updateField(field_name, updatedFieldValue);
   };
 

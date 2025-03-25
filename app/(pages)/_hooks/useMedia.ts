@@ -1,4 +1,4 @@
-import MediaItem from '@app/_types/media/MediaItem';
+import MediaItem from '../_types/media/MediaItem';
 import { useState, useEffect } from 'react';
 import { FindMediaItems } from '@app/(api)/_actions/media/findMediaItem';
 
