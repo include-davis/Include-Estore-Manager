@@ -7,7 +7,7 @@ import ContentSection from '@componentsmedia/ContentSection/ContentSection';
 import SelectContextProvider from '@contexts/SelectContext';
 import FilterContextProvider from '@contexts/FilterContext';
 import { findMediaItems } from '@datalib/media/findMediaItem'; //no media folder under ./app/(api)/_datalib and no findMediaItem function yet
-import MediaItem from '@typeDefs/media/MediaItem'; //no media folder under ./app/(api)/_types and no typeDef for Media Item yet
+import MediaItem from '@app/(pages)/_types/media/MediaItem'; 
 
 export default async function MediaPage() {
   const res = JSON.parse(JSON.stringify(await findMediaItems()));
