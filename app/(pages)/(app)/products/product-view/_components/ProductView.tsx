@@ -1,10 +1,10 @@
 'use client';
 import styles from './ProductView.module.scss';
 import Image from 'next/image';
-import listedItem from '../../../../../public/icons/check_circle_fill.svg';
-import unlistedItem from '../../../../../public/icons/close_circle_fill.svg';
-import nextImage from '../../../../../public/icons/chevron-right.svg';
-import prevImage from '../../../../../public/icons/chevron-left.svg';
+import listedItem from '/public/icons/check_circle_fill.svg';
+import unlistedItem from '/public/icons/close_circle_fill.svg';
+import nextImage from '/public/icons/chevron-right.svg';
+import prevImage from '/public/icons/chevron-left.svg';
 import { useState } from 'react';
 
 export default function ProductView() {

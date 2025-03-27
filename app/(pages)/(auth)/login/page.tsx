@@ -4,61 +4,68 @@ import Image from 'next/image';
 import includeArt from '/public/graphics/bg-abstract.svg';
 import google from '/public/icons/google.svg';
 import useToggle from '@hooks/useToggle';
+import React, { useState } from 'react';
+import { loginWithCredentials } from '@actions/Authorization';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [activeCurrent, toggleActiveCurrent] = useToggle(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const email = formData.get('email');
+    const password = formData.get('current_password');
+
+    if (!email || !password) {
+      setErrorMessage('Both fields are required.');
+      return;
+    }
+
+    const response = await loginWithCredentials(
+      email as string,
+      password as string
+    );
+
+    if (response.isError) setErrorMessage(response.message);
+    else router.push('/');
+  };
+
   return (
     <div className={styles.page_container}>
       <div className={styles.login_container}>
         <div className={styles.header}>
-          <h4>Sign Up</h4>
+          <h4>Sign In</h4>
           <p>
-            Have an account? <span>Sign In</span>
+            Don't have an account?{' '}
+            <span>
+              <Link href={'/signup'}>Sign Up</Link>
+            </span>
           </p>
         </div>
-        <form className={styles.form_container}>
-          <div className={styles.input_container}>
-            <label>Name</label>
-            <input name="first" type="text" placeholder="First Name" />
-            <input name="last" type="text" placeholder="Last Name" />
-          </div>
+        {errorMessage && <p className={styles.error_message}>{errorMessage}</p>}
+        <form className={styles.form_container} onSubmit={handleSubmit}>
           <div className={styles.input_container}>
             <label>Email address</label>
             <input name="email" type="text" placeholder="e.g. anna@gmail.com" />
           </div>
           <div className={styles.input_container}>
-            <label>Phone Number</label>
-            <input name="phone" type="text" placeholder="(###)-###-####" />
-          </div>
-          <div className={styles.input_container}>
             <label>Password</label>
             <div className={styles.password_container}>
               <input
-                type={`${activeCurrent ? 'text' : 'password'}`}
-                name="enter_password"
-                placeholder="Enter your password"
+                type={activeCurrent ? 'text' : 'password'}
+                name="current_password"
+                placeholder="Password"
               />
               <Image
-                className={`${
+                className={
                   activeCurrent ? styles.active_eye_icon : styles.eye_icon
-                }`}
-                src="/icons/eye.svg"
-                alt="eye icon"
-                width={24}
-                height={24}
-                onClick={toggleActiveCurrent}
-              />
-            </div>
-            <div className={styles.password_container}>
-              <input
-                type={`${activeCurrent ? 'text' : 'password'}`}
-                name="confirm_password"
-                placeholder="Confirm your password"
-              />
-              <Image
-                className={`${
-                  activeCurrent ? styles.active_eye_icon : styles.eye_icon
-                }`}
+                }
                 src="/icons/eye.svg"
                 alt="eye icon"
                 width={24}
@@ -67,12 +74,18 @@ export default function LoginPage() {
               />
             </div>
           </div>
-          <button className={styles.submit}>Sign In</button>
+          <div className={styles.toggle_container}>
+            <input name="check" type="checkbox" />
+            <p>Keep me signed in</p>
+          </div>
+          <button type="submit" className={styles.submit}>
+            Sign In
+          </button>
         </form>
         <div className={styles.google_signin}>
           <div className={styles.divider}>
             <div className={styles.line}></div>
-            <p>Or sign up with</p>
+            <p>Or sign in with</p>
             <div className={styles.line}></div>
           </div>
           <button className={styles.google_button}>
