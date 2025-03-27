@@ -1,11 +1,11 @@
 import { ApolloServer } from '@apollo/server';
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
+import { Session } from 'next-auth';
 
+import { auth } from '@/auth';
+import prisma from '@datalib/_prisma/client';
 import typeDefs from './_typeDefs/index';
 import resolvers from './_resolvers/index';
-import { auth } from '@/auth';
-import { Session } from 'next-auth';
-import prisma from '@datalib/_prisma/client';
 
 const server = new ApolloServer<ApolloContext>({
   typeDefs,
