@@ -20,12 +20,16 @@
       }
     ],
     "paths": {
+    "@app/*": ["./app/*"],
+    "@public/*": ["./public/*"],
     "@globals/*": ["./app/(pages)/_globals/*"],
     "@components/*": ["./app/(pages)/_components/*"],
+    "@componentsmedia/*": ["./app/(pages)/uploaded-media/_components"],
     "@data/*": ["./app/(pages)/_data/*"],
     "@hooks/*": ["./app/(pages)/_hooks/*"],
+    "@types/*": ["./app/(pages)/_types/*"],
     "@contexts/*": ["./app/(pages)/_contexts/*"],
-    "@utils/*": ["./app/(api)/_utils/*"],
+    "@utils/*": ["./app/(pages)/_utils/*"],
     "@pageUtils/*": ["./app/(pages)/_utils/*"],
     "@actions/*": ["./app/(api)/_actions/*"],
     "@graphql/*": ["./app/(pages)/_graphql/*"],
