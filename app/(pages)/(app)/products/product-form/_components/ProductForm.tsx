@@ -28,72 +28,77 @@ export default function ProductForm() {
   };
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.img_container}>
-          <Image
-            src="/icons/cloud_upload.svg"
-            alt="upload icon"
-            width={34}
-            height={34}
-          />
-          <p>Drag and Drop here</p>
-          <p>or</p>
-          <button className={styles.purple_button}>Select File</button>
-        </div>
-        <div className={styles.inputs_container}>
-          <div className={styles.input_container}>
-            <p>Product Name</p>
-            <input type="text" name="product_name" placeholder="iWatch" />
+      <div className={styles.title}>
+        <h3>Listing</h3>
+      </div>
+      <div className={styles.listing}>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.img_container}>
+            <Image
+              src="/icons/cloud_upload.svg"
+              alt="upload icon"
+              width={34}
+              height={34}
+            />
+            <p>Drag and Drop here</p>
+            <p>or</p>
+            <button className={styles.purple_button}>Select File</button>
           </div>
-          <div className={styles.input_container}>
-            <p>Price</p>
-            <div className={styles.column_container}>
-              <input type="text" name="product_price" placeholder="$$" />
-              <div className={styles.toggle_container}>
-                <p>List Product</p>
-                <input
-                  className={styles.toggle}
-                  type="checkbox"
-                  name="list_toggle"
-                />
+          <div className={styles.inputs_container}>
+            <div className={styles.input_container}>
+              <p>Product Name</p>
+              <input type="text" name="product_name" placeholder="iWatch" />
+            </div>
+            <div className={styles.input_container}>
+              <p>Price</p>
+              <div className={styles.column_container}>
+                <input type="text" name="product_price" placeholder="$$" />
+                <div className={styles.toggle_container}>
+                  <p>List Product</p>
+                  <input
+                    className={styles.toggle}
+                    type="checkbox"
+                    name="list_toggle"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <h4>Details</h4>
-          <div className={styles.input_container}>
-            <p>Tags</p>
-            <input
-              onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
-                if (event.key === 'Enter') {
-                  addTag(event);
-                }
-              }}
-              id="tags_search"
-              type="text"
-              placeholder="Watch.."
-            />
-            <div className={styles.selected_tags}>
-              {tags.map((tag, index) => (
-                <p key={index} className={styles.tag_display}>
-                  {tag} <span onClick={() => deleteTag(index)}>x</span>
-                </p>
-              ))}
+            <h4>Details</h4>
+            <div className={styles.input_container}>
+              <p>Tags</p>
+              <input
+                onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                  if (event.key === 'Enter') {
+                    addTag(event);
+                  }
+                }}
+                id="tags_search"
+                type="text"
+                placeholder="Watch.."
+              />
+              <div className={styles.selected_tags}>
+                {tags.map((tag, index) => (
+                  <p key={index} className={styles.tag_display}>
+                    {tag} <span onClick={() => deleteTag(index)}>x</span>
+                  </p>
+                ))}
+              </div>
+            </div>
+            <div className={styles.input_container}>
+              <p>Product Description</p>
+              <Textbox />
+            </div>
+            <div className={styles.input_container}>
+              <p>Product Details</p>
+              <Textbox />
             </div>
           </div>
-          <div className={styles.input_container}>
-            <p>Product Description</p>
-            <Textbox />
+          <div className={styles.button_container}>
+            <input className={styles.white_button} type="reset" value="Cancel" />
+            <input className={styles.purple_button} type="submit" value="Save" />
           </div>
-          <div className={styles.input_container}>
-            <p>Product Details</p>
-            <Textbox />
-          </div>
-        </div>
-        <div className={styles.button_container}>
-          <input className={styles.white_button} type="reset" value="Cancel" />
-          <input className={styles.purple_button} type="submit" value="Save" />
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
