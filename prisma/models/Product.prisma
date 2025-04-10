@@ -3,7 +3,8 @@ model Product {
     inventory            Inventory?
     tags                 ProductToTag[]
     name                 String
-    price                Int
+    price                Float
+    discount             Float?
     description          String
     details              String
     weight               Int
