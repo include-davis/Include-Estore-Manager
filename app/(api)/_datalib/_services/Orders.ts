@@ -5,13 +5,15 @@ import { OrderInput, OrderProductInput } from '@datatypes/Order';
 export default class Orders {
   //CREATE
   static async create(input: OrderInput) {
-    return prisma.order.create({
+    const order = prisma.order.create({
       data: {
         ...input, // Spread the input fields
         status: 'pending', // Default status
         created_at: new Date(), // Current timestamp
       },
     });
+    revalidateCache(['orders']);
+    return order;
   }
 
   //READ -> get order and orders, also getProducts using the ProductToOrder table
@@ -68,7 +70,7 @@ export default class Orders {
       revalidateCache(['orders', 'products']);
       return order;
     } catch (e) {
-      return null;
+      return e;
     }
   }
 

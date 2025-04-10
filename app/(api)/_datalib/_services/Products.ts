@@ -9,6 +9,7 @@ export default class Products {
     const {
       name,
       price,
+      discount,
       description,
       details,
       weight,
@@ -24,6 +25,7 @@ export default class Products {
         data: {
           name,
           price,
+          discount,
           description,
           details,
           weight,

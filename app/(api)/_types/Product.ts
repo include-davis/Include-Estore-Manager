@@ -9,6 +9,7 @@ export type Product = {
   orders: ProductToOrder[];
   name: string;
   price: number;
+  discount?: number;
   description: string;
   details: string;
   weight: number;
@@ -21,6 +22,7 @@ export type Product = {
 export type ProductInput = {
   name: string;
   price: number;
+  discount?: number;
   description: string;
   details: string;
   weight: number;
