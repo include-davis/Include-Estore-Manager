@@ -5,7 +5,38 @@ import React, { useState } from 'react';
 import Textbox from '@components/Textbox/Textbox';
 import { FormEvent } from 'react';
 
+const ItemsBar = ({
+  items,
+  activeIndex,
+  onTabChange,
+}: {
+  items: string[];
+  activeIndex: number;
+  onTabChange: (index: number) => void;
+}) => {
+  return (
+    <nav className={styles.navbar}>
+      {items.map((item, index) => (
+        <div
+          key={index}
+          className={`${styles.navItem} ${
+            activeIndex === index ? styles.active : ''
+          }`}
+          onClick={() => onTabChange(index)}
+        >
+          {item}
+        </div>
+      ))}
+      <div
+        className={styles.activeIndicator}
+        style={{ transform: `translateX(${activeIndex * 100}%)` }}
+      />
+    </nav>
+  );
+};
+
 export default function ProductForm() {
+  const [activeTab, setActiveTab] = useState(0);
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('Form submitted');
@@ -26,12 +57,60 @@ export default function ProductForm() {
       ...prevTags.slice(index + 1),
     ]);
   };
+  const renderContent = () => {
+    switch (activeTab) {
+      case 0:
+        return (
+          <div>
+            <h4>About the Product</h4>
+            <p> details </p>
+          </div>
+        );
+      case 1:
+        return (
+          <div>
+            <h4>Details</h4>
+            <p> details</p>
+          </div>
+        );
+      case 2:
+        return (
+          <div>
+            <h4>Shipping Information</h4>
+            <p> placeholder </p>
+          </div>
+        );
+      case 3:
+        return (
+          <div>
+            <h4>Carriers Information</h4>
+            <p> placeholder </p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        <h3>Listing</h3>
+      <div className={styles.header}>
+        <div className={styles.title}>
+          <h3>Listing</h3>
+        </div>
+        <div className={styles.button_container}>
+          <button className={styles.delete_button}>Delete</button>
+        </div>
       </div>
+      {/* Content of Product Form */}
       <div className={styles.listing}>
+        {/* Navigation Bar == Items bar*/}
+        <ItemsBar
+          items={['About', 'Details', 'Shipping', 'Carriers']}
+          activeIndex={activeTab}
+          onTabChange={setActiveTab}
+        />
+        {/* Dynamic Content */}
+        <div className={styles.content}>{renderContent()}</div>
         <form onSubmit={handleSubmit}>
           <div className={styles.img_container}>
             <Image
@@ -94,8 +173,16 @@ export default function ProductForm() {
             </div>
           </div>
           <div className={styles.button_container}>
-            <input className={styles.white_button} type="reset" value="Cancel" />
-            <input className={styles.purple_button} type="submit" value="Save" />
+            <input
+              className={styles.white_button}
+              type="reset"
+              value="Cancel"
+            />
+            <input
+              className={styles.purple_button}
+              type="submit"
+              value="Save & Next"
+            />
           </div>
         </form>
       </div>
