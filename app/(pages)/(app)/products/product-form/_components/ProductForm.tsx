@@ -76,7 +76,7 @@ export default function ProductForm() {
     title: '',
     description: '',
   });
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -99,7 +99,7 @@ export default function ProductForm() {
                   <input
                     type="text"
                     name="title"
-                    value={FormDataEvent.title}
+                    value={formData.title}
                     onChange={handleInputChange}
                   />
                   <p>Category</p>
@@ -120,7 +120,7 @@ export default function ProductForm() {
                   <input
                     type="text"
                     name="description"
-                    value={FormDataEvent.description}
+                    value={formData.description}
                     onChange={handleInputChange}
                   />
                 </div>
