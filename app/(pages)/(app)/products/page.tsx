@@ -56,10 +56,13 @@ const products = [
 export default function Products() {
   return (
     <div className={styles.generalcontainer}>
-      <h2>Products</h2>
+      <div>
+        <h2>Product Listings</h2>
+        <div className="button">+ Add</div>
+      </div>
+
       <div className={`${styles.generalcontainer} ${styles.main}`}>
         <SearchFilters />
-        <ProductList products={products} />
       </div>
     </div>
   );
