@@ -36,7 +36,7 @@ export default function LoginPage() {
     if (response.isError) setErrorMessage(response.message);
     else router.push('/');
   };
-    
+
   return (
     <div className={styles.page_container}>
       <div className={styles.login_container}>
