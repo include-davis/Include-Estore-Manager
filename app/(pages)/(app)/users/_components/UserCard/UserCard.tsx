@@ -25,12 +25,8 @@ export default async function UserCard({ user }: { user: User }) {
       <form action={UpdateUser}>
         <h3>Rename form</h3>
         <div>
-          <label>New first name</label>
-          <input name="fname" type="text"></input>
-        </div>
-        <div>
-          <label>New last name</label>
-          <input name="lname" type="text"></input>
+          <label>New name</label>
+          <input name="name" type="text"></input>
         </div>
         <button type="submit">{`Update ${user.name}`}</button>
       </form>

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import includeArt from '/public/graphics/bg-abstract.svg';
 import google from '/public/icons/google.svg';
 import useToggle from '@hooks/useToggle';
+
 import React, { useState } from 'react';
 import { loginWithCredentials } from '@actions/Authorization';
 import { useRouter } from 'next/navigation';
@@ -35,7 +36,7 @@ export default function LoginPage() {
     if (response.isError) setErrorMessage(response.message);
     else router.push('/');
   };
-
+    
   return (
     <div className={styles.page_container}>
       <div className={styles.login_container}>

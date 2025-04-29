@@ -11,6 +11,7 @@ const resolvers = {
   Product: {
     inventory: (parent: Product) => Inventories.find(parent.id), // product and inventory have the same id
     tags: (parent: Product) => Products.getTags(parent.id),
+    orders: (parent: Product) => Products.getOrders(parent.id),
   },
   Query: {
     product: (_: never, args: { id: string }) => Products.find(args.id),
