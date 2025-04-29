@@ -56,13 +56,40 @@ const products = [
 export default function Products() {
   return (
     <div className={styles.generalcontainer}>
-      <div>
+      <div className={styles.topbar}>
         <h2>Product Listings</h2>
-        <div className="button">+ Add</div>
+        <div className={styles.addbutton}>+ Add</div>
       </div>
-
-      <div className={`${styles.generalcontainer} ${styles.main}`}>
-        <SearchFilters />
+      <div className={styles.rowbaropposite}>
+        <input
+          className={styles.searchbar}
+          type="text"
+          id="searchbar"
+          name="searchbar"
+          placeholder="Search Listings"
+        ></input>
+        <div className={styles.pagenav}>
+          <div className={styles.circlebutton}>&lt;</div>
+          <div className={styles.circlebutton}>&gt;</div>
+        </div>
+      </div>
+      <div className={styles.rowbar}>
+        <div className={styles.genbutton}>All</div>
+        <div className={styles.genbutton}>Active</div>
+        <div className={styles.genbutton}>Draft</div>
+        <div className={styles.genbutton}>Archived</div>
+      </div>
+      <div className={styles.listingarea}>
+        {products.length == 0 ? (
+          <div className={styles.centerbar}>
+            <div className={styles.addlistingbutton}>List A Product</div>
+          </div>
+        ) : (
+          <div>
+            <SearchFilters />
+            <ProductList products={products} />
+          </div>
+        )}
       </div>
     </div>
   );

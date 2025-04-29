@@ -1,9 +1,170 @@
 .generalcontainer{
+	display: flex;
+	flex-direction: column;
     padding: var(--spacer);
+	margin-top: 2%;
+	margin-right: 5%;
+	margin-left: 5%;
+	gap: 15px;
+	background-color: #F6F6F6;
 }
 
 .main {
 	display: flex;
 	flex-direction: column;
+	background-color: #F6F6F6;
 	gap: var(--spacer);
+	height:max-content;
+}
+
+.topbar{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+.addbutton{
+	background-color: #3A2779;
+	color: white;
+	border-radius: 5px;
+	width: 10%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-right: 20px;
+	padding-left: 20px;
+	height: 100%;
+	text-align: center;
+	transition: 300ms;
+}
+
+.addbutton:hover{
+	background-color: #ededed;
+	color: #3A2779;
+	transition: 300ms;
+	
+}
+
+.searchbar{
+	border-radius: 20px;
+	border: 0;
+	background-color: white;
+	color: #454545;
+	padding-left: 3%;
+	padding-top: 0.75%;
+	padding-bottom: 0.75%;
+	width: 85%;
+}
+
+.rowbaropposite{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.pagenav{
+	display: flex;
+	flex-direction: row;
+	background-color: rgb(255, 255, 255);
+	border-radius: 25%;
+	color: #454545;
+	padding-top: 0.5%;
+	padding-bottom: 0.5%;
+	width: 10%;
+	justify-content: space-between;
+}
+
+.circlebutton{
+	border-radius: 100%;
+	background-color:#f7f4ff;
+	height: 100%;
+	padding-left: 8%;
+	padding-right: 8%;
+	padding-top: 4%;
+	padding-bottom: 4%;
+	color: #271953;
+}
+
+.circlebutton:hover{
+	background-color: rgb(134, 128, 155);
+	color: white;
+	transition: 300ms;
+}
+
+.rowbar{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.genbutton{
+	background-color: white;
+	color: #454545;
+	border-radius: 5px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	width: 8%;
+	height: 100%;
+	text-align: center;
+	transition: 300ms;
+	margin-right: 1%;
+}
+
+.genbutton:hover{
+	background-color: #3A2779;
+	color: white;
+	transition: 300ms;
+	
+}
+
+.listingarea{
+	background-color: white;
+	height: 100%;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	padding-right: 25px;
+	padding-left: 25px;
+	width: 100%;
+	border-radius: 15px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #454545;
+	justify-content: center;
+	align-items: center;
+	// text-align: center;
+}
+
+.centerbar{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.addlistingbutton{
+	background-color: #3A2779;
+	color: white;
+	border-radius: 10px;
+	width: 15%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-right: 20px;
+	padding-left: 20px;
+	height: 100%;
+	text-align: center;
+	transition: 300ms;
+}
+
+.addlistingbutton:hover{
+	background-color: #F6F6F6;
+	color: rgb(46, 46, 46);
+	transition: 300ms;
 }
