@@ -59,13 +59,13 @@ export default function ViewOrderCards() {
   return (
     <div className={styles.page_container}>
       <div className={styles.orders}>
-        <h4>Orders</h4>
+        <h4 className={styles.text}>Orders</h4>
         <form className={styles.order_form}>
           <div className={styles.searchbar}>
             <input
               className={styles.search}
               type="text"
-              placeholder="Search"
+              placeholder="Search orders"
               name="search"
             />
             <button className={styles.search_submit} type="submit">

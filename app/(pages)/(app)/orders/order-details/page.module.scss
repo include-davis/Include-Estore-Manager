@@ -1,0 +1,151 @@
+@use 'media';
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap');
+
+.container {
+    display:flex;
+    width: 1428px;
+    height: 1117px;
+    background-color: #F6F6F6;
+    margin-left: 300px;
+}
+.seccontainer {
+    width: 1268px;
+    height: 100%;
+    margin-right: 80px;
+    margin-left: 80px;
+}
+.back {
+    width: 1268px;
+    height: 35px;
+    margin-top: 48px;
+    margin-top: 48px;
+    display:flex;
+}
+.maincontainer {
+    width: 1268px;
+}
+.orderdelete {
+    display: flex;
+    width: 1268px;
+    height: 64px;
+    margin-bottom: 16px;
+}
+.info{
+    margin-top: 16px;
+    height: 580px;
+    display: flex;
+}
+.materialcost {
+    width: 882px;
+    height: 580px;
+}
+.materials {
+    flex-direction: column;
+    width: 882px;
+    height: 360px;
+    margin-bottom: 16px;
+    background-color: white;
+    border-radius: 10px;
+}
+.cost {
+    width: 882px;
+    height: 204px;
+    background-color: white;
+    border-radius: 10px;
+}
+.shipping {
+    width: 366px;
+    height: 532px;
+    background-color: white;
+    margin-left: 20px;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0px 4px 20px 0px #3333330F;
+
+}
+.arrowcontainer {
+    width: 18px;
+    height: 35px;
+}
+.arrow {
+   
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    
+    cursor: pointer;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    
+}
+.left-arrow:hover {
+  background-color: #0056b3;
+}
+.text {
+    font-size: 18px;
+    font-family: 'Manrope', sans-serif;
+}
+.h1text{
+    font-size: 48px;
+    font-family: 'Manrope', sans-serif;
+    width: 634px;
+    height: 64px;
+    margin-right: 462px;
+}
+.deletebutton{
+    cursor: pointer;
+    width:172px;
+    height:64px;
+    border-radius: 10px;
+    padding:10px 40px 10px 40px;
+    background-color: white; 
+    box-shadow: 0px 4px 20px 0px #3333330F;
+    border: none;
+}
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdownToggle {
+    box-shadow: 0px 4px 20px 0px #3333330F;
+    width: 200px;
+    height: 48px;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .dropdownToggle:hover {
+    background-color: #aeb6c0;
+  }
+  
+  .dropdownMenu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    padding: 8px 0;
+    z-index: 1;
+  }
+  .dropdownMenu li {
+    list-style: none;
+  }
+  
+  .dropdownMenu li a {
+    padding: 10px 16px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .dropdownMenu li a:hover {
+    background-color: #f1f1f1;
+  }
