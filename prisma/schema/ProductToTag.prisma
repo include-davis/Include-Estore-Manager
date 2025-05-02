@@ -1,0 +1,8 @@
+model ProductToTag {
+  product_id String
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  tag_id     String
+  tag        Tag     @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+
+  @@id(name: "id", fields: [product_id, tag_id])
+}
