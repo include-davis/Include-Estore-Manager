@@ -81,10 +81,14 @@
 }
 
 .info_button {
-    height: 47px;
-    width: 47px;
+    width: 172px;
+    height: 64px;
     cursor: pointer;
-    background-color: var(--purple);
+    background-color: #3A2779;
     border-style: none;
-    border-radius: 10%;
+    border-radius: 10px;
+    
+}
+.text{
+    color: white;
 }

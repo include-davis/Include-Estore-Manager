@@ -68,7 +68,7 @@ const OrderCard: React.FC<TextboxProps> = (props) => {
         </div>
       </div>
       <button className={styles.info_button}>
-        <Image src={arrowRight} alt="right arrow icon" />
+        <p className={styles.text}>View Order</p>
       </button>
     </div>
   );
