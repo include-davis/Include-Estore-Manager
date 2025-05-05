@@ -6,8 +6,7 @@ import fonts from '@globals/fonts';
 import metadata from '@globals/metadata.json';
 
 import navLinks from '@data/navLinks.json';
-import Navbar from '@components/Navbar/Navbar';
-import Footer from './_components/Footer/Footer';
+import Sidebar from '@components/Sidebar/Sidebar';
 
 export { metadata };
 
@@ -19,9 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={fonts}>
-        <Navbar />
-        {children}
-        <Footer navLinks={navLinks} />
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Sidebar navLinks={navLinks} />
+          {children}
+        </div>
       </body>
     </html>
   );
