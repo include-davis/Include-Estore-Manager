@@ -1,0 +1,95 @@
+.container {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 300px !important;
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+
+  .header {
+    height: 100px;
+    width: 100%;
+    background-color: var(--purple);
+    display: flex;
+    align-items: center;     
+    justify-content: flex-start; 
+    color: white;
+    font-size: 2.2rem;
+    font-weight: 500;           
+    padding-left: var(--small-spacer);
+    letter-spacing: 0.1rem;
+  }
+  
+
+  .sidebarContent {
+    display: flex;
+    flex-direction: column;
+    width: 300px !important;
+    padding-top: var(--medium-spacer);
+    flex-grow: 1;
+
+    .logo {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .logoText {
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: var(--small-spacer);
+
+      a {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem; 
+        text-decoration: none;
+        color: black;
+        font-size: 1.2rem;
+        padding: 1rem var(--small-spacer);
+        transition: background-color 0.2s ease;
+        position: relative;
+
+        &:hover {
+          background-color: rgba(128, 0, 128, 0.1);
+        }
+
+        img {
+          flex-shrink: 0;
+        }
+      }
+    }
+
+    .active {
+      position: relative;
+      background-color: rgba(128, 0, 128, 0.1); 
+    }
+
+    .active::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 4px;
+      background-color: var(--purple); 
+    }
+
+    .profileLink {
+      margin-top: auto;
+      margin-bottom: var(--medium-spacer);
+    }
+
+    .footerText {
+      font-size: 0.8rem;
+      color: white;
+    }
+  }
+}
