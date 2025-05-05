@@ -1,12 +1,15 @@
 import { Inventory, InventoryInput } from './Inventory';
 import { Tag } from './Tag';
+import { ProductToOrder } from './Order';
 
 export type Product = {
   id: string;
   inventory: Inventory;
   tags: Tag[];
+  orders: ProductToOrder[];
   name: string;
   price: number;
+  discount?: number;
   description: string;
   details: string;
   weight: number;
@@ -19,6 +22,7 @@ export type Product = {
 export type ProductInput = {
   name: string;
   price: number;
+  discount?: number;
   description: string;
   details: string;
   weight: number;

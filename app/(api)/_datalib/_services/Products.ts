@@ -9,6 +9,7 @@ export default class Products {
     const {
       name,
       price,
+      discount,
       description,
       details,
       weight,
@@ -24,6 +25,7 @@ export default class Products {
         data: {
           name,
           price,
+          discount,
           description,
           details,
           weight,
@@ -78,6 +80,19 @@ export default class Products {
     });
 
     return productToTag.map((item) => item.tag);
+  }
+
+  static async getOrders(product_id: string) {
+    const productToOrder = await prisma.productToOrder.findMany({
+      where: {
+        product_id,
+      },
+      include: {
+        order: true,
+      },
+    });
+
+    return productToOrder.map((item) => item.order);
   }
 
   // UPDATE

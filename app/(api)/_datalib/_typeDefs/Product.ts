@@ -5,8 +5,10 @@ const typeDefs = gql`
     id: ID!
     inventory: Inventory!
     tags: [Tag]
+    orders: [Order]
     name: String!
     price: Float!
+    discount: Float
     description: String!
     details: String!
     weight: Int!
@@ -19,6 +21,7 @@ const typeDefs = gql`
   input ProductInput {
     name: String!
     price: Float!
+    discount: Float
     description: String!
     details: String!
     weight: Int!
@@ -30,7 +33,8 @@ const typeDefs = gql`
 
   input ProductUpdateInput {
     name: String
-    price: Int
+    price: Float
+    discount: Float
     description: String
     details: String
     weight: Int
