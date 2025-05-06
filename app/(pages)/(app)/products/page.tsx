@@ -1,6 +1,6 @@
+'use client';
 import styles from './page.module.scss';
 import ProductList from './_components/ProductList/ProductList';
-import SearchFilters from './_components/SearchFilters/SearchFilters';
 
 const products = [
   {
@@ -69,7 +69,7 @@ export default function Products() {
           placeholder="Search Listings"
         ></input>
         <div className={styles.pagenav}>
-          <div className={styles.circlebutton}>&lt;</div>
+          <div className={styles.circlebutton}>&lt;</div>0 out of 0
           <div className={styles.circlebutton}>&gt;</div>
         </div>
       </div>
@@ -86,7 +86,6 @@ export default function Products() {
           </div>
         ) : (
           <div>
-            <SearchFilters />
             <ProductList products={products} />
           </div>
         )}

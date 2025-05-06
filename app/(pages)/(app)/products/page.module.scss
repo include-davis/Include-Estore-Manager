@@ -1,12 +1,12 @@
 .generalcontainer{
 	display: flex;
 	flex-direction: column;
-    padding: var(--spacer);
-	margin-top: 2%;
-	margin-right: 5%;
-	margin-left: 5%;
+    padding: 3%;
+	padding-left: 5%;
+	padding-right: 5%;
 	gap: 15px;
 	background-color: #F6F6F6;
+	font-family: var(--font-manrope);
 }
 
 .main {
@@ -22,8 +22,8 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	margin-top: 2%;
 	margin-bottom: 2%;
+	font-family: var(--font-manrope);
 }
 
 .addbutton{
@@ -64,22 +64,27 @@
 	align-items: center;
 	justify-content: space-between;
 	margin-top: 1%;
-	margin-bottom: 1%;
 }
 
 .pagenav{
+	border-radius: 50px;
 	display: flex;
 	flex-direction: row;
 	background-color: rgb(255, 255, 255);
-	border-radius: 25%;
 	color: #454545;
-	padding-top: 0.5%;
-	padding-bottom: 0.5%;
+	padding-top: 0.25%;
+	padding-bottom: 0.25%;
+	padding-right: 0.2%;
+	padding-left: 0.2%;
 	width: 10%;
 	justify-content: space-between;
+	text-align: center;
+	align-items: center;
 }
 
 .circlebutton{
+	display: flex;
+	flex-direction: row;
 	border-radius: 100%;
 	background-color:#f7f4ff;
 	height: 100%;
@@ -88,12 +93,13 @@
 	padding-top: 4%;
 	padding-bottom: 4%;
 	color: #271953;
+	transition: 150ms;
 }
 
 .circlebutton:hover{
 	background-color: rgb(134, 128, 155);
 	color: white;
-	transition: 300ms;
+	transition: 150ms;
 }
 
 .rowbar{
@@ -108,7 +114,7 @@
 .genbutton{
 	background-color: white;
 	color: #454545;
-	border-radius: 5px;
+	border-radius: 15px;
 	padding-top: 15px;
 	padding-bottom: 15px;
 	width: 8%;
