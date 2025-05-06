@@ -40,6 +40,7 @@ export default function SignUpPage() {
       !confirmPassword ||
       !addressLine1 ||
       !city ||
+      !state ||
       !country ||
       !zip
     ) {
@@ -61,7 +62,7 @@ export default function SignUpPage() {
       addressLine1: addressLine1 as string,
       addressLine2: (addressLine2 as string) || '', // Optional field
       city: city as string,
-      state: (state as string) || '', // Optional field
+      state: state as string,
       country: country as string,
       zip: parseInt(zip as string),
     });

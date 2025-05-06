@@ -57,7 +57,7 @@ async function credentialsSignUp(credentials: Credentials) {
     addressLine1,
     addressLine2, // Not required for sign up.
     city,
-    state, // Not required for sign up.
+    state,
     country,
     zip,
   } = credentials;
@@ -69,6 +69,7 @@ async function credentialsSignUp(credentials: Credentials) {
     !phone ||
     !addressLine1 ||
     !city ||
+    !state ||
     !country ||
     !zip
   ) {

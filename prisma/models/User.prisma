@@ -7,7 +7,7 @@ model User {
   shipping_address_line_1   String
   shipping_address_line_2   String?
   shipping_city             String
-  shipping_state            String?
+  shipping_state            String
   shipping_country          String
   shipping_zip              Int
 }
