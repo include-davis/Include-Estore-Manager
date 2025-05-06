@@ -2,13 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import styles from './Sidebar.module.scss';
 
-import tag from '/public/icons/tag.svg';
-import home from '/public/icons/home.svg';
-import profile from '/public/icons/profile2.svg';
-import orders from '/public/icons/shop.svg';
+import { CgProfile } from 'react-icons/cg';
+import { IoPricetagOutline } from 'react-icons/io5';
+import { FiShoppingCart } from 'react-icons/fi';
 
 interface NavLink {
   name: string;
@@ -22,17 +20,18 @@ interface SidebarProps {
 function displayIconByName(name: string) {
   switch (name.toLowerCase()) {
     case 'home':
-      return home;
+      return <IoPricetagOutline size={25} className={styles.linkIcon} />;
     case 'product':
-      return tag;
+      return <IoPricetagOutline size={25} className={styles.linkIcon} />;
     case 'order':
-      return orders;
+      return <FiShoppingCart size={25} className={styles.linkIcon} />;
     case 'profile':
-      return profile;
+      return <CgProfile size={25} className={styles.linkIcon} />;
     default:
-      return tag;
+      return <IoPricetagOutline size={25} className={styles.linkIcon} />;
   }
 }
+
 
 const Sidebar: React.FC<SidebarProps> = ({ navLinks }) => {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
@@ -59,13 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ navLinks }) => {
             }`}
             onClick={() => handleSelect('/profile/account-settings')}
           >
-            <Image
-              src={displayIconByName('profile')}
-              alt="profile icon"
-              width={25}
-              height={25}
-              className={styles.linkIcon}
-            />
+            {displayIconByName('profile')}
             <span>Profile</span>
           </Link>
 
@@ -80,13 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({ navLinks }) => {
                 }`}
                 onClick={() => handleSelect(link.slug)}
               >
-                <Image
-                  src={displayIconByName(link.name)}
-                  alt={`${link.name} icon`}
-                  width={25}
-                  height={25}
-                  className={styles.linkIcon}
-                />
+                {displayIconByName(link.name)}
                 <span>{link.name}</span>
               </Link>
             ))}
