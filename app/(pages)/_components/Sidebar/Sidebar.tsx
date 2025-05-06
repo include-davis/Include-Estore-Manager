@@ -32,7 +32,6 @@ function displayIconByName(name: string) {
   }
 }
 
-
 const Sidebar: React.FC<SidebarProps> = ({ navLinks }) => {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
 
