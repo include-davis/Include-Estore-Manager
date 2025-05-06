@@ -34,12 +34,12 @@
       color: white;
       font-size: 1.5rem;
       font-weight: bold;
+      .logoText {
+        color: white !important;
+        font-size: 1.5rem;
+      }
     }
 
-    .logoText {
-      color: white;
-      font-size: 1.5rem;
-    }
 
     .links {
       display: flex;

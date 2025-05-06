@@ -45,7 +45,9 @@ const Sidebar: React.FC<SidebarProps> = ({ navLinks }) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.logo}>
-          <span style={{ color: 'white' }}>#INCLUDE</span>
+          <Link href="/" onClick={() => setSelectedSlug(null)}>
+            <span style={{ color: 'white' }}>#INCLUDE</span>
+          </Link>
         </div>
       </div>
       <div className={styles.sidebarContent}>
@@ -67,25 +69,27 @@ const Sidebar: React.FC<SidebarProps> = ({ navLinks }) => {
             <span>Profile</span>
           </Link>
 
-          {navLinks.map((link) => (
-            <Link
-              key={link.slug}
-              href={link.slug}
-              className={`${styles.linkItem} ${
-                selectedSlug === link.slug ? styles.active : ''
-              }`}
-              onClick={() => handleSelect(link.slug)}
-            >
-              <Image
-                src={displayIconByName(link.name)}
-                alt={`${link.name} icon`}
-                width={25}
-                height={25}
-                className={styles.linkIcon}
-              />
-              <span>{link.name}</span>
-            </Link>
-          ))}
+          {navLinks
+            .filter((link) => link.name.toLowerCase() !== 'home')
+            .map((link) => (
+              <Link
+                key={link.slug}
+                href={link.slug}
+                className={`${styles.linkItem} ${
+                  selectedSlug === link.slug ? styles.active : ''
+                }`}
+                onClick={() => handleSelect(link.slug)}
+              >
+                <Image
+                  src={displayIconByName(link.name)}
+                  alt={`${link.name} icon`}
+                  width={25}
+                  height={25}
+                  className={styles.linkIcon}
+                />
+                <span>{link.name}</span>
+              </Link>
+            ))}
         </div>
       </div>
     </div>
