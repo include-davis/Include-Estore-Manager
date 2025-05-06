@@ -1,9 +1,176 @@
 .generalcontainer{
-    padding: var(--spacer);
+	display: flex;
+	flex-direction: column;
+    padding: 3%;
+	padding-left: 5%;
+	padding-right: 5%;
+	gap: 15px;
+	background-color: #F6F6F6;
+	font-family: var(--font-manrope);
 }
 
 .main {
 	display: flex;
 	flex-direction: column;
+	background-color: #F6F6F6;
 	gap: var(--spacer);
+	height:max-content;
+}
+
+.topbar{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 2%;
+	font-family: var(--font-manrope);
+}
+
+.addbutton{
+	background-color: #3A2779;
+	color: white;
+	border-radius: 5px;
+	width: 10%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-right: 20px;
+	padding-left: 20px;
+	height: 100%;
+	text-align: center;
+	transition: 300ms;
+}
+
+.addbutton:hover{
+	background-color: #ededed;
+	color: #3A2779;
+	transition: 300ms;
+	
+}
+
+.searchbar{
+	border-radius: 20px;
+	border: 0;
+	background-color: white;
+	color: #454545;
+	padding-left: 3%;
+	padding-top: 0.75%;
+	padding-bottom: 0.75%;
+	width: 85%;
+}
+
+.rowbaropposite{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 1%;
+}
+
+.pagenav{
+	border-radius: 50px;
+	display: flex;
+	flex-direction: row;
+	background-color: rgb(255, 255, 255);
+	color: #454545;
+	padding-top: 0.25%;
+	padding-bottom: 0.25%;
+	padding-right: 0.2%;
+	padding-left: 0.2%;
+	width: 10%;
+	justify-content: space-between;
+	text-align: center;
+	align-items: center;
+}
+
+.circlebutton{
+	display: flex;
+	flex-direction: row;
+	border-radius: 100%;
+	background-color:#f7f4ff;
+	height: 100%;
+	padding-left: 8%;
+	padding-right: 8%;
+	padding-top: 4%;
+	padding-bottom: 4%;
+	color: #271953;
+	transition: 150ms;
+}
+
+.circlebutton:hover{
+	background-color: rgb(134, 128, 155);
+	color: white;
+	transition: 150ms;
+}
+
+.rowbar{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: start;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.genbutton{
+	background-color: white;
+	color: #454545;
+	border-radius: 15px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	width: 8%;
+	height: 100%;
+	text-align: center;
+	transition: 300ms;
+	margin-right: 1%;
+}
+
+.genbutton:hover{
+	background-color: #3A2779;
+	color: white;
+	transition: 300ms;
+	
+}
+
+.listingarea{
+	background-color: white;
+	height: 100%;
+	padding-top: 25px;
+	padding-bottom: 25px;
+	padding-right: 25px;
+	padding-left: 25px;
+	width: 100%;
+	border-radius: 15px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #454545;
+	justify-content: center;
+	align-items: center;
+	// text-align: center;
+}
+
+.centerbar{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.addlistingbutton{
+	background-color: #3A2779;
+	color: white;
+	border-radius: 10px;
+	width: 15%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-right: 20px;
+	padding-left: 20px;
+	height: 100%;
+	text-align: center;
+	transition: 300ms;
+}
+
+.addlistingbutton:hover{
+	background-color: #F6F6F6;
+	color: rgb(46, 46, 46);
+	transition: 300ms;
 }
