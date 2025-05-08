@@ -6,10 +6,11 @@ import User from './User';
 import Inventory from './Inventory';
 import Tag from './Tag';
 import Order from './Order';
+import Hello from './HealthCheck';
 
 const allResolvers: IResolvers[] = [];
 
-const modules = [Product, User, Inventory, Tag, Order];
+const modules = [Product, User, Inventory, Tag, Order, Hello];
 modules.forEach((module) => {
   allResolvers.push(module);
 });

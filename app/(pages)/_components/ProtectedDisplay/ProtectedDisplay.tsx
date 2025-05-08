@@ -2,6 +2,7 @@
 
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import React from 'react';
 
 interface ProtectedDisplayProps {
   failRedirectRoute: string;

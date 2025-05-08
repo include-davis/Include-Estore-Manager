@@ -34,20 +34,21 @@ async function apiKeyIsValid(req: NextRequest) {
   const referer = req.headers.get('Referer') || '';
   const isLocalDevelopment = process.env.NODE_ENV === 'development';
 
-  const hasValidApiKey = apiKey === process.env.API_KEY;
+  const apiKeyMatches = apiKey === process.env.API_KEY;
   const hasValidOrigin =
     ALLOWED_ORIGINS.includes(origin) ||
     ALLOWED_ORIGINS.some((domain) => referer.startsWith(domain)); // I believe this can be spoofed. Good to use in combination with API key.
 
   // If an API key is provided, ensure it's valid and comes from an allowed origin
-  return hasValidApiKey && (hasValidOrigin || isLocalDevelopment);
+  return apiKeyMatches && (hasValidOrigin || isLocalDevelopment);
 }
 
 const handler = startServerAndCreateNextHandler(server, {
   context: async (req: NextRequest): Promise<ApolloContext> => {
     // If there's no valid API key, fallback to session auth
     /*
-    TODO: There are different ways to do this. We can make it so that if the API key is invalid,
+    TODO:
+    There are different ways to do this. We can make it so that if the API key is invalid,
     instead of falling back to session auth we completely ignore this attempt to connect to the server at all
     (by throwing an error). This ensures that if anyone attempts to use an API key, session auth will not be used.
      */
@@ -55,11 +56,17 @@ const handler = startServerAndCreateNextHandler(server, {
     let session: Session | null = null;
     let isOwner = false;
 
-    if (!hasValidApiKey) {
+    try {
       session = await auth();
-      const uid = session?.user?.id;
-      const dbUser = await prisma.user.findUnique({ where: { id: uid } });
-      isOwner = uid != undefined && dbUser !== null;
+      const email = session?.user?.email;
+
+      if (email) {
+        const dbUser = await prisma.user.findUnique({ where: { email: email } });
+        isOwner = dbUser !== null;
+      }
+    } catch (err) {
+      // Some database error occurs here for some reason...
+      console.error(err);
     }
 
     return {
