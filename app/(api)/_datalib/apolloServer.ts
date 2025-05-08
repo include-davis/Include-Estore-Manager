@@ -61,7 +61,9 @@ const handler = startServerAndCreateNextHandler(server, {
       const email = session?.user?.email;
 
       if (email) {
-        const dbUser = await prisma.user.findUnique({ where: { email: email } });
+        const dbUser = await prisma.user.findUnique({
+          where: { email: email },
+        });
         isOwner = dbUser !== null;
       }
     } catch (err) {
