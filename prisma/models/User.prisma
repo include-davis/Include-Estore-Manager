@@ -1,12 +1,13 @@
 model User { 
-  id                        String         @id @default(uuid())
+  id                        String        @id @default(uuid())
   name                      String
-  email                     String         @unique
-  password                  String         
+  email                     String        @unique
+  phone                     String        @unique
+  password                  String
   shipping_address_line_1   String
   shipping_address_line_2   String?
   shipping_city             String
-  shipping_state            String?
+  shipping_state            String
   shipping_country          String
   shipping_zip              Int
 }
