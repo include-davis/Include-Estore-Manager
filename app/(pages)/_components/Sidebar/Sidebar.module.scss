@@ -1,54 +1,48 @@
 .container {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 300px !important;
-  background-color: whitesmoke;
   display: flex;
   flex-direction: column;
-  z-index: 1000;
+  position: sticky;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: fit-content;
+  background-color: whitesmoke;
 
   .header {
-    height: 100px;
-    width: 100%;
-    background-color: var(--purple);
     display: flex;
     align-items: center;     
-    justify-content: flex-start; 
+    justify-content: flex-start;
+    background-color: var(--purple);
+    padding: 16px 64px 16px 16px;
+
     color: white;
     font-size: 2.2rem;
     font-weight: 500;           
-    padding-left: var(--small-spacer);
     letter-spacing: 0.1rem;
   }
-  
 
   .sidebarContent {
     display: flex;
     flex-direction: column;
-    width: 300px !important;
     padding-top: var(--medium-spacer);
-    flex-grow: 1;
 
     .logo {
       color: white;
       font-size: 1.5rem;
       font-weight: bold;
+
       .logoText {
-        color: white !important;
+        color: white;
         font-size: 1.5rem;
       }
     }
+
     .linkIcon {
       margin-right: 8px;
       vertical-align: middle;
       color: #555;
       transition: color 0.2s ease;
     }
-    
-
-    
-
 
     .links {
       display: flex;

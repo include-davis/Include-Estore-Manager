@@ -11,28 +11,28 @@ import { FiShoppingCart } from 'react-icons/fi';
 interface NavLink {
   name: string;
   slug: string;
+  icon: React.ReactNode;
 }
 
-interface SidebarProps {
-  navLinks: NavLink[];
-}
+const navLinks: NavLink[] = [
+  {
+    name: 'Profile',
+    slug: '/profile/account-settings',
+    icon: <CgProfile size={25} className={styles.linkIcon} />,
+  },
+  {
+    name: 'Product',
+    slug: '/products',
+    icon: <IoPricetagOutline size={25} className={styles.linkIcon} />,
+  },
+  {
+    name: 'Order',
+    slug: '/orders',
+    icon: <FiShoppingCart size={25} className={styles.linkIcon} />,
+  },
+];
 
-function displayIconByName(name: string) {
-  switch (name.toLowerCase()) {
-    case 'home':
-      return <IoPricetagOutline size={25} className={styles.linkIcon} />;
-    case 'product':
-      return <IoPricetagOutline size={25} className={styles.linkIcon} />;
-    case 'order':
-      return <FiShoppingCart size={25} className={styles.linkIcon} />;
-    case 'profile':
-      return <CgProfile size={25} className={styles.linkIcon} />;
-    default:
-      return <IoPricetagOutline size={25} className={styles.linkIcon} />;
-  }
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ navLinks }) => {
+export default function Sidebar() {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
 
   const handleSelect = (slug: string) => {
@@ -50,36 +50,21 @@ const Sidebar: React.FC<SidebarProps> = ({ navLinks }) => {
       </div>
       <div className={styles.sidebarContent}>
         <div className={styles.links}>
-          <Link
-            href="/profile/account-settings"
-            className={`${styles.linkItem} ${
-              selectedSlug === '/profile/account-settings' ? styles.active : ''
-            }`}
-            onClick={() => handleSelect('/profile/account-settings')}
-          >
-            {displayIconByName('profile')}
-            <span>Profile</span>
-          </Link>
-
-          {navLinks
-            .filter((link) => link.name.toLowerCase() !== 'home')
-            .map((link) => (
-              <Link
-                key={link.slug}
-                href={link.slug}
-                className={`${styles.linkItem} ${
-                  selectedSlug === link.slug ? styles.active : ''
-                }`}
-                onClick={() => handleSelect(link.slug)}
-              >
-                {displayIconByName(link.name)}
-                <span>{link.name}</span>
-              </Link>
-            ))}
+          {navLinks.map((link) => (
+            <Link
+              key={link.slug}
+              href={link.slug}
+              className={`${styles.linkItem} ${
+                selectedSlug === link.slug ? styles.active : ''
+              }`}
+              onClick={() => handleSelect(link.slug)}
+            >
+              {link.icon}
+              <span>{link.name}</span>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
   );
-};
-
-export default Sidebar;
+}
