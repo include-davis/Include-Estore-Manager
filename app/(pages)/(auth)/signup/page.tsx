@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { signupAllowed } from '@actions/Authorization';
 import Signup from './Signup';
-import { useRouter } from 'next/navigation';
 
-const SignUpWrapper = () => {
+export default function SignupPage() {
   const [isAllowed, setIsAllowed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -22,7 +22,6 @@ const SignUpWrapper = () => {
 
   if (isLoading) return <div>Loading...</div>; // TODO: Probably make this look nicer.
   if (!isAllowed) router.push('/login');
-  return <Signup />;
-};
 
-export default SignUpWrapper;
+  return <Signup />;
+}

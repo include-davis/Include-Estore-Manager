@@ -4,8 +4,10 @@ import { ApolloContext } from '@datalib/apolloServer';
 
 const resolvers = {
   Query: {
-    user: (_: never, args: { id: string }) => Users.find(args.id),
-    users: (_: never, args: { ids: string[] }) => Users.findMany(args.ids),
+    user: (_: never, args: { id: string }, ctx: ApolloContext) =>
+      Users.find(args.id, ctx),
+    users: (_: never, args: { ids: string[] }, ctx: ApolloContext) =>
+      Users.findMany(args.ids, ctx),
   },
   Mutation: {
     createUser: (_: never, args: { input: UserInput }, ctx: ApolloContext) =>

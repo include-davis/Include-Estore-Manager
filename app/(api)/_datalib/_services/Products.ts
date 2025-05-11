@@ -6,7 +6,7 @@ import { ApolloContext } from '@datalib/apolloServer';
 export default class Products {
   // CREATE
   static async create(input: ProductInventoryInput, ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     const { productInput, inventoryInput } = input;
     const {
@@ -50,7 +50,9 @@ export default class Products {
   }
 
   // READ
-  static async find(id: string) {
+  static async find(id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     return prisma.product.findUnique({
       where: {
         id,
@@ -58,7 +60,9 @@ export default class Products {
     });
   }
 
-  static async findMany(ids: string[]) {
+  static async findMany(ids: string[], ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     if (!ids) {
       return prisma.product.findMany();
     }
@@ -72,7 +76,9 @@ export default class Products {
     });
   }
 
-  static async getTags(product_id: string) {
+  static async getTags(product_id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     const productToTag = await prisma.productToTag.findMany({
       where: {
         product_id,
@@ -85,7 +91,9 @@ export default class Products {
     return productToTag.map((item) => item.tag);
   }
 
-  static async getOrders(product_id: string) {
+  static async getOrders(product_id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     const productToOrder = await prisma.productToOrder.findMany({
       where: {
         product_id,
@@ -100,7 +108,7 @@ export default class Products {
 
   // UPDATE
   static async update(id: string, input: ProductInput, ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
       const product = await prisma.product.update({
@@ -117,7 +125,7 @@ export default class Products {
   }
 
   static async addTags(id: string, tagNames: string[], ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
       const existingProduct = await prisma.product.findUnique({
@@ -175,7 +183,7 @@ export default class Products {
   }
 
   static async removeTags(id: string, tagNames: string[], ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     const tags = await prisma.tag.findMany({
       where: {
@@ -217,7 +225,7 @@ export default class Products {
 
   // DELETE
   static async delete(id: string, ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
       await prisma.product.delete({

@@ -9,14 +9,18 @@ import { ApolloContext } from '@datalib/apolloServer';
 
 const resolvers = {
   Product: {
-    inventory: (parent: Product) => Inventories.find(parent.id), // product and inventory have the same id
-    tags: (parent: Product) => Products.getTags(parent.id),
-    orders: (parent: Product) => Products.getOrders(parent.id),
+    inventory: (parent: Product, _: never, ctx: ApolloContext) =>
+      Inventories.find(parent.id, ctx), // product and inventory have the same id
+    tags: (parent: Product, _: never, ctx: ApolloContext) =>
+      Products.getTags(parent.id, ctx),
+    orders: (parent: Product, _: never, ctx: ApolloContext) =>
+      Products.getOrders(parent.id, ctx),
   },
   Query: {
-    product: (_: never, args: { id: string }) => Products.find(args.id),
-    products: (_: never, args: { ids: string[] }) =>
-      Products.findMany(args.ids),
+    product: (_: never, args: { id: string }, ctx: ApolloContext) =>
+      Products.find(args.id, ctx),
+    products: (_: never, args: { ids: string[] }, ctx: ApolloContext) =>
+      Products.findMany(args.ids, ctx),
   },
   Mutation: {
     createProduct: (

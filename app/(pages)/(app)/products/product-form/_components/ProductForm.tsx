@@ -1,7 +1,7 @@
 'use client';
 import styles from './ProductForm.module.scss';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Textbox from '@components/Textbox/Textbox';
 import { FormEvent } from 'react';
 

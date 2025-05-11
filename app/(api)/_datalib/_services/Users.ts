@@ -6,7 +6,7 @@ import { ApolloContext } from '@datalib/apolloServer';
 export default class Users {
   // CREATE
   static async create(input: UserInput, ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     const user = await prisma.user.create({
       data: input,
@@ -16,7 +16,9 @@ export default class Users {
   }
 
   // READ
-  static async find(id: string) {
+  static async find(id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     return prisma.user.findUnique({
       where: {
         id,
@@ -24,7 +26,9 @@ export default class Users {
     });
   }
 
-  static async findMany(ids: string[]) {
+  static async findMany(ids: string[], ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     if (!ids) {
       return prisma.user.findMany();
     }
@@ -40,7 +44,7 @@ export default class Users {
 
   // UPDATE
   static async update(id: string, input: UserInput, ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
       const user = await prisma.user.update({
@@ -58,7 +62,7 @@ export default class Users {
 
   // DELETE
   static async delete(id: string, ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
       await prisma.user.delete({

@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ProductCard.module.scss';
 import Image from 'next/image';
 import {

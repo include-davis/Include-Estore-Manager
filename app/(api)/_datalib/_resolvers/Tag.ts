@@ -4,11 +4,14 @@ import { ApolloContext } from '@datalib/apolloServer';
 
 const resolvers = {
   Tag: {
-    products: (parent: Tag) => Tags.findProducts(parent.id),
+    products: (parent: Tag, _: never, ctx: ApolloContext) =>
+      Tags.findProducts(parent.id, ctx),
   },
   Query: {
-    tag: (_: never, args: { name: string }) => Tags.find(args.name),
-    tags: (_: never, args: { names: string[] }) => Tags.findMany(args.names),
+    tag: (_: never, args: { name: string }, ctx: ApolloContext) =>
+      Tags.find(args.name, ctx),
+    tags: (_: never, args: { names: string[] }, ctx: ApolloContext) =>
+      Tags.findMany(args.names, ctx),
   },
   Mutation: {
     createTag: (_: never, args: { input: TagInput }, ctx: ApolloContext) =>

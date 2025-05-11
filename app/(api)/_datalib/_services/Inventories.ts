@@ -5,7 +5,9 @@ import { ApolloContext } from '@datalib/apolloServer';
 
 export default class Inventories {
   // READ
-  static async find(id: string) {
+  static async find(id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     return prisma.inventory.findUnique({
       where: {
         id,
@@ -13,7 +15,9 @@ export default class Inventories {
     });
   }
 
-  static async findMany(ids: string[]) {
+  static async findMany(ids: string[], ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     if (!ids) {
       return prisma.inventory.findMany();
     }
@@ -29,7 +33,7 @@ export default class Inventories {
 
   // UPDATE
   static async update(id: string, input: InventoryInput, ctx: ApolloContext) {
-    if (!ctx.isOwner) return null; // TODO: Possibly some better error message.
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
       const inventory = await prisma.inventory.update({

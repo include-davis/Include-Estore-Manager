@@ -4,7 +4,7 @@ import Image from 'next/image';
 import includeArt from '/public/graphics/bg-abstract.svg';
 import google from '/public/icons/google.svg';
 import useToggle from '@hooks/useToggle';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { signupWithCredentials } from '@actions/Authorization';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -116,7 +116,7 @@ export default function SignUpPage() {
           </div>
           <div className={styles.input_container}>
             <input name="city" type="text" placeholder="City" />
-            <input name="state" type="text" placeholder="State (optional)" />
+            <input name="state" type="text" placeholder="State" />
             <input name="country" type="text" placeholder="Country" />
           </div>
           <div className={styles.input_container}>

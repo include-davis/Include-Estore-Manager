@@ -1,11 +1,12 @@
 'use client';
+
 import styles from './page.module.scss';
 import Image from 'next/image';
 import includeArt from '/public/graphics/bg-abstract.svg';
 import google from '/public/icons/google.svg';
 import useToggle from '@hooks/useToggle';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { loginWithCredentials } from '@actions/Authorization';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';

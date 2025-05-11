@@ -1,10 +1,13 @@
 import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { OrderInput, OrderProductInput } from '@datatypes/Order';
+import { ApolloContext } from '../apolloServer';
 
 export default class Orders {
   //CREATE
-  static async create(input: OrderInput) {
+  static async create(input: OrderInput, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     const order = prisma.order.create({
       data: {
         ...input, // Spread the input fields
@@ -18,7 +21,9 @@ export default class Orders {
 
   //READ -> get order and orders, also getProducts using the ProductToOrder table
 
-  static async find(id: string) {
+  static async find(id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     return prisma.order.findUnique({
       where: {
         id,
@@ -26,7 +31,9 @@ export default class Orders {
     });
   }
 
-  static async findMany(ids: string[]) {
+  static async findMany(ids: string[], ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     if (!ids) {
       return prisma.order.findMany();
     }
@@ -40,7 +47,9 @@ export default class Orders {
     });
   }
 
-  static async getProducts(order_id: string) {
+  static async getProducts(order_id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     const productToOrder = await prisma.productToOrder.findMany({
       where: {
         order_id,
@@ -59,7 +68,9 @@ export default class Orders {
   }
 
   //UPDATE
-  static async update(id: string, input: OrderInput) {
+  static async update(id: string, input: OrderInput, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       const order = await prisma.order.update({
         where: {
@@ -75,7 +86,13 @@ export default class Orders {
   }
 
   // these are the services for the mutations we have left
-  static async addProductToOrder(id: string, productToAdd: OrderProductInput) {
+  static async addProductToOrder(
+    id: string,
+    productToAdd: OrderProductInput,
+    ctx: ApolloContext
+  ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       const product_id = productToAdd.product_id;
       const productQuantity = productToAdd.quantity;
@@ -128,8 +145,13 @@ export default class Orders {
     }
   }
 
-  // static async removeProductFromOrder() {}
-  static async removeProductFromOrder(id: string, product_id: string) {
+  static async removeProductFromOrder(
+    id: string,
+    product_id: string,
+    ctx: ApolloContext
+  ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       await prisma.productToOrder.delete({
         where: {
@@ -160,8 +182,11 @@ export default class Orders {
 
   static async editProductQuantity(
     id: string,
-    productToUpdate: OrderProductInput
+    productToUpdate: OrderProductInput,
+    ctx: ApolloContext
   ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       const product_id = productToUpdate.product_id;
       const productQuantity = productToUpdate.quantity;
@@ -208,7 +233,9 @@ export default class Orders {
   }
 
   // DELETE
-  static async delete(id: string) {
+  static async delete(id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       const order = await prisma.order.findFirst({
         where: {
