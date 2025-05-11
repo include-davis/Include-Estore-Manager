@@ -1,10 +1,17 @@
+import ProtectedDisplay from '../_components/ProtectedDisplay/ProtectedDisplay';
 import Sidebar from '@components/Sidebar/Sidebar';
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <Sidebar />
-      <div style={{ width: '100%' }}>{children}</div>
-    </div>
+    <ProtectedDisplay failRedirectRoute="/login">
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <Sidebar />
+        <div style={{ width: '100%' }}>{children}</div>
+      </div>
+    </ProtectedDisplay>
   );
 }
