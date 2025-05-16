@@ -1,7 +1,19 @@
+'use client';
+import React, { useState } from 'react';
 import OrderCard from './_components/OrderCard';
 import styles from './page.module.scss';
 
 export default function ViewOrderCards() {
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  
+  const statusClassMap = {
+    All: 'all-btn',
+    Ordered: 'ordered',
+    Packed: 'packed',
+    Shipped: 'shipped',
+    'In Transit': 'transit',
+  };
+
   const dateTime = new Date('2024-03-01T10:36:01.516Z');
   const progressList = [
     {
@@ -57,10 +69,11 @@ export default function ViewOrderCards() {
     },
   ];
   return (
+    
     <div className={styles.page_container}>
       <div className={styles.orders}>
         <h4 className={styles.text}>Orders</h4>
-        <form className={styles.order_form}>
+        
           <div className={styles.searchbar}>
             <input
               className={styles.search}
@@ -72,15 +85,27 @@ export default function ViewOrderCards() {
               Search
             </button>
           </div>
-          <div className={styles.filter}>
-            <select id="filter" name="filter">
-              <option value="filter">Filter</option>
-            </select>
-          </div>
-        </form>
+          
+       
       </div>
       <div className={styles.progress}>
-        <h4>Progress</h4>
+        <h4>In Progress</h4>
+        <div className={styles.status}>
+          {['All', 'Ordered', 'Packed', 'Shipped', 'In Transit'].map((status) => (
+          <button
+            key={status}
+            type="button"
+            className={`
+              ${styles.all} 
+              ${styles[statusClassMap[status]]} 
+              ${selectedStatus === status ? styles.clicked : ''}
+            `}
+            onClick={() => setSelectedStatus(status)}
+          >
+            {status}
+          </button>
+        ))}
+        </div>
         <div className={styles.order_cards}>
           {progressList.map((item, index) => (
             <div key={index}>

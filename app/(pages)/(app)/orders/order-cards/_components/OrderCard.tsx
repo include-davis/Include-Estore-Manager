@@ -17,10 +17,10 @@ interface TextboxProps {
 
 const OrderCard: React.FC<TextboxProps> = (props) => {
   const itemStatuses = [
-    'Customer',
-    'Payment',
-    'Shipping',
-    'Confirm',
+    'Ordered',
+    'Packed',
+    'Shipped',
+    'In Transit',
     'Delivered',
   ];
 
@@ -43,29 +43,31 @@ const OrderCard: React.FC<TextboxProps> = (props) => {
   }
   return (
     <div className={styles.container}>
-      <div className={styles.item_image}>
-        <Image src={props.image} alt="product image" fill={true} />
-      </div>
-      <div className={styles.item_info}>
-        <h4>{props.title}</h4>
-        <p>Order Placed: {props.date.toDateString()}</p>
-        <div className={styles.item_status}>
-          <div className={styles.status_bar}></div>
-          {itemStatuses.map((status, index) => (
-            <div key={index} className={styles.status_options}>
-              {props.status <= 4 &&
-              displayIcon(props.status, props.icon, index) !== '' ? (
-                <Image
-                  src={displayIcon(props.status, props.icon, index)}
-                  alt="check icon"
-                />
-              ) : (
-                <div className={styles.status_circle}></div>
-              )}
-              <p>{status}</p>
-            </div>
-          ))}
+      <div className={styles.imginfo}>
+        <div className={styles.item_image}>
+          <Image src={props.image} alt="product image" fill={true} />
         </div>
+        <div className={styles.item_info}>
+          <p>{props.title}</p>
+          <p>Order Placed: {props.date.toDateString()}</p>
+          <div className={styles.item_status}>
+            <div className={styles.status_bar}></div>
+            {itemStatuses.map((status, index) => (
+              <div key={index} className={styles.status_options}>
+                {props.status <= 4 &&
+                displayIcon(props.status, props.icon, index) !== '' ? (
+                  <Image
+                    src={displayIcon(props.status, props.icon, index)}
+                    alt="check icon"
+                  />
+                ) : (
+                  <div className={styles.status_circle}></div>
+                )}
+                <p>{status}</p>
+              </div>
+            ))}
+          </div>
+      </div>
       </div>
       <button className={styles.info_button}>
         <p className={styles.text}>View Order</p>
