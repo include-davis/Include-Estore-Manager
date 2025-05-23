@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "db:migrate": "prisma format && prisma migrate dev",
+    "db:reset": "prisma migrate reset",
     "db:view": "prisma studio",
     "dev": "next dev",
     "schema:format": "prisma format",
