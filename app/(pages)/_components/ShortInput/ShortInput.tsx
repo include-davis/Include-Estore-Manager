@@ -5,7 +5,7 @@ interface ShortInputProps {
   label: string;
   value: string | number;
   type: 'text' | 'number';
-  updateValue?: (value: any) => void;
+  updateValue?: (value: string | number) => void;
   disabled?: boolean;
   required?: boolean;
 }

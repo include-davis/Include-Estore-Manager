@@ -2,7 +2,6 @@
 import styles from './ProductForm.module.scss';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import Textbox from '@components/Textbox/Textbox';
 import { FormEvent } from 'react';
 import AboutPage from './AboutPage';
 import DetailsPage from './DetailsPage';
