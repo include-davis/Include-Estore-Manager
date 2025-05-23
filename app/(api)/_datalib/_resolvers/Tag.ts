@@ -1,17 +1,23 @@
 import Tags from '../_services/Tags';
 import { Tag, TagInput } from '@datatypes/Tag';
+import { ApolloContext } from '@datalib/apolloServer';
 
 const resolvers = {
   Tag: {
-    products: (parent: Tag) => Tags.findProducts(parent.id),
+    products: (parent: Tag, _: never, ctx: ApolloContext) =>
+      Tags.findProducts(parent.id, ctx),
   },
   Query: {
-    tag: (_: never, args: { name: string }) => Tags.find(args.name),
-    tags: (_: never, args: { names: string[] }) => Tags.findMany(args.names),
+    tag: (_: never, args: { name: string }, ctx: ApolloContext) =>
+      Tags.find(args.name, ctx),
+    tags: (_: never, args: { names: string[] }, ctx: ApolloContext) =>
+      Tags.findMany(args.names, ctx),
   },
   Mutation: {
-    createTag: (_: never, args: { input: TagInput }) => Tags.create(args.input),
-    deleteTag: (_: never, args: { name: string }) => Tags.delete(args.name),
+    createTag: (_: never, args: { input: TagInput }, ctx: ApolloContext) =>
+      Tags.create(args.input, ctx),
+    deleteTag: (_: never, args: { name: string }, ctx: ApolloContext) =>
+      Tags.delete(args.name, ctx),
   },
 };
 

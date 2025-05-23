@@ -6,10 +6,11 @@ const typeDefs = gql`
     name: String!
     email: String!
     password: String!
+    phone: String!
     shipping_address_line_1: String!
     shipping_address_line_2: String
     shipping_city: String!
-    shipping_state: String
+    shipping_state: String!
     shipping_country: String!
     shipping_zip: Int!
   }
@@ -18,10 +19,11 @@ const typeDefs = gql`
     name: String!
     email: String!
     password: String!
+    phone: String!
     shipping_address_line_1: String!
     shipping_address_line_2: String
     shipping_city: String!
-    shipping_state: String
+    shipping_state: String!
     shipping_country: String!
     shipping_zip: Int!
   }
@@ -30,6 +32,7 @@ const typeDefs = gql`
     name: String
     email: String
     password: String
+    phone: String
     shipping_address_line_1: String
     shipping_address_line_2: String
     shipping_city: String
@@ -40,7 +43,7 @@ const typeDefs = gql`
 
   type Query {
     user(id: ID!): User
-    users(ids: [ID!]): [User]
+    users(ids: [ID]): [User]
   }
 
   type Mutation {

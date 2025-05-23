@@ -3,6 +3,7 @@ export type User = {
   name: string;
   email: string;
   password: string;
+  phone: string;
   shipping_address_line_1: string;
   shipping_address_line_2: string;
   shipping_city: string;
@@ -15,6 +16,7 @@ export type UserInput = {
   name: string;
   email: string;
   password: string;
+  phone: string;
   shipping_address_line_1: string;
   shipping_address_line_2: string;
   shipping_city: string;
