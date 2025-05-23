@@ -39,7 +39,9 @@ jobs:
           --yes
           --prod
           --env NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.GRAPHQL_ENDPOINT }}
+          --env DATABASE_URL=${{ secrets.DATABASE_URL }}
           --build-env NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.GRAPHQL_ENDPOINT }}
+          --build-env DATABASE_URL=${{ secrets.DATABASE_URL }}
 
       - name: Success
         run: echo "🛠️ Deploy successful 🛠️"
