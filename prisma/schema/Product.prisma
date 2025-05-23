@@ -1,0 +1,16 @@
+model Product {
+  id                   String           @id @default(uuid())
+  inventory            Inventory?
+  tags                 ProductToTag[]
+  name                 String
+  price                Float
+  discount             Float?
+  description          String
+  details              String
+  weight               Int
+  height               Int
+  width                Int
+  depth                Int
+  special_label_needed Boolean
+  products             ProductToOrder[]
+}

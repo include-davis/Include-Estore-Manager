@@ -1,0 +1,141 @@
+@use 'media';
+
+.page_container {
+    display: flex;
+    flex-direction: row;
+}
+
+.login_container {
+    background-color: var(--background-secondary);
+    width: 40%;
+    padding: var(--large-spacer);
+    display: flex;
+    flex-direction: column;
+    gap: var(--medium-spacer);
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--tiny-spacer);
+
+    h4 {
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 0.9rem;
+    }
+
+    span {
+        color: var(--purple);
+        cursor: pointer;
+    }
+}
+
+.form_container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-spacer);
+
+    .input_container {
+        display: flex;
+        flex-direction: column;
+        gap: var(--tiny-spacer);
+        margin-top: var(--small-spacer);
+
+        input {
+            padding: var(--small-spacer);
+            font-size: 0.9rem;
+            outline: none;
+            border: 1px solid var(--gray-500);
+            border-radius: 5px;
+            width: 100%;
+        }
+    }
+
+    .submit {
+        padding: var(--small-spacer);
+        background-color: var(--purple);
+        color: var(--text-light);
+        font-weight: 500;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        margin: var(--medium-spacer) 0;
+        cursor: pointer;
+    }
+}
+
+.google_signin {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-spacer);
+}
+
+.divider {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: var(--tiny-spacer);
+
+    .line {
+        height: 2px;
+        background-color: var(--gray-300);
+        width: 100%;
+    }
+
+    p {
+        font-size: 0.8rem;
+        color: var(--gray-700);
+        white-space: nowrap;
+    }
+}
+
+.google_button {
+    padding: var(--small-spacer);
+    margin-top: var(--small-spacer);
+    display: flex;
+    flex-direction: row;
+    gap: var(--small-spacer);
+    justify-content: center;
+    width: 100%;
+    background-color: var(--background-secondary);
+    border: 1px solid var(--gray-500);
+    border-radius: 5px;
+    cursor: pointer;
+
+    p {
+        font-weight: 500;
+    }
+}
+
+.password_container {
+    position: relative;
+    width: 100%;
+
+    .eye_icon {
+        position: absolute;
+        right: var(--tiny-spacer);
+        top: 30%;
+        opacity: 50%;
+        cursor: pointer;
+    }
+
+    .active_eye_icon {
+        position: absolute;
+        right: var(--tiny-spacer);
+        top: 30%;
+        opacity: 100%;
+        cursor: pointer;
+    }
+}
+
+.image_container {
+    background-color: var(--light-purple);
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

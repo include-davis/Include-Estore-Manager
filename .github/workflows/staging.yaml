@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'main'
+  workflow_dispatch:
 
 jobs:
   deploy_staging:
@@ -24,6 +25,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      
+      - name: Run database migrations
+        run: npm run db:migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Lint and build code, then publish to Vercel
         run: >
@@ -33,7 +39,13 @@ jobs:
           --yes
           --prod
           --env NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.GRAPHQL_ENDPOINT }}
+          --env DATABASE_URL=${{ secrets.DATABASE_URL }}
+          --env AUTH_SECRET=${{ secrets.AUTH_SECRET }}
+          --env API_KEY=${{ secrets.API_KEY }}
           --build-env NEXT_PUBLIC_GRAPHQL_ENDPOINT=${{ vars.GRAPHQL_ENDPOINT }}
+          --build-env DATABASE_URL=${{ secrets.DATABASE_URL }}
+          --build-env AUTH_SECRET=${{ secrets.AUTH_SECRET }}
+          --build-env API_KEY=${{ secrets.API_KEY }}
 
       - name: Success
         run: echo "🛠️ Deploy successful 🛠️"
