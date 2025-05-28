@@ -65,6 +65,11 @@ const typeDefs = gql`
     quantity: Int!
   }
 
+  type ProcessOrderResult {
+    order: Order!
+    clientSecret: String!
+  }
+
   type Query {
     order(id: ID!): Order
     orders(id: [ID]): [Order]
@@ -77,6 +82,10 @@ const typeDefs = gql`
     addProductToOrder(id: ID!, productToAdd: OrderProductInput!): Order
     removeProductFromOrder(id: ID!, product_id: ID!): Order
     editProductQuantity(id: ID!, productToUpdate: OrderProductInput!): Order
+    processOrder(
+      input: OrderInput!
+      products: [OrderProductInput!]!
+    ): ProcessOrderResult
   }
 `;
 

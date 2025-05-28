@@ -273,4 +273,17 @@ export default class Orders {
       return false;
     }
   }
+
+  // PROCESS W/STRIPE
+  static async processOrder(
+    input: OrderInput,
+    products: OrderProductInput[],
+    ctx: ApolloContext
+  ) {
+    // calculate cart total
+    // create new order w/createOrder
+    // stripe paymentintent
+    // update order w/ paymentintent id
+    // return order w/ client_secret
+  }
 }
