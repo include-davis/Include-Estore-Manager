@@ -31,19 +31,29 @@ export default class Orders {
     });
   }
 
-  static async findMany(ids: string[], ctx: ApolloContext) {
+  static async findMany(
+    statuses: string[],
+    offset: number,
+    limit: number,
+    ctx: ApolloContext
+  ) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
-    if (!ids) {
-      return prisma.order.findMany();
-    }
+    if (offset < 0 || limit <= 0) return null; // TODO: Possible some better error message.
+
+    /*
+      If statuses is null, or has no length, then do not filter by statuses.
+     */
+    const filter =
+      !statuses || statuses.length > 0 ? { status: { in: statuses } } : {};
 
     return prisma.order.findMany({
-      where: {
-        id: {
-          in: ids,
-        },
+      where: filter,
+      orderBy: {
+        created_at: 'desc',
       },
+      skip: offset * limit,
+      take: limit,
     });
   }
 
