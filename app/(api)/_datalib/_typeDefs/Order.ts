@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 const typeDefs = gql`
   type Order {
     id: ID!
+    paymentIntentId: String
     products: [OrderProduct]
     customer_name: String!
     customer_email: String!
