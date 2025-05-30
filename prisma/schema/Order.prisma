@@ -1,5 +1,6 @@
 model Order {
   id                      String           @id @default(uuid())
+  paymentIntentId         String?
   customer_name           String
   customer_email          String
   customer_phone_num      String
