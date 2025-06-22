@@ -1,0 +1,68 @@
+@use 'media';
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap');
+
+.container {
+    width: 882px;
+    height: 120px;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 4px 20px 0px #3333330F;
+    border-radius: 10px;
+    display:flex;
+    align-items: center;
+}
+.text {
+    font-size: 18px;
+    font-family: 'Manrope', sans-serif;
+}
+.material {
+    width: 300px;
+    height: 80px;
+    margin-right: 121px;
+    display: flex;
+    align-items: center;
+    
+}
+.image {
+    width: 80px;
+    height: 80px;
+    margin-right: 16px;
+    border-radius: 10px;
+}
+.materialtext {
+    flex-direction: column;
+    gap: 8px;
+    width: 124px;
+    height: 52px;
+    font-size: 18px;
+    line-height: 120%;
+    font-family: 'Manrope', sans-serif;
+}
+.priceBreakdown {
+    margin-right: 121px;
+    width: 200px;
+    height: 22px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+    line-height: 120%;
+    display: flex;
+}
+.number
+{
+    width: 8px;
+    margin-right: 24px;
+}
+.times
+{
+    width: 11px;
+    margin-right: 24px;
+}
+.pricetimes {
+    width: 57px;
+}
+.price {
+    width: 100px;
+    height: 22px;
+    font-family: 'Manrope', sans-serif;
+    font-size: 18px;
+}
