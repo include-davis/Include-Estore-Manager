@@ -347,7 +347,7 @@ export default class Orders {
       data: {
         ...input,
         total: total,
-        status: 'pending payment',
+        status: 'pending',
         created_at: new Date(),
         products: {
           create: products.map((p) => ({
