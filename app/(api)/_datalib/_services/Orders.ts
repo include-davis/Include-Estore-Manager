@@ -7,6 +7,7 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-05-28.basil', // explicitly set the API version
 });
+import { Prisma } from '@prisma/client';
 
 export default class Orders {
   //CREATE
@@ -25,8 +26,7 @@ export default class Orders {
   }
 
   //READ -> get order and orders, also getProducts using the ProductToOrder table
-
-  static async find(id: string, ctx: ApolloContext) {
+  static async find(id: number, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     return prisma.order.findUnique({
@@ -36,23 +36,62 @@ export default class Orders {
     });
   }
 
-  static async findMany(ids: string[], ctx: ApolloContext) {
+  static async findMany(
+    statuses: string[],
+    search: string,
+    offset: number,
+    limit: number,
+    ctx: ApolloContext
+  ) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
-    if (!ids) {
-      return prisma.order.findMany();
+    if (offset < 0 || limit <= 0) return null;
+
+    const whereClause: Prisma.OrderWhereInput = {};
+
+    if (statuses && statuses.length > 0) {
+      whereClause.status = { in: statuses };
+    }
+
+    if (search) {
+      const searchConditions: Prisma.OrderWhereInput[] = [
+        { customer_name: { contains: search, mode: 'insensitive' } },
+        { customer_email: { contains: search, mode: 'insensitive' } },
+        { customer_phone_num: { contains: search, mode: 'insensitive' } },
+      ];
+
+      const searchAsNumber = parseInt(search, 10);
+      if (!isNaN(searchAsNumber)) {
+        searchConditions.push({ id: searchAsNumber });
+        searchConditions.push({
+          id: {
+            in: await prisma.order
+              .findMany({
+                select: { id: true },
+              })
+              .then((orders) =>
+                orders
+                  .filter((order) => order.id.toString().includes(search))
+                  .map((order) => order.id)
+              ),
+          },
+        });
+      }
+
+      whereClause.OR = searchConditions;
     }
 
     return prisma.order.findMany({
-      where: {
-        id: {
-          in: ids,
-        },
+      where: whereClause,
+      orderBy: {
+        created_at: 'desc',
       },
+      skip: offset * limit,
+      take: limit,
     });
   }
 
-  static async getProducts(order_id: string, ctx: ApolloContext) {
+  static async getProducts(order_id: number, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     const productToOrder = await prisma.productToOrder.findMany({
@@ -73,7 +112,7 @@ export default class Orders {
   }
 
   //UPDATE
-  static async update(id: string, input: OrderInput, ctx: ApolloContext) {
+  static async update(id: number, input: OrderInput, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
@@ -92,7 +131,7 @@ export default class Orders {
 
   // these are the services for the mutations we have left
   static async addProductToOrder(
-    id: string,
+    id: number,
     productToAdd: OrderProductInput,
     ctx: ApolloContext
   ) {
@@ -151,7 +190,7 @@ export default class Orders {
   }
 
   static async removeProductFromOrder(
-    id: string,
+    id: number,
     product_id: string,
     ctx: ApolloContext
   ) {
@@ -186,7 +225,7 @@ export default class Orders {
   }
 
   static async editProductQuantity(
-    id: string,
+    id: number,
     productToUpdate: OrderProductInput,
     ctx: ApolloContext
   ) {
@@ -238,7 +277,7 @@ export default class Orders {
   }
 
   // DELETE
-  static async delete(id: string, ctx: ApolloContext) {
+  static async delete(id: number, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
