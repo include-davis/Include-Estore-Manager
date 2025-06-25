@@ -17,6 +17,7 @@ export default class Orders {
     const order = prisma.order.create({
       data: {
         ...input, // Spread the input fields
+        total: 0,
         status: 'pending', // Default status
         created_at: new Date(), // Current timestamp
       },
@@ -345,7 +346,8 @@ export default class Orders {
     const createdOrder = await prisma.order.create({
       data: {
         ...input,
-        status: 'pending payment',
+        total: total,
+        status: 'pending',
         created_at: new Date(),
         products: {
           create: products.map((p) => ({
@@ -372,6 +374,8 @@ export default class Orders {
       data: { paymentIntentId: paymentIntent.id },
       include: { products: { include: { product: true } } },
     });
+
+    revalidateCache(['orders', 'products']);
 
     return {
       order: updatedOrder,

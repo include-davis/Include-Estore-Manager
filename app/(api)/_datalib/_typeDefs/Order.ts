@@ -4,6 +4,7 @@ const typeDefs = gql`
   type Order {
     id: ID!
     paymentIntentId: String
+    total: Float!
     products: [OrderProduct]
     customer_name: String!
     customer_email: String!
@@ -40,6 +41,7 @@ const typeDefs = gql`
   }
 
   input OrderUpdateInput {
+    total: Float
     customer_name: String
     customer_email: String
     customer_phone_num: String
