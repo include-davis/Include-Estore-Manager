@@ -1,5 +1,7 @@
 model Order {
   id                      Int              @id @default(autoincrement())
+  paymentIntentId         String?
+  total                   Float
   customer_name           String
   customer_email          String
   customer_phone_num      String

@@ -50,6 +50,11 @@ const resolvers = {
       },
       ctx: ApolloContext
     ) => Orders.editProductQuantity(args.id, args.productToUpdate, ctx),
+    processOrder: async (
+      _: never,
+      args: { input: OrderInput; products: [OrderProductInput] },
+      ctx: ApolloContext
+    ) => Orders.processOrder(args.input, args.products, ctx),
   },
 };
 

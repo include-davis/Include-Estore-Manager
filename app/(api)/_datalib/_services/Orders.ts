@@ -3,6 +3,11 @@ import prisma from '../_prisma/client';
 import { OrderInput, OrderProductInput } from '@datatypes/Order';
 import { ApolloContext } from '../apolloServer';
 import { Prisma } from '@prisma/client';
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-05-28.basil', // explicitly set the API version
+});
 
 export default class Orders {
   //CREATE
@@ -12,6 +17,7 @@ export default class Orders {
     const order = prisma.order.create({
       data: {
         ...input, // Spread the input fields
+        total: 0,
         status: 'pending', // Default status
         created_at: new Date(), // Current timestamp
       },
@@ -311,5 +317,69 @@ export default class Orders {
     } catch (e) {
       return false;
     }
+  }
+
+  // PROCESS W/STRIPE
+  static async processOrder(
+    input: OrderInput,
+    products: OrderProductInput[],
+    ctx: ApolloContext
+  ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+    // Lookup product prices from DB
+    const productIds = products.map((p) => p.product_id);
+    const dbProducts = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+    });
+
+    const productMap = Object.fromEntries(dbProducts.map((p) => [p.id, p]));
+
+    const total = products.reduce((sum, item) => {
+      const product = productMap[item.product_id];
+      return sum + (product?.price ?? 0) * item.quantity;
+    }, 0);
+
+    // Stripe counts payment amounts in cents
+    const amountInCents = Math.round(total * 100);
+
+    // Create the order
+    const createdOrder = await prisma.order.create({
+      data: {
+        ...input,
+        total: total,
+        status: 'pending payment',
+        created_at: new Date(),
+        products: {
+          create: products.map((p) => ({
+            quantity: p.quantity,
+            product: { connect: { id: p.product_id } },
+          })),
+        },
+      },
+      include: { products: { include: { product: true } } },
+    });
+
+    // Create Stripe PaymentIntent
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amountInCents,
+      currency: 'usd',
+      metadata: {
+        orderId: createdOrder.id,
+      },
+    });
+
+    // Save paymentIntentId to order
+    const updatedOrder = await prisma.order.update({
+      where: { id: createdOrder.id },
+      data: { paymentIntentId: paymentIntent.id },
+      include: { products: { include: { product: true } } },
+    });
+
+    revalidateCache(['orders', 'products']);
+
+    return {
+      order: updatedOrder,
+      clientSecret: paymentIntent.client_secret,
+    };
   }
 }
