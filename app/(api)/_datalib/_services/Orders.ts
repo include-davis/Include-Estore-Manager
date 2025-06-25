@@ -2,12 +2,12 @@ import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { OrderInput, OrderProductInput } from '@datatypes/Order';
 import { ApolloContext } from '../apolloServer';
+import { Prisma } from '@prisma/client';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-05-28.basil', // explicitly set the API version
 });
-import { Prisma } from '@prisma/client';
 
 export default class Orders {
   //CREATE
