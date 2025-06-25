@@ -8,7 +8,7 @@ const resolvers = {
       Orders.getProducts(parent.id, ctx),
   },
   Query: {
-    order: (_: never, args: { id: string }, ctx: ApolloContext) =>
+    order: (_: never, args: { id: number }, ctx: ApolloContext) =>
       Orders.find(args.id, ctx),
     orders: (
       _: never,
@@ -25,27 +25,27 @@ const resolvers = {
   Mutation: {
     updateOrder: (
       _: never,
-      args: { id: string; input: OrderInput },
+      args: { id: number; input: OrderInput },
       ctx: ApolloContext
     ) => Orders.update(args.id, args.input, ctx),
-    deleteOrder: (_: never, args: { id: string }, ctx: ApolloContext) =>
+    deleteOrder: (_: never, args: { id: number }, ctx: ApolloContext) =>
       Orders.delete(args.id, ctx),
     createOrder: (_: never, args: { input: OrderInput }, ctx: ApolloContext) =>
       Orders.create(args.input, ctx),
     addProductToOrder: (
       _: never,
-      args: { id: string; productToAdd: OrderProductInput },
+      args: { id: number; productToAdd: OrderProductInput },
       ctx: ApolloContext
     ) => Orders.addProductToOrder(args.id, args.productToAdd, ctx),
     removeProductFromOrder: (
       _: never,
-      args: { id: string; product_id: string },
+      args: { id: number; product_id: string },
       ctx: ApolloContext
     ) => Orders.removeProductFromOrder(args.id, args.product_id, ctx),
     editProductQuantity: (
       _: never,
       args: {
-        id: string;
+        id: number;
         productToUpdate: OrderProductInput;
       },
       ctx: ApolloContext

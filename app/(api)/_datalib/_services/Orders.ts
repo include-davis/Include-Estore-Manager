@@ -21,7 +21,7 @@ export default class Orders {
   }
 
   //READ -> get order and orders, also getProducts using the ProductToOrder table
-  static async find(id: string, ctx: ApolloContext) {
+  static async find(id: number, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     return prisma.order.findUnique({
@@ -49,12 +49,31 @@ export default class Orders {
     }
 
     if (search) {
-      whereClause.OR = [
-        { id: { contains: search, mode: 'insensitive' } },
+      const searchConditions: Prisma.OrderWhereInput[] = [
         { customer_name: { contains: search, mode: 'insensitive' } },
         { customer_email: { contains: search, mode: 'insensitive' } },
         { customer_phone_num: { contains: search, mode: 'insensitive' } },
       ];
+
+      const searchAsNumber = parseInt(search, 10);
+      if (!isNaN(searchAsNumber)) {
+        searchConditions.push({ id: searchAsNumber });
+        searchConditions.push({
+          id: {
+            in: await prisma.order
+              .findMany({
+                select: { id: true },
+              })
+              .then((orders) =>
+                orders
+                  .filter((order) => order.id.toString().includes(search))
+                  .map((order) => order.id)
+              ),
+          },
+        });
+      }
+
+      whereClause.OR = searchConditions;
     }
 
     return prisma.order.findMany({
@@ -67,7 +86,7 @@ export default class Orders {
     });
   }
 
-  static async getProducts(order_id: string, ctx: ApolloContext) {
+  static async getProducts(order_id: number, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     const productToOrder = await prisma.productToOrder.findMany({
@@ -88,7 +107,7 @@ export default class Orders {
   }
 
   //UPDATE
-  static async update(id: string, input: OrderInput, ctx: ApolloContext) {
+  static async update(id: number, input: OrderInput, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
@@ -107,7 +126,7 @@ export default class Orders {
 
   // these are the services for the mutations we have left
   static async addProductToOrder(
-    id: string,
+    id: number,
     productToAdd: OrderProductInput,
     ctx: ApolloContext
   ) {
@@ -166,7 +185,7 @@ export default class Orders {
   }
 
   static async removeProductFromOrder(
-    id: string,
+    id: number,
     product_id: string,
     ctx: ApolloContext
   ) {
@@ -201,7 +220,7 @@ export default class Orders {
   }
 
   static async editProductQuantity(
-    id: string,
+    id: number,
     productToUpdate: OrderProductInput,
     ctx: ApolloContext
   ) {
@@ -253,7 +272,7 @@ export default class Orders {
   }
 
   // DELETE
-  static async delete(id: string, ctx: ApolloContext) {
+  static async delete(id: number, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
