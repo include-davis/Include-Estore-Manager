@@ -12,9 +12,15 @@ const resolvers = {
       Orders.find(args.id, ctx),
     orders: (
       _: never,
-      args: { statuses: string[]; offset: number; limit: number },
+      args: {
+        statuses: string[];
+        search: string;
+        offset: number;
+        limit: number;
+      },
       ctx: ApolloContext
-    ) => Orders.findMany(args.statuses, args.offset, args.limit, ctx),
+    ) =>
+      Orders.findMany(args.statuses, args.search, args.offset, args.limit, ctx),
   },
   Mutation: {
     updateOrder: (

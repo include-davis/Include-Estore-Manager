@@ -67,7 +67,12 @@ const typeDefs = gql`
 
   type Query {
     order(id: ID!): Order
-    orders(statuses: [String], offset: Int!, limit: Int!): [Order]
+    orders(
+      statuses: [String]
+      search: String
+      offset: Int!
+      limit: Int!
+    ): [Order]
   }
 
   type Mutation {

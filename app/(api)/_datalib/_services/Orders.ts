@@ -2,6 +2,7 @@ import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { OrderInput, OrderProductInput } from '@datatypes/Order';
 import { ApolloContext } from '../apolloServer';
+import { Prisma } from '@prisma/client';
 
 export default class Orders {
   //CREATE
@@ -20,7 +21,6 @@ export default class Orders {
   }
 
   //READ -> get order and orders, also getProducts using the ProductToOrder table
-
   static async find(id: string, ctx: ApolloContext) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
@@ -33,22 +33,32 @@ export default class Orders {
 
   static async findMany(
     statuses: string[],
+    search: string,
     offset: number,
     limit: number,
     ctx: ApolloContext
   ) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
-    if (offset < 0 || limit <= 0) return null; // TODO: Possible some better error message.
+    if (offset < 0 || limit <= 0) return null;
 
-    /*
-      If statuses is null, or has no length, then do not filter by statuses.
-     */
-    const filter =
-      !statuses || statuses.length > 0 ? { status: { in: statuses } } : {};
+    const whereClause: Prisma.OrderWhereInput = {};
+
+    if (statuses && statuses.length > 0) {
+      whereClause.status = { in: statuses };
+    }
+
+    if (search) {
+      whereClause.OR = [
+        { id: { contains: search, mode: 'insensitive' } },
+        { customer_name: { contains: search, mode: 'insensitive' } },
+        { customer_email: { contains: search, mode: 'insensitive' } },
+        { customer_phone_num: { contains: search, mode: 'insensitive' } },
+      ];
+    }
 
     return prisma.order.findMany({
-      where: filter,
+      where: whereClause,
       orderBy: {
         created_at: 'desc',
       },
