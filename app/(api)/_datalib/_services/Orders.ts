@@ -5,10 +5,6 @@ import { ApolloContext } from '../apolloServer';
 import { Prisma } from '@prisma/client';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-05-28.basil', // explicitly set the API version
-});
-
 export default class Orders {
   //CREATE
   static async create(input: OrderInput, ctx: ApolloContext) {
@@ -328,6 +324,10 @@ export default class Orders {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
     try {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: '2025-05-28.basil', // explicitly set the API version
+      });
+
       // Lookup product prices from DB
       const productIds = products.map((p) => p.product_id);
       const dbProducts = await prisma.product.findMany({
