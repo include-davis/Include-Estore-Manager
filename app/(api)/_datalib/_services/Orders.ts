@@ -3,11 +3,11 @@ import prisma from '../_prisma/client';
 import { OrderInput, OrderProductInput } from '@datatypes/Order';
 import { ApolloContext } from '../apolloServer';
 import { Prisma } from '@prisma/client';
-import Stripe from 'stripe';
+// import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-05-28.basil', // explicitly set the API version
-});
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+//   apiVersion: '2025-05-28.basil', // explicitly set the API version
+// });
 
 export default class Orders {
   //CREATE
@@ -327,64 +327,66 @@ export default class Orders {
   ) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
-    try {
-      // Lookup product prices from DB
-      const productIds = products.map((p) => p.product_id);
-      const dbProducts = await prisma.product.findMany({
-        where: { id: { in: productIds } },
-      });
+    return null;
 
-      const productMap = Object.fromEntries(dbProducts.map((p) => [p.id, p]));
+    // try {
+    //   // Lookup product prices from DB
+    //   const productIds = products.map((p) => p.product_id);
+    //   const dbProducts = await prisma.product.findMany({
+    //     where: { id: { in: productIds } },
+    //   });
 
-      const total = products.reduce((sum, item) => {
-        const product = productMap[item.product_id];
-        return sum + (product?.price ?? 0) * item.quantity;
-      }, 0);
+    //   const productMap = Object.fromEntries(dbProducts.map((p) => [p.id, p]));
 
-      // Stripe counts payment amounts in cents
-      const amountInCents = Math.round(total * 100);
+    //   const total = products.reduce((sum, item) => {
+    //     const product = productMap[item.product_id];
+    //     return sum + (product?.price ?? 0) * item.quantity;
+    //   }, 0);
 
-      // Create the order
-      const createdOrder = await prisma.order.create({
-        data: {
-          ...input,
-          total: total,
-          status: 'pending',
-          created_at: new Date(),
-          products: {
-            create: products.map((p) => ({
-              quantity: p.quantity,
-              product: { connect: { id: p.product_id } },
-            })),
-          },
-        },
-        include: { products: { include: { product: true } } },
-      });
+    //   // Stripe counts payment amounts in cents
+    //   const amountInCents = Math.round(total * 100);
 
-      // Create Stripe PaymentIntent
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: amountInCents,
-        currency: 'usd',
-        metadata: {
-          orderId: createdOrder.id,
-        },
-      });
+    //   // Create the order
+    //   const createdOrder = await prisma.order.create({
+    //     data: {
+    //       ...input,
+    //       total: total,
+    //       status: 'pending',
+    //       created_at: new Date(),
+    //       products: {
+    //         create: products.map((p) => ({
+    //           quantity: p.quantity,
+    //           product: { connect: { id: p.product_id } },
+    //         })),
+    //       },
+    //     },
+    //     include: { products: { include: { product: true } } },
+    //   });
 
-      // Save paymentIntentId to order
-      const updatedOrder = await prisma.order.update({
-        where: { id: createdOrder.id },
-        data: { paymentIntentId: paymentIntent.id },
-        include: { products: { include: { product: true } } },
-      });
+    //   // Create Stripe PaymentIntent
+    //   const paymentIntent = await stripe.paymentIntents.create({
+    //     amount: amountInCents,
+    //     currency: 'usd',
+    //     metadata: {
+    //       orderId: createdOrder.id,
+    //     },
+    //   });
 
-      revalidateCache(['orders', 'products']);
+    //   // Save paymentIntentId to order
+    //   const updatedOrder = await prisma.order.update({
+    //     where: { id: createdOrder.id },
+    //     data: { paymentIntentId: paymentIntent.id },
+    //     include: { products: { include: { product: true } } },
+    //   });
 
-      return {
-        order: updatedOrder,
-        clientSecret: paymentIntent.client_secret,
-      };
-    } catch (e) {
-      return e;
-    }
+    //   revalidateCache(['orders', 'products']);
+
+    //   return {
+    //     order: updatedOrder,
+    //     clientSecret: paymentIntent.client_secret,
+    //   };
+    // } catch (e) {
+    //   return e;
+    // }
   }
 }
