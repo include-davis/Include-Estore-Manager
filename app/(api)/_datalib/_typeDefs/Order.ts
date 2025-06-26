@@ -3,6 +3,8 @@ import gql from 'graphql-tag';
 const typeDefs = gql`
   type Order {
     id: ID!
+    paymentIntentId: String
+    total: Float!
     products: [OrderProduct]
     customer_name: String!
     customer_email: String!
@@ -39,6 +41,7 @@ const typeDefs = gql`
   }
 
   input OrderUpdateInput {
+    total: Float
     customer_name: String
     customer_email: String
     customer_phone_num: String
@@ -65,9 +68,19 @@ const typeDefs = gql`
     quantity: Int!
   }
 
+  type ProcessOrderResult {
+    order: Order!
+    clientSecret: String!
+  }
+
   type Query {
     order(id: ID!): Order
-    orders(id: [ID]): [Order]
+    orders(
+      statuses: [String]
+      search: String
+      offset: Int!
+      limit: Int!
+    ): [Order]
   }
 
   type Mutation {
@@ -77,6 +90,10 @@ const typeDefs = gql`
     addProductToOrder(id: ID!, productToAdd: OrderProductInput!): Order
     removeProductFromOrder(id: ID!, product_id: ID!): Order
     editProductQuantity(id: ID!, productToUpdate: OrderProductInput!): Order
+    processOrder(
+      input: OrderInput!
+      products: [OrderProductInput!]!
+    ): ProcessOrderResult
   }
 `;
 
