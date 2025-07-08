@@ -1,10 +1,13 @@
 import { TagInput } from '@datatypes/Tag';
 import prisma from '../_prisma/client';
 import revalidateCache from '@actions/revalidateCache';
+import { ApolloContext } from '@datalib/apolloServer';
 
 export default class Tags {
   // CREATE
-  static async create(input: TagInput) {
+  static async create(input: TagInput, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     const tag = await prisma.tag.create({
       data: input,
     });
@@ -13,7 +16,9 @@ export default class Tags {
   }
 
   // READ
-  static async find(name: string) {
+  static async find(name: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     return prisma.tag.findUnique({
       where: {
         name,
@@ -21,7 +26,9 @@ export default class Tags {
     });
   }
 
-  static async findMany(names: string[]) {
+  static async findMany(names: string[], ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     if (!names) {
       return prisma.tag.findMany();
     }
@@ -35,7 +42,9 @@ export default class Tags {
     });
   }
 
-  static async findProducts(tag_id: string) {
+  static async findProducts(tag_id: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     return prisma.productToTag.findMany({
       where: {
         tag_id,
@@ -47,7 +56,9 @@ export default class Tags {
   }
 
   // DELETE
-  static async delete(name: string) {
+  static async delete(name: string, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       await prisma.tag.delete({
         where: {

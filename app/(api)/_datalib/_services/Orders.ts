@@ -1,13 +1,19 @@
 import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import { OrderInput, OrderProductInput } from '@datatypes/Order';
+import { ApolloContext } from '../apolloServer';
+import { Prisma } from '@prisma/client';
+import Stripe from 'stripe';
 
 export default class Orders {
   //CREATE
-  static async create(input: OrderInput) {
+  static async create(input: OrderInput, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     const order = prisma.order.create({
       data: {
         ...input, // Spread the input fields
+        total: 0,
         status: 'pending', // Default status
         created_at: new Date(), // Current timestamp
       },
@@ -17,8 +23,9 @@ export default class Orders {
   }
 
   //READ -> get order and orders, also getProducts using the ProductToOrder table
+  static async find(id: number, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
 
-  static async find(id: string) {
     return prisma.order.findUnique({
       where: {
         id,
@@ -26,21 +33,64 @@ export default class Orders {
     });
   }
 
-  static async findMany(ids: string[]) {
-    if (!ids) {
-      return prisma.order.findMany();
+  static async findMany(
+    statuses: string[],
+    search: string,
+    offset: number,
+    limit: number,
+    ctx: ApolloContext
+  ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
+    if (offset < 0 || limit <= 0) return null;
+
+    const whereClause: Prisma.OrderWhereInput = {};
+
+    if (statuses && statuses.length > 0) {
+      whereClause.status = { in: statuses };
+    }
+
+    if (search) {
+      const searchConditions: Prisma.OrderWhereInput[] = [
+        { customer_name: { contains: search, mode: 'insensitive' } },
+        { customer_email: { contains: search, mode: 'insensitive' } },
+        { customer_phone_num: { contains: search, mode: 'insensitive' } },
+      ];
+
+      const searchAsNumber = parseInt(search, 10);
+      if (!isNaN(searchAsNumber)) {
+        searchConditions.push({ id: searchAsNumber });
+        searchConditions.push({
+          id: {
+            in: await prisma.order
+              .findMany({
+                select: { id: true },
+              })
+              .then((orders) =>
+                orders
+                  .filter((order) => order.id.toString().includes(search))
+                  .map((order) => order.id)
+              ),
+          },
+        });
+      }
+
+      whereClause.OR = searchConditions;
     }
 
     return prisma.order.findMany({
-      where: {
-        id: {
-          in: ids,
-        },
+      where: whereClause,
+      orderBy: {
+        created_at: 'desc',
       },
+      skip: offset * limit,
+      take: limit,
     });
   }
 
-  static async getProducts(order_id: string) {
+  static async getProducts(order_id: number, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     const productToOrder = await prisma.productToOrder.findMany({
       where: {
         order_id,
@@ -59,7 +109,9 @@ export default class Orders {
   }
 
   //UPDATE
-  static async update(id: string, input: OrderInput) {
+  static async update(id: number, input: OrderInput, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       const order = await prisma.order.update({
         where: {
@@ -75,7 +127,13 @@ export default class Orders {
   }
 
   // these are the services for the mutations we have left
-  static async addProductToOrder(id: string, productToAdd: OrderProductInput) {
+  static async addProductToOrder(
+    id: number,
+    productToAdd: OrderProductInput,
+    ctx: ApolloContext
+  ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       const product_id = productToAdd.product_id;
       const productQuantity = productToAdd.quantity;
@@ -128,8 +186,13 @@ export default class Orders {
     }
   }
 
-  // static async removeProductFromOrder() {}
-  static async removeProductFromOrder(id: string, product_id: string) {
+  static async removeProductFromOrder(
+    id: number,
+    product_id: string,
+    ctx: ApolloContext
+  ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       await prisma.productToOrder.delete({
         where: {
@@ -159,9 +222,12 @@ export default class Orders {
   }
 
   static async editProductQuantity(
-    id: string,
-    productToUpdate: OrderProductInput
+    id: number,
+    productToUpdate: OrderProductInput,
+    ctx: ApolloContext
   ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       const product_id = productToUpdate.product_id;
       const productQuantity = productToUpdate.quantity;
@@ -208,7 +274,9 @@ export default class Orders {
   }
 
   // DELETE
-  static async delete(id: string) {
+  static async delete(id: number, ctx: ApolloContext) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
     try {
       const order = await prisma.order.findFirst({
         where: {
@@ -244,6 +312,79 @@ export default class Orders {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  // PROCESS W/STRIPE
+  static async processOrder(
+    input: OrderInput,
+    products: OrderProductInput[],
+    ctx: ApolloContext
+  ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
+    try {
+      const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+        apiVersion: '2025-05-28.basil', // explicitly set the API version
+      });
+
+      // Lookup product prices from DB
+      const productIds = products.map((p) => p.product_id);
+      const dbProducts = await prisma.product.findMany({
+        where: { id: { in: productIds } },
+      });
+
+      const productMap = Object.fromEntries(dbProducts.map((p) => [p.id, p]));
+
+      const total = products.reduce((sum, item) => {
+        const product = productMap[item.product_id];
+        return sum + (product?.price ?? 0) * item.quantity;
+      }, 0);
+
+      // Stripe counts payment amounts in cents
+      const amountInCents = Math.round(total * 100);
+
+      // Create the order
+      const createdOrder = await prisma.order.create({
+        data: {
+          ...input,
+          total: total,
+          status: 'pending',
+          created_at: new Date(),
+          products: {
+            create: products.map((p) => ({
+              quantity: p.quantity,
+              product: { connect: { id: p.product_id } },
+            })),
+          },
+        },
+        include: { products: { include: { product: true } } },
+      });
+
+      // Create Stripe PaymentIntent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amountInCents,
+        currency: 'usd',
+        metadata: {
+          orderId: createdOrder.id,
+        },
+      });
+
+      // Save paymentIntentId to order
+      const updatedOrder = await prisma.order.update({
+        where: { id: createdOrder.id },
+        data: { paymentIntentId: paymentIntent.id },
+        include: { products: { include: { product: true } } },
+      });
+
+      revalidateCache(['orders', 'products']);
+
+      return {
+        order: updatedOrder,
+        clientSecret: paymentIntent.client_secret,
+      };
+    } catch (e) {
+      return e;
     }
   }
 }
