@@ -7,6 +7,9 @@ const typeDefs = gql`
     SHIPPED
     IN_TRANSIT
     DELIVERED
+  }
+
+  enum CancellationStatus {
     CANCELLED
     REFUNDED
   }
@@ -30,6 +33,7 @@ const typeDefs = gql`
     shipping_zip: String!
     shipping_country: String!
     status: OrderStatus!
+    cancellation_status: CancellationStatus
     created_at: String!
   }
 
@@ -48,6 +52,7 @@ const typeDefs = gql`
     shipping_zip: String!
     shipping_country: String!
     status: OrderStatus
+    cancellation_status: CancellationStatus
   }
 
   input OrderUpdateInput {
@@ -66,6 +71,7 @@ const typeDefs = gql`
     shipping_zip: String
     shipping_country: String
     status: OrderStatus
+    cancellation_status: CancellationStatus
   }
 
   input OrderProductInput {
@@ -87,6 +93,7 @@ const typeDefs = gql`
     order(id: ID!): Order
     orders(
       statuses: [OrderStatus]
+      cancellation_statuses: [CancellationStatus]
       search: String
       offset: Int!
       limit: Int!

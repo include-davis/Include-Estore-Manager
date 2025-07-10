@@ -2,12 +2,13 @@
 
 import Image from 'next/image';
 import styles from './OrderCard.module.scss';
-import { OrderStatus } from '@datatypes/Order';
+import { CancellationStatus, OrderStatus } from '@datatypes/Order';
 
 interface OrderCardProps {
   id: number;
   created_at: string;
   status: OrderStatus;
+  cancellation_status: CancellationStatus | null;
   image: string;
 }
 
@@ -15,20 +16,31 @@ export default function OrderCard({
   id,
   created_at,
   status,
+  cancellation_status,
   image,
 }: OrderCardProps) {
-  const statusLabels = {
+  const progressBarStatuses = [
+    OrderStatus.PENDING,
+    OrderStatus.ORDERED,
+    OrderStatus.SHIPPED,
+    OrderStatus.IN_TRANSIT,
+    OrderStatus.DELIVERED,
+  ];
+
+  const progressBarLabels: { [key: string]: string } = {
+    [OrderStatus.PENDING]: 'Pending',
     [OrderStatus.ORDERED]: 'Ordered',
     [OrderStatus.SHIPPED]: 'Shipped',
     [OrderStatus.IN_TRANSIT]: 'In Transit',
     [OrderStatus.DELIVERED]: 'Delivered',
-    [OrderStatus.PENDING]: 'Pending',
-    [OrderStatus.CANCELLED]: 'Cancelled',
-    [OrderStatus.REFUNDED]: 'Refunded',
   };
 
-  const statusValues = Object.values(OrderStatus);
-  const currentStatusIndex = statusValues.indexOf(status);
+  const badgeStatusLabels: { [key: string]: string } = {
+    [CancellationStatus.CANCELLED]: 'Cancelled',
+    [CancellationStatus.REFUNDED]: 'Refunded',
+  };
+
+  const currentStatusIndex = progressBarStatuses.indexOf(status);
 
   return (
     <div className={styles.container}>
@@ -39,7 +51,18 @@ export default function OrderCard({
 
         <div className={styles.order_info}>
           <div className={styles.order_details}>
-            <h3 className={styles.order_id}>Order #{id}</h3>
+            <div className={styles.order_id_container}>
+              <h3 className={styles.order_id}>Order #{id}</h3>
+              {cancellation_status && (
+                <span
+                  className={`${styles.status_badge} ${
+                    styles[cancellation_status.toLowerCase()]
+                  }`}
+                >
+                  {badgeStatusLabels[cancellation_status]}
+                </span>
+              )}
+            </div>
             <p className={styles.order_date}>
               Order Placed:{' '}
               {new Date(Number(created_at)).toLocaleDateString(undefined, {
@@ -52,7 +75,7 @@ export default function OrderCard({
 
           <div className={styles.progress_section}>
             <div className={styles.progress_bar}>
-              {statusValues.map((value, index) => (
+              {progressBarStatuses.map((value, index) => (
                 <div key={index} className={styles.status_item}>
                   <div
                     className={`${styles.status_dot} ${
@@ -62,7 +85,7 @@ export default function OrderCard({
                     } ${index === currentStatusIndex ? styles.current : ''}`}
                   />
                   <span className={styles.status_label}>
-                    {statusLabels[value]}
+                    {progressBarLabels[value]}
                   </span>
                 </div>
               ))}

@@ -1,5 +1,5 @@
 model Order {
-  id                      Int              @id @default(autoincrement())
+  id                      Int                 @id @default(autoincrement())
   paymentIntentId         String?
   total                   Float
   customer_name           String
@@ -16,6 +16,7 @@ model Order {
   shipping_zip            String
   shipping_country        String
   status                  OrderStatus
+  cancellation_status     CancellationStatus?
   created_at              DateTime
   products                ProductToOrder[]
 }
@@ -26,6 +27,9 @@ enum OrderStatus {
   SHIPPED
   IN_TRANSIT
   DELIVERED
+}
+
+enum CancellationStatus {
   CANCELLED
   REFUNDED
 }

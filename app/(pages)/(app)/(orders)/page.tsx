@@ -2,20 +2,31 @@
 
 import { useState, useEffect } from 'react';
 import { gql } from 'graphql-tag';
-import OrderCard from './_components/OrderCard';
 import sendApolloRequest from '../../_utils/sendApolloRequest';
-import { Order } from '@datatypes/Order';
+import { Order, OrderStatus, CancellationStatus } from '@datatypes/Order';
 import styles from './page.module.scss';
+import OrderSection from './_components/OrderSection/OrderSection';
 
 const query = gql`
-  query OrderQuery($offset: Int!, $limit: Int!) {
-    orders(offset: $offset, limit: $limit) {
+  query OrderQuery(
+    $offset: Int!
+    $limit: Int!
+    $statuses: [OrderStatus!]
+    $cancellation_statuses: [CancellationStatus!]
+  ) {
+    orders(
+      offset: $offset
+      limit: $limit
+      statuses: $statuses
+      cancellation_statuses: $cancellation_statuses
+    ) {
       id
       customer_name
       customer_email
       customer_phone_num
       created_at
       status
+      cancellation_status
       total
       shipping_address_line_1
       shipping_address_line_2
@@ -40,76 +51,105 @@ const query = gql`
   }
 `;
 
-// Example IDs
 const variables = {
   offset: 0,
   limit: 5,
 };
 
 export default function ViewOrderCards() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [inProgressOrders, setInProgressOrders] = useState<Order[]>([]);
+  const [completedOrders, setCompletedOrders] = useState<Order[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState<OrderStatus | 'All'>(
+    'All'
+  );
+  const [selectedCompletedStatus, setSelectedCompletedStatus] = useState<
+    CancellationStatus | 'All' | 'DELIVERED'
+  >('All');
 
   const statusClassMap: { [key: string]: string } = {
     All: 'all-btn',
-    Ordered: 'ordered',
-    Packed: 'packed',
-    Shipped: 'shipped',
-    'In Transit': 'transit',
+    [OrderStatus.PENDING]: 'pending',
+    [OrderStatus.ORDERED]: 'ordered',
+    [OrderStatus.SHIPPED]: 'shipped',
+    [OrderStatus.IN_TRANSIT]: 'transit',
   };
 
-  const statusOptions = ['All', 'Ordered', 'Packed', 'Shipped', 'In Transit'];
+  const completedStatusClassMap: { [key: string]: string } = {
+    All: 'all-btn',
+    DELIVERED: 'delivered',
+    [CancellationStatus.CANCELLED]: 'cancelled',
+    [CancellationStatus.REFUNDED]: 'refunded',
+  };
 
-  // Updated order data to better match the design
-  // const orderData = [
-  //   {
-  //     orderId: '#48219',
-  //     shippingInfo: 'Pack by April 30',
-  //     orderDate: 'April 26, 2025',
-  //     status: 1, // Packed
-  //     image: '/sample-product/puffer.png',
-  //   },
-  //   {
-  //     orderId: '#73056',
-  //     shippingInfo: 'Ship by April 30',
-  //     orderDate: 'April 22, 2025',
-  //     status: 2, // Shipped
-  //     image: '/sample-product/watch.png',
-  //   },
-  //   {
-  //     orderId: '#19547',
-  //     shippingInfo: 'Ship by April 30',
-  //     orderDate: 'April 18, 2025',
-  //     status: 3, // In Transit
-  //     image: '/sample-product/sneaker.png',
-  //   },
-  // ];
+  const statusOptions: (OrderStatus | 'All')[] = [
+    'All',
+    OrderStatus.PENDING,
+    OrderStatus.ORDERED,
+    OrderStatus.SHIPPED,
+    OrderStatus.IN_TRANSIT,
+  ];
 
-  // const pastOrders = [
-  //   {
-  //     orderId: '#15432',
-  //     shippingInfo: 'Delivered',
-  //     orderDate: 'April 15, 2025',
-  //     status: 4, // Delivered
-  //     image: '/sample-product/cap.png',
-  //   },
-  //   {
-  //     orderId: '#12853',
-  //     shippingInfo: 'Delivered',
-  //     orderDate: 'April 12, 2025',
-  //     status: 4, // Delivered
-  //     image: '/sample-product/bear.png',
-  //   },
-  // ];
+  const completedStatusOptions: (CancellationStatus | 'All' | 'DELIVERED')[] = [
+    'All',
+    'DELIVERED',
+    ...Object.values(CancellationStatus),
+  ];
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const orderData = await sendApolloRequest({ request: query, variables });
-      setOrders(orderData.data.orders);
+      const inProgressStatuses =
+        selectedStatus === 'All'
+          ? [
+              OrderStatus.PENDING,
+              OrderStatus.ORDERED,
+              OrderStatus.SHIPPED,
+              OrderStatus.IN_TRANSIT,
+            ]
+          : [selectedStatus];
+      const inProgressPromise = sendApolloRequest({
+        request: query,
+        variables: {
+          ...variables,
+          statuses: inProgressStatuses,
+        },
+      });
+
+      let completed_statuses: OrderStatus[] = [];
+      let cancellation_statuses: CancellationStatus[] = [];
+
+      if (selectedCompletedStatus === 'All') {
+        completed_statuses = [OrderStatus.DELIVERED];
+        cancellation_statuses = Object.values(CancellationStatus);
+      } else if (selectedCompletedStatus === 'DELIVERED') {
+        completed_statuses = [OrderStatus.DELIVERED];
+      } else {
+        cancellation_statuses = [selectedCompletedStatus as CancellationStatus];
+      }
+
+      const completedPromise = sendApolloRequest({
+        request: query,
+        variables: {
+          ...variables,
+          statuses:
+            completed_statuses.length > 0 ? completed_statuses : undefined,
+          cancellation_statuses:
+            cancellation_statuses.length > 0
+              ? cancellation_statuses
+              : undefined,
+        },
+      });
+
+      const [inProgressData, completedData] = await Promise.all([
+        inProgressPromise,
+        completedPromise,
+      ]);
+
+      setInProgressOrders(inProgressData.data.orders);
+      setCompletedOrders(completedData.data.orders);
     };
 
     fetchOrders();
-  }, []);
+  }, [selectedStatus, selectedCompletedStatus]);
 
   return (
     <div className={styles.page_container}>
@@ -129,59 +169,23 @@ export default function ViewOrderCards() {
         </div>
       </div>
 
-      <div className={styles.progress_section}>
-        <div className={styles.section_header}>
-          <h2>In Progress</h2>
-          <div className={styles.pagination}>
-            <button className={styles.pagination_btn}>&#60;</button>
-            <span className={styles.pagination_text}>1 of 5</span>
-            <button className={styles.pagination_btn}>&#61;</button>
-          </div>
-        </div>
+      <OrderSection
+        title="In Progress"
+        orders={inProgressOrders}
+        statusOptions={statusOptions}
+        statusClassMap={statusClassMap}
+        selectedStatus={selectedStatus}
+        onStatusChange={setSelectedStatus}
+      />
 
-        <div className={styles.status_filters}>
-          {statusOptions.map((status) => (
-            <button
-              key={status}
-              type="button"
-              className={`${styles.filter_btn} ${
-                styles[statusClassMap[status]]
-              } ${selectedStatus === status ? styles.selected : ''}`}
-              onClick={() => setSelectedStatus(status)}
-            >
-              {status}
-            </button>
-          ))}
-        </div>
-
-        <div className={styles.order_cards}>
-          {orders.map((order, index) => (
-            <OrderCard
-              key={index}
-              id={order.id}
-              created_at={order.created_at}
-              status={order.status}
-              image={''}
-              // image={order.image}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* <div className={styles.past_orders_section}>
-        <h2>Past Orders</h2>
-        <div className={styles.order_cards}>
-          {pastOrders.map((order, index) => (
-            <OrderCard
-              key={index}
-              orderId={order.orderId}
-              orderDate={order.orderDate}
-              status={order.status}
-              image={order.image}
-            />
-          ))}
-        </div>
-      </div> */}
+      <OrderSection
+        title="Completed"
+        orders={completedOrders}
+        statusOptions={completedStatusOptions}
+        statusClassMap={completedStatusClassMap}
+        selectedStatus={selectedCompletedStatus}
+        onStatusChange={setSelectedCompletedStatus}
+      />
     </div>
   );
 }

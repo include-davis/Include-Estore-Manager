@@ -6,6 +6,9 @@ export enum OrderStatus {
   SHIPPED = 'SHIPPED',
   IN_TRANSIT = 'IN_TRANSIT',
   DELIVERED = 'DELIVERED',
+}
+
+export enum CancellationStatus {
   CANCELLED = 'CANCELLED',
   REFUNDED = 'REFUNDED',
 }
@@ -27,6 +30,7 @@ export type Order = {
   shipping_zip: string;
   shipping_country: string;
   status: OrderStatus;
+  cancellation_status: CancellationStatus | null;
   created_at: string;
   products: ProductToOrder[];
 };
@@ -64,6 +68,7 @@ export type OrderInput = {
   shipping_zip: string;
   shipping_country: string;
   status?: OrderStatus;
+  cancellation_status?: CancellationStatus;
 };
 
 //make all inputs optional

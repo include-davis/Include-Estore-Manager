@@ -69,28 +69,6 @@
     }
 }
 
-.progress_section {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 100%;
-}
-
-.section_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    
-    h2 {
-        font-family: 'Manrope', sans-serif;
-        font-size: 24px;
-        font-weight: 600;
-        color: var(--text-dark);
-        margin: 0;
-    }
-}
-
 .pagination {
     display: flex;
     align-items: center;
@@ -186,19 +164,4 @@
     flex-direction: column;
     gap: 16px;
     width: 100%;
-}
-
-.past_orders_section {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    width: 100%;
-    
-    h2 {
-        font-family: 'Manrope', sans-serif;
-        font-size: 24px;
-        font-weight: 600;
-        color: var(--text-dark);
-        margin: 0;
-    }
 }

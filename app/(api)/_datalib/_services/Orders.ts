@@ -1,6 +1,7 @@
 import revalidateCache from '@actions/revalidateCache';
 import prisma from '../_prisma/client';
 import {
+  CancellationStatus,
   OrderInput,
   OrderProductInput,
   OrderStatus,
@@ -40,19 +41,40 @@ export default class Orders {
 
   static async findMany(
     statuses: OrderStatus[],
+    cancellation_statuses: CancellationStatus[],
     search: string,
     offset: number,
     limit: number,
     ctx: ApolloContext
   ) {
     if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
-
     if (offset < 0 || limit <= 0) return null;
 
-    const whereClause: Prisma.OrderWhereInput = {};
+    const queryConditions: Prisma.OrderWhereInput[] = [];
 
-    if (statuses && statuses.length > 0) {
-      whereClause.status = { in: statuses };
+    const statusFilters: Prisma.OrderWhereInput[] = [];
+    if (statuses?.length) {
+      statusFilters.push({ status: { in: statuses } });
+    }
+    if (cancellation_statuses?.length) {
+      statusFilters.push({
+        cancellation_status: { in: cancellation_statuses },
+      });
+    }
+
+    if (statusFilters.length > 1) {
+      queryConditions.push({ OR: statusFilters });
+    } else if (statusFilters.length === 1) {
+      queryConditions.push(statusFilters[0]);
+    }
+
+    // For in progress requests, ensure there's no cancellation status.
+    const isInProgressRequest =
+      statuses?.length &&
+      !cancellation_statuses?.length &&
+      !statuses.includes(OrderStatus.DELIVERED);
+    if (isInProgressRequest) {
+      queryConditions.push({ cancellation_status: null });
     }
 
     if (search) {
@@ -80,11 +102,11 @@ export default class Orders {
         });
       }
 
-      whereClause.OR = searchConditions;
+      queryConditions.push({ OR: searchConditions });
     }
 
     return prisma.order.findMany({
-      where: whereClause,
+      where: { AND: queryConditions },
       orderBy: {
         created_at: 'desc',
       },
@@ -288,12 +310,12 @@ export default class Orders {
           id,
         },
         select: {
-          status: true,
+          cancellation_status: true,
         },
       });
 
       if (order) {
-        if (order.status == 'REFUNDED') {
+        if (order.cancellation_status == 'REFUNDED') {
           await prisma.order.delete({
             where: {
               id,
@@ -307,7 +329,7 @@ export default class Orders {
               id,
             },
             data: {
-              status: 'CANCELLED',
+              cancellation_status: CancellationStatus.CANCELLED,
             },
           });
           // could possibly add a message? "this order need to be refunded" or smth

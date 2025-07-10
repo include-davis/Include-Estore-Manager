@@ -164,6 +164,29 @@
     white-space: nowrap;
 }
 
+.order_id_container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status_badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  
+  &.refunded {
+    background-color: var(--error-light);
+    color: var(--error-dark);
+  }
+
+  &.cancelled {
+    background-color: var(--gray-200);
+    color: var(--gray-800);
+  }
+}
+
 .view_order_btn {
     padding: 12px 24px;
     background-color: var(--purple);
