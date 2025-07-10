@@ -15,7 +15,17 @@ model Order {
   shipping_city           String
   shipping_zip            String
   shipping_country        String
-  status                  String
+  status                  OrderStatus
   created_at              DateTime
   products                ProductToOrder[]
+}
+
+enum OrderStatus {
+  PENDING
+  ORDERED
+  SHIPPED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+  REFUNDED
 }

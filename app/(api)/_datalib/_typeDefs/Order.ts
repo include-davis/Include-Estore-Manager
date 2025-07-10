@@ -1,6 +1,16 @@
 import gql from 'graphql-tag';
 
 const typeDefs = gql`
+  enum OrderStatus {
+    PENDING
+    ORDERED
+    SHIPPED
+    IN_TRANSIT
+    DELIVERED
+    CANCELLED
+    REFUNDED
+  }
+
   type Order {
     id: ID!
     paymentIntentId: String
@@ -19,7 +29,7 @@ const typeDefs = gql`
     shipping_city: String!
     shipping_zip: String!
     shipping_country: String!
-    status: String!
+    status: OrderStatus!
     created_at: String!
   }
 
@@ -37,7 +47,7 @@ const typeDefs = gql`
     shipping_city: String!
     shipping_zip: String!
     shipping_country: String!
-    status: String!
+    status: OrderStatus
   }
 
   input OrderUpdateInput {
@@ -55,7 +65,7 @@ const typeDefs = gql`
     shipping_city: String
     shipping_zip: String
     shipping_country: String
-    status: String
+    status: OrderStatus
   }
 
   input OrderProductInput {
@@ -76,7 +86,7 @@ const typeDefs = gql`
   type Query {
     order(id: ID!): Order
     orders(
-      statuses: [String]
+      statuses: [OrderStatus]
       search: String
       offset: Int!
       limit: Int!

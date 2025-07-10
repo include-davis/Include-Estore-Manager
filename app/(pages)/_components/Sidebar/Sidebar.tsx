@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import styles from './Sidebar.module.scss';
 
-import { CgProfile } from 'react-icons/cg';
-import { IoPricetagOutline } from 'react-icons/io5';
-import { FiShoppingCart } from 'react-icons/fi';
+import { FiEdit, FiShoppingCart } from 'react-icons/fi';
+import { RiFileList3Line } from 'react-icons/ri';
+
+import styles from './Sidebar.module.scss';
 
 interface NavLink {
   name: string;
@@ -16,24 +17,25 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   {
-    name: 'Profile',
-    slug: '/profile/account-settings',
-    icon: <CgProfile size={25} className={styles.linkIcon} />,
+    name: 'Orders',
+    slug: '/',
+    icon: <RiFileList3Line size={25} className={styles.linkIcon} />,
   },
   {
-    name: 'Product',
+    name: 'Product Listings',
     slug: '/products',
-    icon: <IoPricetagOutline size={25} className={styles.linkIcon} />,
+    icon: <FiShoppingCart size={25} className={styles.linkIcon} />,
   },
   {
-    name: 'Order',
-    slug: '/orders',
-    icon: <FiShoppingCart size={25} className={styles.linkIcon} />,
+    name: 'Edit Store',
+    slug: '/profile/account-settings',
+    icon: <FiEdit size={25} className={styles.linkIcon} />,
   },
 ];
 
 export default function Sidebar() {
-  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const pathname = usePathname();
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(pathname);
 
   const handleSelect = (slug: string) => {
     setSelectedSlug(slug);

@@ -1,5 +1,10 @@
 import Orders from '../_services/Orders';
-import { OrderInput, Order, OrderProductInput } from '@datatypes/Order';
+import {
+  OrderInput,
+  Order,
+  OrderProductInput,
+  OrderStatus,
+} from '@datatypes/Order';
 import { ApolloContext } from '../apolloServer';
 
 const resolvers = {
@@ -13,7 +18,7 @@ const resolvers = {
     orders: (
       _: never,
       args: {
-        statuses: string[];
+        statuses: OrderStatus[];
         search: string;
         offset: number;
         limit: number;
