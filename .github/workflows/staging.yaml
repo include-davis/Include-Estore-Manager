@@ -32,7 +32,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
       
       - name: Run database migrations
-        run: npm run db:migrate
+        run: npm run db:migrate:retry
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
