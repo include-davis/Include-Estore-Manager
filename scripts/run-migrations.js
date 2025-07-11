@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const exec = require('child_process');
+const { exec } = require('child_process');
 
 const MIGRATION_COMMAND = 'npx prisma migrate deploy';
 const MAX_RETRIES = 5;
