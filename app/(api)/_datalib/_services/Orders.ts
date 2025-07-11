@@ -110,8 +110,75 @@ export default class Orders {
       orderBy: {
         created_at: 'desc',
       },
-      skip: offset * limit,
+      skip: offset,
       take: limit,
+    });
+  }
+
+  static async count(
+    statuses: OrderStatus[],
+    cancellation_statuses: CancellationStatus[],
+    search: string,
+    ctx: ApolloContext
+  ) {
+    if (!ctx.isOwner && !ctx.hasValidApiKey) return null;
+
+    const queryConditions: Prisma.OrderWhereInput[] = [];
+
+    const statusFilters: Prisma.OrderWhereInput[] = [];
+    if (statuses?.length) {
+      statusFilters.push({ status: { in: statuses } });
+    }
+    if (cancellation_statuses?.length) {
+      statusFilters.push({
+        cancellation_status: { in: cancellation_statuses },
+      });
+    }
+
+    if (statusFilters.length > 1) {
+      queryConditions.push({ OR: statusFilters });
+    } else if (statusFilters.length === 1) {
+      queryConditions.push(statusFilters[0]);
+    }
+
+    const isInProgressRequest =
+      statuses?.length &&
+      !cancellation_statuses?.length &&
+      !statuses.includes(OrderStatus.DELIVERED);
+    if (isInProgressRequest) {
+      queryConditions.push({ cancellation_status: null });
+    }
+
+    if (search) {
+      const searchConditions: Prisma.OrderWhereInput[] = [
+        { customer_name: { contains: search, mode: 'insensitive' } },
+        { customer_email: { contains: search, mode: 'insensitive' } },
+        { customer_phone_num: { contains: search, mode: 'insensitive' } },
+      ];
+
+      const searchAsNumber = parseInt(search, 10);
+      if (!isNaN(searchAsNumber)) {
+        searchConditions.push({ id: searchAsNumber });
+        searchConditions.push({
+          id: {
+            in: await prisma.order
+              .findMany({
+                select: { id: true },
+              })
+              .then((orders) =>
+                orders
+                  .filter((order) => order.id.toString().includes(search))
+                  .map((order) => order.id)
+              ),
+          },
+        });
+      }
+
+      queryConditions.push({ OR: searchConditions });
+    }
+
+    return prisma.order.count({
+      where: { AND: queryConditions },
     });
   }
 

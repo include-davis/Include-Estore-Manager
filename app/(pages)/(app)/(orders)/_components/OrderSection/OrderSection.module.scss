@@ -12,7 +12,6 @@
   width: 100%;
   
   h2 {
-    font-family: 'Manrope', sans-serif;
     font-size: 24px;
     font-weight: 600;
     color: var(--text-dark);
@@ -23,7 +22,10 @@
 .pagination {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
+  background-color: var(--background-secondary);
+  padding: 0.5rem;
+  border-radius: 2rem;
 }
 
 .pagination_btn {
@@ -32,29 +34,30 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--gray-300);
-  border-radius: 6px;
-  background-color: var(--background-secondary);
-  color: var(--gray-600);
+  border: none;
+  border-radius: 50%;
+  background-color: var(--background-primary);
+  color: var(--purple);
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover {
-    background-color: var(--background-primary);
-    border-color: var(--gray-400);
+    background-color: var(--light-purple);
+    color: var(--text-light)
   }
   
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background-color: var(--gray-100);
+    color: var(--gray-400);
   }
 }
 
 .pagination_text {
-  font-family: 'Manrope', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: var(--gray-600);
+  color: var(--text-dark);
 }
 
 .status_filters {
@@ -66,7 +69,6 @@
 
 .filter_btn {
   padding: 12px 20px;
-  font-family: 'Manrope', sans-serif;
   font-size: 14px;
   font-weight: 500;
   border: 1px solid var(--gray-300);

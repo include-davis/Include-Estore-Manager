@@ -98,6 +98,11 @@ const typeDefs = gql`
       offset: Int!
       limit: Int!
     ): [Order]
+    ordersCount(
+      statuses: [OrderStatus]
+      cancellation_statuses: [CancellationStatus]
+      search: String
+    ): Int
   }
 
   type Mutation {

@@ -35,6 +35,16 @@ const resolvers = {
         args.limit,
         ctx
       ),
+    ordersCount: (
+      _: never,
+      args: {
+        statuses: OrderStatus[];
+        cancellation_statuses: CancellationStatus[];
+        search: string;
+      },
+      ctx: ApolloContext
+    ) =>
+      Orders.count(args.statuses, args.cancellation_statuses, args.search, ctx),
   },
   Mutation: {
     updateOrder: (

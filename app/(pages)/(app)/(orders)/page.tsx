@@ -4,21 +4,25 @@ import { useState, useEffect } from 'react';
 import { gql } from 'graphql-tag';
 import sendApolloRequest from '../../_utils/sendApolloRequest';
 import { Order, OrderStatus, CancellationStatus } from '@datatypes/Order';
-import styles from './page.module.scss';
 import OrderSection from './_components/OrderSection/OrderSection';
+import styles from './page.module.scss';
 
-const query = gql`
+const QUERY_LIMIT = 3;
+
+const ordersQuery = gql`
   query OrderQuery(
     $offset: Int!
     $limit: Int!
     $statuses: [OrderStatus!]
     $cancellation_statuses: [CancellationStatus!]
+    $search: String
   ) {
     orders(
       offset: $offset
       limit: $limit
       statuses: $statuses
       cancellation_statuses: $cancellation_statuses
+      search: $search
     ) {
       id
       customer_name
@@ -51,20 +55,35 @@ const query = gql`
   }
 `;
 
-const variables = {
-  offset: 0,
-  limit: 5,
-};
+const countQuery = gql`
+  query OrdersCount(
+    $statuses: [OrderStatus!]
+    $cancellation_statuses: [CancellationStatus!]
+    $search: String
+  ) {
+    ordersCount(
+      statuses: $statuses
+      cancellation_statuses: $cancellation_statuses
+      search: $search
+    )
+  }
+`;
 
 export default function ViewOrderCards() {
   const [inProgressOrders, setInProgressOrders] = useState<Order[]>([]);
+  const [inProgressOrdersCount, setInProgressOrdersCount] = useState(0);
   const [completedOrders, setCompletedOrders] = useState<Order[]>([]);
+  const [completedOrdersCount, setCompletedOrdersCount] = useState(0);
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus | 'All'>(
     'All'
   );
   const [selectedCompletedStatus, setSelectedCompletedStatus] = useState<
     CancellationStatus | 'All' | 'DELIVERED'
   >('All');
+  const [inProgressPage, setInProgressPage] = useState(0);
+  const [completedPage, setCompletedPage] = useState(0);
+  const [searchInput, setSearchInput] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
   const statusClassMap: { [key: string]: string } = {
     All: 'all-btn',
@@ -95,8 +114,15 @@ export default function ViewOrderCards() {
     ...Object.values(CancellationStatus),
   ];
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSearchTerm(searchInput);
+    setInProgressPage(0);
+    setCompletedPage(0);
+  };
+
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchInProgressOrders = async () => {
       const inProgressStatuses =
         selectedStatus === 'All'
           ? [
@@ -106,14 +132,34 @@ export default function ViewOrderCards() {
               OrderStatus.IN_TRANSIT,
             ]
           : [selectedStatus];
-      const inProgressPromise = sendApolloRequest({
-        request: query,
+      const ordersPromise = sendApolloRequest({
+        request: ordersQuery,
         variables: {
-          ...variables,
+          offset: inProgressPage * QUERY_LIMIT,
+          limit: QUERY_LIMIT,
           statuses: inProgressStatuses,
+          search: searchTerm,
         },
       });
+      const countPromise = sendApolloRequest({
+        request: countQuery,
+        variables: {
+          statuses: inProgressStatuses,
+          search: searchTerm,
+        },
+      });
+      const [ordersData, countData] = await Promise.all([
+        ordersPromise,
+        countPromise,
+      ]);
+      setInProgressOrders(ordersData.data.orders);
+      setInProgressOrdersCount(countData.data.ordersCount);
+    };
+    fetchInProgressOrders();
+  }, [selectedStatus, inProgressPage, searchTerm]);
 
+  useEffect(() => {
+    const fetchCompletedOrders = async () => {
       let completed_statuses: OrderStatus[] = [];
       let cancellation_statuses: CancellationStatus[] = [];
 
@@ -126,47 +172,69 @@ export default function ViewOrderCards() {
         cancellation_statuses = [selectedCompletedStatus as CancellationStatus];
       }
 
-      const completedPromise = sendApolloRequest({
-        request: query,
+      const ordersPromise = sendApolloRequest({
+        request: ordersQuery,
         variables: {
-          ...variables,
+          offset: completedPage * QUERY_LIMIT,
+          limit: QUERY_LIMIT,
           statuses:
             completed_statuses.length > 0 ? completed_statuses : undefined,
           cancellation_statuses:
             cancellation_statuses.length > 0
               ? cancellation_statuses
               : undefined,
+          search: searchTerm,
         },
       });
-
-      const [inProgressData, completedData] = await Promise.all([
-        inProgressPromise,
-        completedPromise,
+      const countPromise = sendApolloRequest({
+        request: countQuery,
+        variables: {
+          statuses:
+            completed_statuses.length > 0 ? completed_statuses : undefined,
+          cancellation_statuses:
+            cancellation_statuses.length > 0
+              ? cancellation_statuses
+              : undefined,
+          search: searchTerm,
+        },
+      });
+      const [ordersData, countData] = await Promise.all([
+        ordersPromise,
+        countPromise,
       ]);
-
-      setInProgressOrders(inProgressData.data.orders);
-      setCompletedOrders(completedData.data.orders);
+      setCompletedOrders(ordersData.data.orders);
+      setCompletedOrdersCount(countData.data.ordersCount);
     };
+    fetchCompletedOrders();
+  }, [selectedCompletedStatus, completedPage, searchTerm]);
 
-    fetchOrders();
-  }, [selectedStatus, selectedCompletedStatus]);
+  const highestInProgressPage = Math.max(
+    0,
+    Math.ceil(inProgressOrdersCount / QUERY_LIMIT) - 1
+  );
+  const highestCompletedPage = Math.max(
+    0,
+    Math.ceil(completedOrdersCount / QUERY_LIMIT) - 1
+  );
 
   return (
     <div className={styles.page_container}>
       <div className={styles.header}>
         <h1 className={styles.title}>Orders</h1>
 
-        <div className={styles.searchbar}>
+        <form className={styles.searchbar} onSubmit={handleSearch}>
           <input
             className={styles.search}
             type="text"
             placeholder="Search orders"
             name="search"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
           <button className={styles.search_submit} type="submit">
             Search
           </button>
-        </div>
+        </form>
       </div>
 
       <OrderSection
@@ -175,7 +243,13 @@ export default function ViewOrderCards() {
         statusOptions={statusOptions}
         statusClassMap={statusClassMap}
         selectedStatus={selectedStatus}
-        onStatusChange={setSelectedStatus}
+        onStatusChange={(status) => {
+          setSelectedStatus(status);
+          setInProgressPage(0);
+        }}
+        page={inProgressPage}
+        onPageChange={setInProgressPage}
+        highestPage={highestInProgressPage}
       />
 
       <OrderSection
@@ -184,7 +258,13 @@ export default function ViewOrderCards() {
         statusOptions={completedStatusOptions}
         statusClassMap={completedStatusClassMap}
         selectedStatus={selectedCompletedStatus}
-        onStatusChange={setSelectedCompletedStatus}
+        onStatusChange={(status) => {
+          setSelectedCompletedStatus(status);
+          setCompletedPage(0);
+        }}
+        page={completedPage}
+        onPageChange={setCompletedPage}
+        highestPage={highestCompletedPage}
       />
     </div>
   );
