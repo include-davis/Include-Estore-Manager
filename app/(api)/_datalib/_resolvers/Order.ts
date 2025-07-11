@@ -1,5 +1,11 @@
 import Orders from '../_services/Orders';
-import { OrderInput, Order, OrderProductInput } from '@datatypes/Order';
+import {
+  Order,
+  OrderInput,
+  OrderProductInput,
+  OrderStatus,
+  CancellationStatus,
+} from '@datatypes/Order';
 import { ApolloContext } from '../apolloServer';
 
 const resolvers = {
@@ -13,14 +19,32 @@ const resolvers = {
     orders: (
       _: never,
       args: {
-        statuses: string[];
+        statuses: OrderStatus[];
+        cancellation_statuses: CancellationStatus[];
         search: string;
         offset: number;
         limit: number;
       },
       ctx: ApolloContext
     ) =>
-      Orders.findMany(args.statuses, args.search, args.offset, args.limit, ctx),
+      Orders.findMany(
+        args.statuses,
+        args.cancellation_statuses,
+        args.search,
+        args.offset,
+        args.limit,
+        ctx
+      ),
+    ordersCount: (
+      _: never,
+      args: {
+        statuses: OrderStatus[];
+        cancellation_statuses: CancellationStatus[];
+        search: string;
+      },
+      ctx: ApolloContext
+    ) =>
+      Orders.count(args.statuses, args.cancellation_statuses, args.search, ctx),
   },
   Mutation: {
     updateOrder: (

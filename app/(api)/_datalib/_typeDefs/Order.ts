@@ -1,6 +1,19 @@
 import gql from 'graphql-tag';
 
 const typeDefs = gql`
+  enum OrderStatus {
+    PENDING
+    ORDERED
+    SHIPPED
+    IN_TRANSIT
+    DELIVERED
+  }
+
+  enum CancellationStatus {
+    CANCELLED
+    REFUNDED
+  }
+
   type Order {
     id: ID!
     paymentIntentId: String
@@ -19,7 +32,8 @@ const typeDefs = gql`
     shipping_city: String!
     shipping_zip: String!
     shipping_country: String!
-    status: String!
+    status: OrderStatus!
+    cancellation_status: CancellationStatus
     created_at: String!
   }
 
@@ -37,7 +51,8 @@ const typeDefs = gql`
     shipping_city: String!
     shipping_zip: String!
     shipping_country: String!
-    status: String!
+    status: OrderStatus
+    cancellation_status: CancellationStatus
   }
 
   input OrderUpdateInput {
@@ -55,7 +70,8 @@ const typeDefs = gql`
     shipping_city: String
     shipping_zip: String
     shipping_country: String
-    status: String
+    status: OrderStatus
+    cancellation_status: CancellationStatus
   }
 
   input OrderProductInput {
@@ -76,11 +92,17 @@ const typeDefs = gql`
   type Query {
     order(id: ID!): Order
     orders(
-      statuses: [String]
+      statuses: [OrderStatus]
+      cancellation_statuses: [CancellationStatus]
       search: String
       offset: Int!
       limit: Int!
     ): [Order]
+    ordersCount(
+      statuses: [OrderStatus]
+      cancellation_statuses: [CancellationStatus]
+      search: String
+    ): Int
   }
 
   type Mutation {

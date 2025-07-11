@@ -1,5 +1,5 @@
 model Order {
-  id                      Int              @id @default(autoincrement())
+  id                      Int                 @id @default(autoincrement())
   paymentIntentId         String?
   total                   Float
   customer_name           String
@@ -15,7 +15,21 @@ model Order {
   shipping_city           String
   shipping_zip            String
   shipping_country        String
-  status                  String
+  status                  OrderStatus
+  cancellation_status     CancellationStatus?
   created_at              DateTime
   products                ProductToOrder[]
+}
+
+enum OrderStatus {
+  PENDING
+  ORDERED
+  SHIPPED
+  IN_TRANSIT
+  DELIVERED
+}
+
+enum CancellationStatus {
+  CANCELLED
+  REFUNDED
 }

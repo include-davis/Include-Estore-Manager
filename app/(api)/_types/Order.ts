@@ -1,5 +1,18 @@
 import { Product } from './Product';
 
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  ORDERED = 'ORDERED',
+  SHIPPED = 'SHIPPED',
+  IN_TRANSIT = 'IN_TRANSIT',
+  DELIVERED = 'DELIVERED',
+}
+
+export enum CancellationStatus {
+  CANCELLED = 'CANCELLED',
+  REFUNDED = 'REFUNDED',
+}
+
 export type Order = {
   id: number;
   total: number;
@@ -16,8 +29,9 @@ export type Order = {
   shipping_city: string;
   shipping_zip: string;
   shipping_country: string;
-  status: string;
-  created_at: Date;
+  status: OrderStatus;
+  cancellation_status: CancellationStatus | null;
+  created_at: string;
   products: ProductToOrder[];
 };
 
@@ -53,6 +67,8 @@ export type OrderInput = {
   shipping_city: string;
   shipping_zip: string;
   shipping_country: string;
+  status?: OrderStatus;
+  cancellation_status?: CancellationStatus;
 };
 
 //make all inputs optional
