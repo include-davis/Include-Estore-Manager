@@ -2,7 +2,7 @@
 const { exec } = require('child_process');
 
 const MIGRATION_COMMAND = 'npx prisma migrate deploy';
-const MAX_RETRIES = 5;
+const MAX_RETRIES = 3;
 const INITIAL_DELAY_MS = 2000;
 
 let attempt = 0;
